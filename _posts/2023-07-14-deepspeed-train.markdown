@@ -13,7 +13,7 @@ In the literature and the public conversation around Natural Language Processing
 
 <div align="center">
   <figure>
-    <img src="./images/deepspeed/stack_more_layers.webp" width="500" alt="Layers">
+    <img src="/blog/images/deepspeed/stack_more_layers.webp" width="500" alt="Layers">
     <figcaption>Keep it stacking</figcaption>
     </figure>
 </div>
@@ -66,7 +66,7 @@ Without any data parallelism, we get this sorry sight:
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/gpu_unused.png" width = "700" alt="Unused GPU potential">
+  <img src="/blog/images/deepspeed/gpu_unused.png" width = "700" alt="Unused GPU potential">
   <figcaption>Oh dear</figcaption>
   </figure>
 </div>
@@ -77,7 +77,7 @@ One thing that we might try is splitting up the data, parallelising across devic
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/data_parallel.png" width = "700" alt="Data Parallisation">
+  <img src="/blog/images/deepspeed/data_parallel.png" width = "700" alt="Data Parallisation">
   <figcaption>Data Parallelisation</figcaption>
   </figure>
 </div>
@@ -90,7 +90,7 @@ In addition we also increase effective batch size, reducing costly parameter upd
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/whats_the_catch.gif" alt="What's The Catch">
+  <img src="/blog/images/deepspeed/whats_the_catch.gif" alt="What's The Catch">
   <figcaption>I thought you'd never ask</figcaption>
   </figure>
 </div>
@@ -105,7 +105,7 @@ However two problems remain. Firstly how to split up a model efficiently is very
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/model_parallel.png" width = "600" alt="Model parallelisation">
+  <img src="/blog/images/deepspeed/model_parallel.png" width = "600" alt="Model parallelisation">
   <figcaption>One batch moving through the parallelised model. In model parallelisation, one forward and backward pass requires all the devices, most of which are idle at any one time</figcaption>
   </figure>
 </div>
@@ -125,7 +125,7 @@ We don't always get what we want, but in this case we do. With DeepSpeed, Micros
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/dp_vs_mp.png" width = "700" alt="DP vs MP">
+  <img src="/blog/images/deepspeed/dp_vs_mp.png" width = "700" alt="DP vs MP">
   <figcaption>Data Parallelisation vs Model Parallelism</figcaption>
   </figure>
 </div>
@@ -197,7 +197,7 @@ We know that we're going to need to get multiple GPUs and do some model parallel
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero_stages.png" width="800" alt="The Stages of ZeRO">
+  <img src="/blog/images/deepspeed/zero_stages.png" width="800" alt="The Stages of ZeRO">
   <figcaption>The Stages of Zero Redundancy Optimisation (ZeRO)</figcaption>
   </figure>
 </div>
@@ -206,7 +206,7 @@ For ZeRO stage 1, in the backward pass, each device calculates the (first order)
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero1-t1.gif" width = "800" alt="ZeRO Stage 1">
+  <img src="/blog/images/deepspeed/zero1-t1.gif" width = "800" alt="ZeRO Stage 1">
   <figcaption>
     ZeRO Stage 1
 </figcaption>
@@ -234,7 +234,7 @@ We can take the partitioning idea further and do it for parameters and gradients
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero3_forward.gif" width="800" alt="ZeRO Stage 3 (Forward)">
+  <img src="/blog/images/deepspeed/zero3_forward.gif" width="800" alt="ZeRO Stage 3 (Forward)">
   <figcaption>
     ZeRO Stage 3: forward pass
 </figcaption>
@@ -249,7 +249,7 @@ We can take the partitioning idea further and do it for parameters and gradients
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero3_backward.gif" width = "800" alt="ZeRO Stage 3 (Backward)">
+  <img src="/blog/images/deepspeed/zero3_backward.gif" width = "800" alt="ZeRO Stage 3 (Backward)">
   <figcaption>
     Zero Stage 3: backward pass
 </figcaption>
@@ -278,7 +278,7 @@ Overall, ZeRO removes the redundancy across data parallel process by partitionin
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/deepspeed_benefits.png" width="800" alt="DeepSpeed Benefits">
+  <img src="/blog/images/deepspeed/deepspeed_benefits.png" width="800" alt="DeepSpeed Benefits">
   <figcaption>Benefits of DeepSpeed</figcaption>
   </figure>
 </div>
@@ -288,7 +288,7 @@ In splitting up the model across more GPUs, we leave more space per node for act
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/superlinear_scale.png" alt="Superlinear Scale">
+  <img src="/blog/images/deepspeed/superlinear_scale.png" alt="Superlinear Scale">
   <figcaption>Superlinear Scale of DeepSpeed vs Perfect Scaling</figcaption>
   </figure>
 </div>
@@ -307,7 +307,7 @@ For example:
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/row_slicing_numbers.png" width = "700" alt="Row Slicing">
+  <img src="/blog/images/deepspeed/row_slicing_numbers.png" width = "700" alt="Row Slicing">
   <figcaption>Row Slicing</figcaption>
   </figure>
 </div>
@@ -321,7 +321,7 @@ For example:
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/column_slicing_numbers.png" width = "700" alt="Column Slicing">
+  <img src="/blog/images/deepspeed/column_slicing_numbers.png" width = "700" alt="Column Slicing">
   <figcaption>Column Slicing</figcaption>
   </figure>
 </div>
@@ -377,7 +377,7 @@ Check out the [docs](https://deepspeed.readthedocs.io/en/latest/) for more info!
 ## 3. In Pictures
 
 <video controls width = "700">
-  <source src="./images/deepspeed/Turing-Animation.mp4" type="video/mp4">
+  <source src="/blog/images/deepspeed/Turing-Animation.mp4" type="video/mp4">
 </video>
 
 _Animated Video from Microsoft: warning, it's a little slow._
@@ -392,7 +392,7 @@ DeepSpeed integrates with PyTorch and TensorFlow to optimize training.
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/stack.png" width = "600" alt="Stack">
+  <img src="/blog/images/deepspeed/stack.png" width = "600" alt="Stack">
   </figure>
 </div>
 
