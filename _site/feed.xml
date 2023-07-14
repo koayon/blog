@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-07-14T22:18:53+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde. ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/2023/07/14/deepspeed-train.html">&lt;h1 id=&quot;deepspeeds-bag-of-tricks-for-speed--scale&quot;&gt;DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-07-14T22:35:12+01:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde. ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;h1 id=&quot;deepspeeds-bag-of-tricks-for-speed--scale&quot;&gt;DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale&lt;/h1&gt;
 
 &lt;h2 id=&quot;part-i-an-introduction-to-deepspeed-for-training&quot;&gt;Part I: An Introduction to DeepSpeed for Training&lt;/h2&gt;
 
@@ -6,7 +6,7 @@
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-    &lt;img src=&quot;/images/deepspeed/stack_more_layers.webp&quot; width=&quot;500&quot; alt=&quot;Layers&quot; /&gt;
+    &lt;img src=&quot;./images/deepspeed/stack_more_layers.webp&quot; width=&quot;500&quot; alt=&quot;Layers&quot; /&gt;
     &lt;figcaption&gt;Keep it stacking&lt;/figcaption&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
@@ -63,7 +63,7 @@ refresher!&lt;/em&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/gpu_unused.png&quot; width=&quot;700&quot; alt=&quot;Unused GPU potential&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/gpu_unused.png&quot; width=&quot;700&quot; alt=&quot;Unused GPU potential&quot; /&gt;
   &lt;figcaption&gt;Oh dear&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -74,7 +74,7 @@ refresher!&lt;/em&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/data_parallel.png&quot; width=&quot;700&quot; alt=&quot;Data Parallisation&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/data_parallel.png&quot; width=&quot;700&quot; alt=&quot;Data Parallisation&quot; /&gt;
   &lt;figcaption&gt;Data Parallelisation&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -87,7 +87,7 @@ refresher!&lt;/em&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/whats_the_catch.gif&quot; alt=&quot;What&apos;s The Catch&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/whats_the_catch.gif&quot; alt=&quot;What&apos;s The Catch&quot; /&gt;
   &lt;figcaption&gt;I thought you&apos;d never ask&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -102,7 +102,7 @@ refresher!&lt;/em&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/model_parallel.png&quot; width=&quot;600&quot; alt=&quot;Model parallelisation&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/model_parallel.png&quot; width=&quot;600&quot; alt=&quot;Model parallelisation&quot; /&gt;
   &lt;figcaption&gt;One batch moving through the parallelised model. In model parallelisation, one forward and backward pass requires all the devices, most of which are idle at any one time&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -122,7 +122,7 @@ Here it looks like the model takes the same amount of time as if we had a GPU to
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/dp_vs_mp.png&quot; width=&quot;700&quot; alt=&quot;DP vs MP&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/dp_vs_mp.png&quot; width=&quot;700&quot; alt=&quot;DP vs MP&quot; /&gt;
   &lt;figcaption&gt;Data Parallelisation vs Model Parallelism&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -194,7 +194,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/zero_stages.png&quot; width=&quot;800&quot; alt=&quot;The Stages of ZeRO&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/zero_stages.png&quot; width=&quot;800&quot; alt=&quot;The Stages of ZeRO&quot; /&gt;
   &lt;figcaption&gt;The Stages of Zero Redundancy Optimisation (ZeRO)&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -203,7 +203,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/zero1-t1.gif&quot; width=&quot;800&quot; alt=&quot;ZeRO Stage 1&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/zero1-t1.gif&quot; width=&quot;800&quot; alt=&quot;ZeRO Stage 1&quot; /&gt;
   &lt;figcaption&gt;
     ZeRO Stage 1
 &lt;/figcaption&gt;
@@ -232,7 +232,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/zero3_forward.gif&quot; width=&quot;800&quot; alt=&quot;ZeRO Stage 3 (Forward)&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/zero3_forward.gif&quot; width=&quot;800&quot; alt=&quot;ZeRO Stage 3 (Forward)&quot; /&gt;
   &lt;figcaption&gt;
     ZeRO Stage 3: forward pass
 &lt;/figcaption&gt;
@@ -249,7 +249,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/zero3_backward.gif&quot; width=&quot;800&quot; alt=&quot;ZeRO Stage 3 (Backward)&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/zero3_backward.gif&quot; width=&quot;800&quot; alt=&quot;ZeRO Stage 3 (Backward)&quot; /&gt;
   &lt;figcaption&gt;
     Zero Stage 3: backward pass
 &lt;/figcaption&gt;
@@ -282,7 +282,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/deepspeed_benefits.png&quot; width=&quot;800&quot; alt=&quot;DeepSpeed Benefits&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/deepspeed_benefits.png&quot; width=&quot;800&quot; alt=&quot;DeepSpeed Benefits&quot; /&gt;
   &lt;figcaption&gt;Benefits of DeepSpeed&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -292,7 +292,7 @@ In splitting up the model across more GPUs, we leave more space per node for act
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/superlinear_scale.png&quot; alt=&quot;Superlinear Scale&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/superlinear_scale.png&quot; alt=&quot;Superlinear Scale&quot; /&gt;
   &lt;figcaption&gt;Superlinear Scale of DeepSpeed vs Perfect Scaling&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -311,7 +311,7 @@ $&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/row_slicing_numbers.png&quot; width=&quot;700&quot; alt=&quot;Row Slicing&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/row_slicing_numbers.png&quot; width=&quot;700&quot; alt=&quot;Row Slicing&quot; /&gt;
   &lt;figcaption&gt;Row Slicing&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -325,7 +325,7 @@ So we should instead split up X by columns and duplicate M across both nodes suc
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/column_slicing_numbers.png&quot; width=&quot;700&quot; alt=&quot;Column Slicing&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/column_slicing_numbers.png&quot; width=&quot;700&quot; alt=&quot;Column Slicing&quot; /&gt;
   &lt;figcaption&gt;Column Slicing&lt;/figcaption&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
@@ -381,7 +381,7 @@ Developer happiness matters almost as much as loss!&lt;/p&gt;
 &lt;h2 id=&quot;3-in-pictures&quot;&gt;3. In Pictures&lt;/h2&gt;
 
 &lt;video controls=&quot;&quot; width=&quot;700&quot;&gt;
-  &lt;source src=&quot;/images/deepspeed/Turing-Animation.mp4&quot; type=&quot;video/mp4&quot; /&gt;
+  &lt;source src=&quot;./images/deepspeed/Turing-Animation.mp4&quot; type=&quot;video/mp4&quot; /&gt;
 &lt;/video&gt;
 
 &lt;p&gt;&lt;em&gt;Animated Video from Microsoft: warning, it’s a little slow.&lt;/em&gt;&lt;/p&gt;
@@ -396,7 +396,7 @@ Developer happiness matters almost as much as loss!&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-  &lt;img src=&quot;/images/deepspeed/stack.png&quot; width=&quot;600&quot; alt=&quot;Stack&quot; /&gt;
+  &lt;img src=&quot;./images/deepspeed/stack.png&quot; width=&quot;600&quot; alt=&quot;Stack&quot; /&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
 
