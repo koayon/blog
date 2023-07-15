@@ -2,10 +2,10 @@
 layout: post
 title: "DeepSpeed's Bag of Tricks for Speed & Scale: Part I"
 # date: 2023-07-14 20:29:35 +0100
-# categories: jekyll update
+categories: machine-learning deepspeed training
 ---
 
-# DeepSpeed's Bag of Tricks for Speed & Scale
+<!-- # DeepSpeed's Bag of Tricks for Speed & Scale -->
 
 ## Part I: An Introduction to DeepSpeed for Training
 
