@@ -21,7 +21,7 @@
 title: Kola Ayonrinde
 email: koayon@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  The technical blog of Kola Ayonrinde. ML Engineer/Data Scientist
+  The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist
 baseurl: "/blog" # the subpath of your site, e.g. /blog
 url: "http://www.kolaayonrinde.com" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: koayon

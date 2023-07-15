@@ -10,8 +10,8 @@
 <meta name="generator" content="Jekyll v3.9.3">
 <meta property="og:title" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I">
 <meta property="og:locale" content="en_US">
-<meta name="description" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale">
-<meta property="og:description" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale">
+<meta name="description" content="The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist">
+<meta property="og:description" content="The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist">
 <link rel="canonical" href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">
 <meta property="og:url" content="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">
 <meta property="og:site_name" content="Kola Ayonrinde">
@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-07-14T00:00:00+01:00","datePublished":"2023-07-14T00:00:00+01:00","description":"DeepSpeed’s Bag of Tricks for Speed &amp; Scale","headline":"DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"},"url":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-07-14T00:00:00+01:00","datePublished":"2023-07-14T00:00:00+01:00","description":"The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist","headline":"DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"},"url":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/main.css">
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/blog/feed.xml" title="Kola Ayonrinde">
@@ -56,7 +56,7 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h1 id="deepspeeds-bag-of-tricks-for-speed--scale">DeepSpeed’s Bag of Tricks for Speed &amp; Scale</h1>
+    <!-- # DeepSpeed's Bag of Tricks for Speed & Scale -->
 
 <h2 id="part-i-an-introduction-to-deepspeed-for-training">Part I: An Introduction to DeepSpeed for Training</h2>
 
@@ -64,7 +64,7 @@
 
 <div align="center">
   <figure>
-    <img src="./images/deepspeed/stack_more_layers.webp" width="500" alt="Layers">
+    <img src="/blog/images/deepspeed/stack_more_layers.webp" width="500" alt="Layers">
     <figcaption>Keep it stacking</figcaption>
     </figure>
 </div>
@@ -121,7 +121,7 @@ refresher!</em></p>
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/gpu_unused.png" width="700" alt="Unused GPU potential">
+  <img src="/blog/images/deepspeed/gpu_unused.png" width="700" alt="Unused GPU potential">
   <figcaption>Oh dear</figcaption>
   </figure>
 </div>
@@ -132,7 +132,7 @@ refresher!</em></p>
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/data_parallel.png" width="700" alt="Data Parallisation">
+  <img src="/blog/images/deepspeed/data_parallel.png" width="700" alt="Data Parallisation">
   <figcaption>Data Parallelisation</figcaption>
   </figure>
 </div>
@@ -145,7 +145,7 @@ refresher!</em></p>
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/whats_the_catch.gif" alt="What's The Catch">
+  <img src="/blog/images/deepspeed/whats_the_catch.gif" alt="What's The Catch">
   <figcaption>I thought you'd never ask</figcaption>
   </figure>
 </div>
@@ -160,7 +160,7 @@ refresher!</em></p>
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/model_parallel.png" width="600" alt="Model parallelisation">
+  <img src="/blog/images/deepspeed/model_parallel.png" width="600" alt="Model parallelisation">
   <figcaption>One batch moving through the parallelised model. In model parallelisation, one forward and backward pass requires all the devices, most of which are idle at any one time</figcaption>
   </figure>
 </div>
@@ -180,7 +180,7 @@ Here it looks like the model takes the same amount of time as if we had a GPU to
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/dp_vs_mp.png" width="700" alt="DP vs MP">
+  <img src="/blog/images/deepspeed/dp_vs_mp.png" width="700" alt="DP vs MP">
   <figcaption>Data Parallelisation vs Model Parallelism</figcaption>
   </figure>
 </div>
@@ -252,7 +252,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero_stages.png" width="800" alt="The Stages of ZeRO">
+  <img src="/blog/images/deepspeed/zero_stages.png" width="800" alt="The Stages of ZeRO">
   <figcaption>The Stages of Zero Redundancy Optimisation (ZeRO)</figcaption>
   </figure>
 </div>
@@ -261,7 +261,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero1-t1.gif" width="800" alt="ZeRO Stage 1">
+  <img src="/blog/images/deepspeed/zero1-t1.gif" width="800" alt="ZeRO Stage 1">
   <figcaption>
     ZeRO Stage 1
 </figcaption>
@@ -291,7 +291,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero3_forward.gif" width="800" alt="ZeRO Stage 3 (Forward)">
+  <img src="/blog/images/deepspeed/zero3_forward.gif" width="800" alt="ZeRO Stage 3 (Forward)">
   <figcaption>
     ZeRO Stage 3: forward pass
 </figcaption>
@@ -308,7 +308,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/zero3_backward.gif" width="800" alt="ZeRO Stage 3 (Backward)">
+  <img src="/blog/images/deepspeed/zero3_backward.gif" width="800" alt="ZeRO Stage 3 (Backward)">
   <figcaption>
     Zero Stage 3: backward pass
 </figcaption>
@@ -341,7 +341,7 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/deepspeed_benefits.png" width="800" alt="DeepSpeed Benefits">
+  <img src="/blog/images/deepspeed/deepspeed_benefits.png" width="800" alt="DeepSpeed Benefits">
   <figcaption>Benefits of DeepSpeed</figcaption>
   </figure>
 </div>
@@ -351,7 +351,7 @@ In splitting up the model across more GPUs, we leave more space per node for act
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/superlinear_scale.png" alt="Superlinear Scale">
+  <img src="/blog/images/deepspeed/superlinear_scale.png" alt="Superlinear Scale">
   <figcaption>Superlinear Scale of DeepSpeed vs Perfect Scaling</figcaption>
   </figure>
 </div>
@@ -370,7 +370,7 @@ $</p>
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/row_slicing_numbers.png" width="700" alt="Row Slicing">
+  <img src="/blog/images/deepspeed/row_slicing_numbers.png" width="700" alt="Row Slicing">
   <figcaption>Row Slicing</figcaption>
   </figure>
 </div>
@@ -384,7 +384,7 @@ So we should instead split up X by columns and duplicate M across both nodes suc
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/column_slicing_numbers.png" width="700" alt="Column Slicing">
+  <img src="/blog/images/deepspeed/column_slicing_numbers.png" width="700" alt="Column Slicing">
   <figcaption>Column Slicing</figcaption>
   </figure>
 </div>
@@ -440,7 +440,7 @@ Developer happiness matters almost as much as loss!</p>
 <h2 id="3-in-pictures">3. In Pictures</h2>
 
 <video controls="" width="700">
-  <source src="./images/deepspeed/Turing-Animation.mp4" type="video/mp4"></source>
+  <source src="/blog/images/deepspeed/Turing-Animation.mp4" type="video/mp4"></source>
 </video>
 
 <p><em>Animated Video from Microsoft: warning, it’s a little slow.</em></p>
@@ -455,7 +455,7 @@ Developer happiness matters almost as much as loss!</p>
 
 <div align="center">
   <figure>
-  <img src="./images/deepspeed/stack.png" width="600" alt="Stack">
+  <img src="/blog/images/deepspeed/stack.png" width="600" alt="Stack">
   </figure>
 </div>
 
@@ -552,7 +552,7 @@ Developer happiness matters almost as much as loss!</p>
 </div>
 
       <div class="footer-col footer-col-3">
-        <p>The technical blog of Kola Ayonrinde. ML Engineer/Data Scientist</p>
+        <p>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</p>
       </div>
     </div>
 
