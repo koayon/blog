@@ -222,7 +222,7 @@ We can think of this as a 5 step process:
 
 ZeRO stage 1 typically reduces our memory footprint by ~4x.
 
-```ruby
+```
 🔄 Fun Fact: The name DeepSpeed is a palindrome! How cute 🤗
 ```
 
