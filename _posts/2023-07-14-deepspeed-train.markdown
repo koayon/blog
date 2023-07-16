@@ -386,6 +386,8 @@ _Animated Video from Microsoft: warning, it's a little slow._
 
 The full DeepSpeed library, with all the hardware level optimisations, is open-sourced. See the [core library](https://github.com/microsoft/DeepSpeed/), the [docs](https://www.deepspeed.ai/training/) and [examples](https://github.com/microsoft/DeepSpeedExamples).
 
+For an annotated and easier to follow implementation see [Lab ML's version](https://nn.labml.ai/scaling/zero3/index.html).
+
 ## 5. Using DeepSpeed
 
 DeepSpeed integrates with PyTorch and TensorFlow to optimize training.
