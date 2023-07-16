@@ -28,6 +28,37 @@ This series is about the engineering tricks that bring the research to life.
 > works will also be useful - check out [this video](https://www.youtube.com/watch?v=Ilg3gGewQ5U) if you want a
 > refresher!_
 
+<br>
+
+<!-- {:toc}  -->
+
+---
+
+**Table of Contents**
+
+- [0. Introduction](#)
+  - [0.1 DeepSpeed's Three Innovation Pillars](#01-deepspeed-s-three-innovation-pillars)
+  - [0.2 Problems Training Large Models](#02-problems-training-large-models)
+- [1. Partial Solutions](#1-partial-solutions)
+  - [1.1 Naive Data Parallelism](#11-naive-data-parallelism)
+  - [1.2 Naive Model Parallelism](#12-naive-model-parallelism)
+  - [1.3 A Better Way: DeepSpeed](#13-a-better-way--deepspeed)
+- [2. DeepSpeed Deep Dive: Key Ideas](#2-deepspeed-deep-dive--key-ideas)
+  - [2.0 Mixed Precision Training](#20-mixed-precision-training)
+  - [2.1 Delaying Weight Updates](#21-delaying-weight-updates)
+  - [2.2 Storing Optimiser States Without Redundancy (ZeRO stage 1)](#22-storing-optimiser-states-without-redundancy--zero-stage-1-)
+  - [2.3 Storing Gradients and Parameters Without Redundancy (ZeRO stages 2 & 3)](#23-storing-gradients-and-parameters-without-redundancy--zero-stages-2---3-)
+  - [2.4 Tensor Slicing](#24-tensor-slicing)
+  - [2.5 Gradient Checkpointing](#25-gradient-checkpointing)
+  - [2.6 Profiling etc](#26-profiling-etc)
+- [3. In Pictures](#3-in-pictures)
+- [4. In Code](#4-in-code)
+- [5. Using DeepSpeed](#5-using-deepspeed)
+
+---
+
+<br>
+
 ### 0.1 DeepSpeed's Three Innovation Pillars
 
 [DeepSpeed](https://www.deepspeed.ai) has three main use cases: enabling large training runs, decreasing inference latency and model compression.
@@ -56,7 +87,7 @@ Our aims are:
 
 DeepSpeed reduces compute and time to train by >100x for large models.
 
-If you just want to see how to implement DeepSpeed in your code, see the "Using DeepSpeed" section below.
+If you just want to see how to implement DeepSpeed in your code, see the [Using DeepSpeed](#5-using-deepspeed) section below.
 
 ## 1. Partial Solutions
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-07-16T10:01:44+01:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-07-16T23:07:34+01:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
 
 &lt;h2 id=&quot;part-i-an-introduction-to-deepspeed-for-training&quot;&gt;Part I: An Introduction to DeepSpeed for Training&lt;/h2&gt;
 
@@ -22,6 +22,48 @@ these before check out the &lt;a href=&quot;https://pytorch.org/docs/stable/inde
 works will also be useful - check out &lt;a href=&quot;https://www.youtube.com/watch?v=Ilg3gGewQ5U&quot;&gt;this video&lt;/a&gt; if you want a
 refresher!&lt;/em&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;!-- {:toc}  --&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#&quot;&gt;0. Introduction&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#01-deepspeed-s-three-innovation-pillars&quot;&gt;0.1 DeepSpeed’s Three Innovation Pillars&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#02-problems-training-large-models&quot;&gt;0.2 Problems Training Large Models&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-partial-solutions&quot;&gt;1. Partial Solutions&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#11-naive-data-parallelism&quot;&gt;1.1 Naive Data Parallelism&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#12-naive-model-parallelism&quot;&gt;1.2 Naive Model Parallelism&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#13-a-better-way--deepspeed&quot;&gt;1.3 A Better Way: DeepSpeed&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-deepspeed-deep-dive--key-ideas&quot;&gt;2. DeepSpeed Deep Dive: Key Ideas&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#20-mixed-precision-training&quot;&gt;2.0 Mixed Precision Training&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#21-delaying-weight-updates&quot;&gt;2.1 Delaying Weight Updates&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#22-storing-optimiser-states-without-redundancy--zero-stage-1-&quot;&gt;2.2 Storing Optimiser States Without Redundancy (ZeRO stage 1)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#23-storing-gradients-and-parameters-without-redundancy--zero-stages-2---3-&quot;&gt;2.3 Storing Gradients and Parameters Without Redundancy (ZeRO stages 2 &amp;amp; 3)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#24-tensor-slicing&quot;&gt;2.4 Tensor Slicing&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#25-gradient-checkpointing&quot;&gt;2.5 Gradient Checkpointing&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#26-profiling-etc&quot;&gt;2.6 Profiling etc&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-in-pictures&quot;&gt;3. In Pictures&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-in-code&quot;&gt;4. In Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-using-deepspeed&quot;&gt;5. Using DeepSpeed&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;01-deepspeeds-three-innovation-pillars&quot;&gt;0.1 DeepSpeed’s Three Innovation Pillars&lt;/h3&gt;
 
@@ -53,7 +95,7 @@ refresher!&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;DeepSpeed reduces compute and time to train by &amp;gt;100x for large models.&lt;/p&gt;
 
-&lt;p&gt;If you just want to see how to implement DeepSpeed in your code, see the “Using DeepSpeed” section below.&lt;/p&gt;
+&lt;p&gt;If you just want to see how to implement DeepSpeed in your code, see the &lt;a href=&quot;#5-using-deepspeed&quot;&gt;Using DeepSpeed&lt;/a&gt; section below.&lt;/p&gt;
 
 &lt;h2 id=&quot;1-partial-solutions&quot;&gt;1. Partial Solutions&lt;/h2&gt;
 
