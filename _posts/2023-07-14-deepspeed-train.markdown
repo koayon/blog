@@ -342,11 +342,11 @@ Most of the operations in a large ML model are matrix multiplications followed b
 
 Another way to think about this is that if we want to parallelise matrix multiplication across GPUs, we can slice up huge tensors into smaller ones and then combine the results at the end.
 
-For matrices $ X = \begin{bmatrix} X_1 & X_2 \end{bmatrix} $ and $ A = \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $, we note that:
+For matrices $$ X = \begin{bmatrix} X_1 & X_2 \end{bmatrix} $$ and $$ A = \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $$, we note that:
 
-$
+$$
 XA = \begin{bmatrix} X_1 & X_2 \end{bmatrix} \begin{bmatrix} A_1 \\ A_2 \end{bmatrix}
-$
+$$
 
 For example:
 
@@ -357,10 +357,10 @@ For example:
   </figure>
 </div>
 
-However if there is a non-linear map after the M e.g. if $ Y = \text{ReLU}(XA) $, this slicing isn't going to work. $ \text{ReLU}(X_1A_1 + X_2A_2) \neq \text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $ in general by non-linearity.
+However if there is a non-linear map after the M e.g. if $$ Y = \text{ReLU}(XA) $$, this slicing isn't going to work. $$ \text{ReLU}(X_1A_1 + X_2A_2) \neq \text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $$ in general by non-linearity.
 So we should instead split up X by columns and duplicate M across both nodes such that we have:
 
-$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $
+$$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $$
 
 For example:
 
@@ -396,7 +396,7 @@ An alternative approach to storing all the activations would be to simply recomp
 
 This recomputing approach saves lots of memory but is quite compute wasteful, incurring `m` extra forward passes for an `m-layer` transformer.
 
-A middle ground approach to trading off compute and memory is [gradient checkpointing](https://github.com/cybertronai/gradient-checkpointing) (sometimes known as activation checkpointing). Here we store some intermediate activations with $\sqrt m$ of the memory for the cost of one forward pass.
+A middle ground approach to trading off compute and memory is [gradient checkpointing](https://github.com/cybertronai/gradient-checkpointing) (sometimes known as activation checkpointing). Here we store some intermediate activations with $$\sqrt m$$ of the memory for the cost of one forward pass.
 
 <div align="center">
   <figure>

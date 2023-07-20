@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-07-20T22:43:49+01:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-07-20T23:02:25+01:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
 
 &lt;h2 id=&quot;part-i-an-introduction-to-deepspeed-for-training&quot;&gt;Part I: An Introduction to DeepSpeed for Training&lt;/h2&gt;
 
@@ -346,11 +346,11 @@ In splitting up the model across more GPUs, we leave more space per node for act
 
 &lt;p&gt;Another way to think about this is that if we want to parallelise matrix multiplication across GPUs, we can slice up huge tensors into smaller ones and then combine the results at the end.&lt;/p&gt;
 
-&lt;p&gt;For matrices $ X = \begin{bmatrix} X_1 &amp;amp; X_2 \end{bmatrix} $ and $ A = \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $, we note that:&lt;/p&gt;
+&lt;p&gt;For matrices $$ X = \begin{bmatrix} X_1 &amp;amp; X_2 \end{bmatrix} $$ and $$ A = \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $$, we note that:&lt;/p&gt;
 
-&lt;p&gt;$
+&lt;p&gt;$$
 XA = \begin{bmatrix} X_1 &amp;amp; X_2 \end{bmatrix} \begin{bmatrix} A_1 \\ A_2 \end{bmatrix}
-$&lt;/p&gt;
+$$&lt;/p&gt;
 
 &lt;p&gt;For example:&lt;/p&gt;
 
@@ -361,10 +361,10 @@ $&lt;/p&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
 
-&lt;p&gt;However if there is a non-linear map after the M e.g. if $ Y = \text{ReLU}(XA) $, this slicing isn’t going to work. $ \text{ReLU}(X_1A_1 + X_2A_2) \neq \text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $ in general by non-linearity.
+&lt;p&gt;However if there is a non-linear map after the M e.g. if $$ Y = \text{ReLU}(XA) $$, this slicing isn’t going to work. $$ \text{ReLU}(X_1A_1 + X_2A_2) \neq \text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $$ in general by non-linearity.
 So we should instead split up X by columns and duplicate M across both nodes such that we have:&lt;/p&gt;
 
-&lt;p&gt;$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $&lt;/p&gt;
+&lt;p&gt;$$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $$&lt;/p&gt;
 
 &lt;p&gt;For example:&lt;/p&gt;
 
@@ -400,7 +400,7 @@ An alternative approach to storing all the activations would be to simply recomp
 
 &lt;p&gt;This recomputing approach saves lots of memory but is quite compute wasteful, incurring &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m&lt;/code&gt; extra forward passes for an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m-layer&lt;/code&gt; transformer.&lt;/p&gt;
 
-&lt;p&gt;A middle ground approach to trading off compute and memory is &lt;a href=&quot;https://github.com/cybertronai/gradient-checkpointing&quot;&gt;gradient checkpointing&lt;/a&gt; (sometimes known as activation checkpointing). Here we store some intermediate activations with $\sqrt m$ of the memory for the cost of one forward pass.&lt;/p&gt;
+&lt;p&gt;A middle ground approach to trading off compute and memory is &lt;a href=&quot;https://github.com/cybertronai/gradient-checkpointing&quot;&gt;gradient checkpointing&lt;/a&gt; (sometimes known as activation checkpointing). Here we store some intermediate activations with $$\sqrt m$$ of the memory for the cost of one forward pass.&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
