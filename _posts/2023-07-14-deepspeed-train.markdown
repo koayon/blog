@@ -34,26 +34,38 @@ This series is about the engineering tricks that bring the research to life.
 
 ---
 
-**Table of Contents**
-
-- [0. Introduction](#)
-  - [0.1 DeepSpeed's Three Innovation Pillars](#01-deepspeed-s-three-innovation-pillars)
-  - [0.2 Problems Training Large Models](#02-problems-training-large-models)
-- [1. Partial Solutions](#1-partial-solutions)
-  - [1.1 Naive Data Parallelism](#11-naive-data-parallelism)
-  - [1.2 Naive Model Parallelism](#12-naive-model-parallelism)
-  - [1.3 A Better Way: DeepSpeed](#13-a-better-way--deepspeed)
-- [2. DeepSpeed Deep Dive: Key Ideas](#2-deepspeed-deep-dive--key-ideas)
-  - [2.0 Mixed Precision Training](#20-mixed-precision-training)
-  - [2.1 Delaying Weight Updates](#21-delaying-weight-updates)
-  - [2.2 Storing Optimiser States Without Redundancy (ZeRO stage 1)](#22-storing-optimiser-states-without-redundancy--zero-stage-1-)
-  - [2.3 Storing Gradients and Parameters Without Redundancy (ZeRO stages 2 & 3)](#23-storing-gradients-and-parameters-without-redundancy--zero-stages-2---3-)
-  - [2.4 Tensor Slicing](#24-tensor-slicing)
-  - [2.5 Gradient Checkpointing](#25-gradient-checkpointing)
-  - [2.6 Profiling etc](#26-profiling-etc)
-- [3. In Pictures](#3-in-pictures)
-- [4. In Code](#4-in-code)
-- [5. Using DeepSpeed](#5-using-deepspeed)
+<details>
+  <summary>Table of Contents</summary>
+  <ul>
+    <li><a href="#">0. Introduction</a>
+      <ul>
+        <li><a href="#01-deepspeed-s-three-innovation-pillars">0.1 DeepSpeed's Three Innovation Pillars</a></li>
+        <li><a href="#02-problems-training-large-models">0.2 Problems Training Large Models</a></li>
+      </ul>
+    </li>
+    <li><a href="#1-partial-solutions">1. Partial Solutions</a>
+      <ul>
+        <li><a href="#11-naive-data-parallelism">1.1 Naive Data Parallelism</a></li>
+        <li><a href="#12-naive-model-parallelism">1.2 Naive Model Parallelism</a></li>
+        <li><a href="#13-a-better-way--deepspeed">1.3 A Better Way: DeepSpeed</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-deepspeed-deep-dive--key-ideas">2. DeepSpeed Deep Dive: Key Ideas</a>
+      <ul>
+        <li><a href="#20-mixed-precision-training">2.0 Mixed Precision Training</a></li>
+        <li><a href="#21-delaying-weight-updates">2.1 Delaying Weight Updates</a></li>
+        <li><a href="#22-storing-optimiser-states-without-redundancy--zero-stage-1-">2.2 Storing Optimiser States Without Redundancy (ZeRO stage 1)</a></li>
+        <li><a href="#23-storing-gradients-and-parameters-without-redundancy--zero-stages-2---3-">2.3 Storing Gradients and Parameters Without Redundancy (ZeRO stages 2 &amp; 3)</a></li>
+        <li><a href="#24-tensor-slicing">2.4 Tensor Slicing</a></li>
+        <li><a href="#25-gradient-checkpointing">2.5 Gradient Checkpointing</a></li>
+        <li><a href="#26-profiling-etc">2.6 Profiling etc</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-in-pictures">3. In Pictures</a></li>
+    <li><a href="#4-in-code">4. In Code</a></li>
+    <li><a href="#5-using-deepspeed">5. Using DeepSpeed</a></li>
+  </ul>
+</details>
 
 ---
 
@@ -169,7 +181,7 @@ We don't always get what we want, but in this case we do. With DeepSpeed, Micros
 1. Delaying Weight Updates
 2. Storing the optimiser states without redundancy (ZeRO stage 1)
 3. Storing gradients and parameters without redundancy (ZeRO stages 2 & 3)
-4. Tensor Clicing
+4. Tensor Slicing
 5. Gradient Checkpointing
 6. Quality of Life Improvements and Profiling
 
@@ -326,7 +338,9 @@ In splitting up the model across more GPUs, we leave more space per node for act
 
 ### 2.4 Tensor Slicing
 
-Most of the operations in a large ML model are matrix multiplications followed by non-linearities. If we want to parallelise this across GPUs _within the same core_, we can slice up huge tensors into smaller ones and then combine the results at the end.
+Most of the operations in a large ML model are matrix multiplications followed by non-linearities. Matrix multiplication can be thought of as dot products between pairs of matrix rows and columns. So we can compute independent dot products on different GPUs and then combine the results afterwards.
+
+Another way to think about this is that if we want to parallelise matrix multiplication across GPUs, we can slice up huge tensors into smaller ones and then combine the results at the end.
 
 For matrices $ X = \begin{bmatrix} X_1 & X_2 \end{bmatrix} $ and $ A = \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $, we note that:
 
@@ -343,10 +357,10 @@ For example:
   </figure>
 </div>
 
-However if there is a non-linear map after the M e.g. if $ Y = \text{ReLU}(MX) $, this slicing isn't going to work. $ \text{ReLU}(M_1X_1 + M_2X_2) \neq \text{ReLU}(M_1X_1) + \text{ReLU}(M_2X_2) $ in general by non-linearity.
+However if there is a non-linear map after the M e.g. if $ Y = \text{ReLU}(XA) $, this slicing isn't going to work. $ \text{ReLU}(X_1A_1 + X_2A_2) \neq \text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $ in general by non-linearity.
 So we should instead split up X by columns and duplicate M across both nodes such that we have:
 
-$ Y = [Y_i, Y_z] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $
+$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $
 
 For example:
 
@@ -382,7 +396,7 @@ An alternative approach to storing all the activations would be to simply recomp
 
 This recomputing approach saves lots of memory but is quite compute wasteful, incurring `m` extra forward passes for an `m-layer` transformer.
 
-A middle ground approach to trading off compute and memory is [gradient checkpointing](https://github.com/cybertronai/gradient-checkpointing). Here we store some intermediate activations with $\sqrt m$ of the memory for the cost of one forward pass.
+A middle ground approach to trading off compute and memory is [gradient checkpointing](https://github.com/cybertronai/gradient-checkpointing) (sometimes known as activation checkpointing). Here we store some intermediate activations with $\sqrt m$ of the memory for the cost of one forward pass.
 
 <div align="center">
   <figure>

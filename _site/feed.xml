@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-07-16T23:07:34+01:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-07-20T21:32:59+01:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale: Part I" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
 
 &lt;h2 id=&quot;part-i-an-introduction-to-deepspeed-for-training&quot;&gt;Part I: An Introduction to DeepSpeed for Training&lt;/h2&gt;
 
@@ -29,37 +29,38 @@ refresher!&lt;/em&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;&lt;strong&gt;Table of Contents&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#&quot;&gt;0. Introduction&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#01-deepspeed-s-three-innovation-pillars&quot;&gt;0.1 DeepSpeed’s Three Innovation Pillars&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#02-problems-training-large-models&quot;&gt;0.2 Problems Training Large Models&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-partial-solutions&quot;&gt;1. Partial Solutions&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#11-naive-data-parallelism&quot;&gt;1.1 Naive Data Parallelism&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#12-naive-model-parallelism&quot;&gt;1.2 Naive Model Parallelism&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#13-a-better-way--deepspeed&quot;&gt;1.3 A Better Way: DeepSpeed&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-deepspeed-deep-dive--key-ideas&quot;&gt;2. DeepSpeed Deep Dive: Key Ideas&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#20-mixed-precision-training&quot;&gt;2.0 Mixed Precision Training&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#21-delaying-weight-updates&quot;&gt;2.1 Delaying Weight Updates&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#22-storing-optimiser-states-without-redundancy--zero-stage-1-&quot;&gt;2.2 Storing Optimiser States Without Redundancy (ZeRO stage 1)&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#23-storing-gradients-and-parameters-without-redundancy--zero-stages-2---3-&quot;&gt;2.3 Storing Gradients and Parameters Without Redundancy (ZeRO stages 2 &amp;amp; 3)&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#24-tensor-slicing&quot;&gt;2.4 Tensor Slicing&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#25-gradient-checkpointing&quot;&gt;2.5 Gradient Checkpointing&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#26-profiling-etc&quot;&gt;2.6 Profiling etc&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-in-pictures&quot;&gt;3. In Pictures&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-in-code&quot;&gt;4. In Code&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#5-using-deepspeed&quot;&gt;5. Using DeepSpeed&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;details&gt;
+  &lt;summary&gt;Table of Contents&lt;/summary&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;0. Introduction&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#01-deepspeed-s-three-innovation-pillars&quot;&gt;0.1 DeepSpeed&apos;s Three Innovation Pillars&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#02-problems-training-large-models&quot;&gt;0.2 Problems Training Large Models&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#1-partial-solutions&quot;&gt;1. Partial Solutions&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#11-naive-data-parallelism&quot;&gt;1.1 Naive Data Parallelism&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#12-naive-model-parallelism&quot;&gt;1.2 Naive Model Parallelism&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#13-a-better-way--deepspeed&quot;&gt;1.3 A Better Way: DeepSpeed&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#2-deepspeed-deep-dive--key-ideas&quot;&gt;2. DeepSpeed Deep Dive: Key Ideas&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#20-mixed-precision-training&quot;&gt;2.0 Mixed Precision Training&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#21-delaying-weight-updates&quot;&gt;2.1 Delaying Weight Updates&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#22-storing-optimiser-states-without-redundancy--zero-stage-1-&quot;&gt;2.2 Storing Optimiser States Without Redundancy (ZeRO stage 1)&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#23-storing-gradients-and-parameters-without-redundancy--zero-stages-2---3-&quot;&gt;2.3 Storing Gradients and Parameters Without Redundancy (ZeRO stages 2 &amp;amp; 3)&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#24-tensor-slicing&quot;&gt;2.4 Tensor Slicing&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#25-gradient-checkpointing&quot;&gt;2.5 Gradient Checkpointing&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#26-profiling-etc&quot;&gt;2.6 Profiling etc&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#3-in-pictures&quot;&gt;3. In Pictures&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#4-in-code&quot;&gt;4. In Code&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#5-using-deepspeed&quot;&gt;5. Using DeepSpeed&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/details&gt;
 
 &lt;hr /&gt;
 
@@ -178,7 +179,7 @@ Here it looks like the model takes the same amount of time as if we had a GPU to
   &lt;li&gt;Delaying Weight Updates&lt;/li&gt;
   &lt;li&gt;Storing the optimiser states without redundancy (ZeRO stage 1)&lt;/li&gt;
   &lt;li&gt;Storing gradients and parameters without redundancy (ZeRO stages 2 &amp;amp; 3)&lt;/li&gt;
-  &lt;li&gt;Tensor Clicing&lt;/li&gt;
+  &lt;li&gt;Tensor Slicing&lt;/li&gt;
   &lt;li&gt;Gradient Checkpointing&lt;/li&gt;
   &lt;li&gt;Quality of Life Improvements and Profiling&lt;/li&gt;
 &lt;/ol&gt;
@@ -341,7 +342,9 @@ In splitting up the model across more GPUs, we leave more space per node for act
 
 &lt;h3 id=&quot;24-tensor-slicing&quot;&gt;2.4 Tensor Slicing&lt;/h3&gt;
 
-&lt;p&gt;Most of the operations in a large ML model are matrix multiplications followed by non-linearities. If we want to parallelise this across GPUs &lt;em&gt;within the same core&lt;/em&gt;, we can slice up huge tensors into smaller ones and then combine the results at the end.&lt;/p&gt;
+&lt;p&gt;Most of the operations in a large ML model are matrix multiplications followed by non-linearities. Matrix multiplication can be thought of as dot products between pairs of matrix rows and columns. So we can compute independent dot products on different GPUs and then combine the results afterwards.&lt;/p&gt;
+
+&lt;p&gt;Another way to think about this is that if we want to parallelise matrix multiplication across GPUs, we can slice up huge tensors into smaller ones and then combine the results at the end.&lt;/p&gt;
 
 &lt;p&gt;For matrices $ X = \begin{bmatrix} X_1 &amp;amp; X_2 \end{bmatrix} $ and $ A = \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $, we note that:&lt;/p&gt;
 
@@ -358,10 +361,10 @@ $&lt;/p&gt;
   &lt;/figure&gt;
 &lt;/div&gt;
 
-&lt;p&gt;However if there is a non-linear map after the M e.g. if $ Y = \text{ReLU}(MX) $, this slicing isn’t going to work. $ \text{ReLU}(M_1X_1 + M_2X_2) \neq \text{ReLU}(M_1X_1) + \text{ReLU}(M_2X_2) $ in general by non-linearity.
+&lt;p&gt;However if there is a non-linear map after the M e.g. if $ Y = \text{ReLU}(XA) $, this slicing isn’t going to work. $ \text{ReLU}(X_1A_1 + X_2A_2) \neq \text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $ in general by non-linearity.
 So we should instead split up X by columns and duplicate M across both nodes such that we have:&lt;/p&gt;
 
-&lt;p&gt;$ Y = [Y_i, Y_z] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $&lt;/p&gt;
+&lt;p&gt;$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $&lt;/p&gt;
 
 &lt;p&gt;For example:&lt;/p&gt;
 
@@ -397,7 +400,7 @@ An alternative approach to storing all the activations would be to simply recomp
 
 &lt;p&gt;This recomputing approach saves lots of memory but is quite compute wasteful, incurring &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m&lt;/code&gt; extra forward passes for an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;m-layer&lt;/code&gt; transformer.&lt;/p&gt;
 
-&lt;p&gt;A middle ground approach to trading off compute and memory is &lt;a href=&quot;https://github.com/cybertronai/gradient-checkpointing&quot;&gt;gradient checkpointing&lt;/a&gt;. Here we store some intermediate activations with $\sqrt m$ of the memory for the cost of one forward pass.&lt;/p&gt;
+&lt;p&gt;A middle ground approach to trading off compute and memory is &lt;a href=&quot;https://github.com/cybertronai/gradient-checkpointing&quot;&gt;gradient checkpointing&lt;/a&gt; (sometimes known as activation checkpointing). Here we store some intermediate activations with $\sqrt m$ of the memory for the cost of one forward pass.&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
