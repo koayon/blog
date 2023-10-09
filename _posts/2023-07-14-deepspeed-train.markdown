@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "DeepSpeed's Bag of Tricks for Speed & Scale: Part I"
+title: "DeepSpeed's Bag of Tricks for Speed & Scale"
 # date: 2023-07-14 20:29:35 +0100
 tags: machine-learning deepspeed training
 ---
 
 <!-- # DeepSpeed's Bag of Tricks for Speed & Scale -->
 
-## Part I: An Introduction to DeepSpeed for Training
+## An Introduction to DeepSpeed for Training
 
 In the literature and the public conversation around Natural Language
 Processing, lots has been made of the results of scaling up data, compute and
@@ -24,7 +24,7 @@ and [updated](https://arxiv.org/abs/2203.15556) transformer scaling laws.
 One sometimes overlooked point is the vital role of engineering breakthroughs in
 enabling large models to be trained and served on current hardware.
 
-This series is about the engineering tricks that bring the research to life.
+This post is about the engineering tricks that bring the research to life.
 
 > _Note: This post assumes some basic familiarity with PyTorch/Tensorflow and
 > transformers. If you've never used these before check out the
@@ -79,16 +79,17 @@ This series is about the engineering tricks that bring the research to life.
 
 ### 0.1 DeepSpeed's Three Innovation Pillars
 
-[DeepSpeed](https://www.deepspeed.ai) has three main use cases: enabling large
-training runs, decreasing inference latency and model compression.
+[DeepSpeed](https://www.deepspeed.ai) has four main use cases: enabling large
+training runs, decreasing inference latency, model compression and enabling ML
+science.
 
 <div align="center">
   <figure>
-  <img src="https://github.com/microsoft/DeepSpeed/raw/master/docs/assets/images/3pillars.png" width="700" alt="">
+  <img src="/blog/images/deepspeed/deepspeed-pillars.png" width="700" alt="">
   </figure>
 </div>
 
-This post covers training optimizations. Future posts will detail other pillars.
+This post covers training optimizations.
 
 ### 0.2 Problems Training Large Models
 
@@ -602,7 +603,5 @@ There's a lot of clever improvements that go into the special sauce for training
 large models. And for users, with just a few simple code changes, DeepSpeed
 works its magic to unleash the power of all your hardware for fast, efficient
 model training.
-
-Next time we'll talk about the engineering tricks for Inference.
 
 Happy training!

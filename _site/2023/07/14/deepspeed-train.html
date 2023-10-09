@@ -6,9 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I | Kola Ayonrinde</title>
+<title>DeepSpeed’s Bag of Tricks for Speed &amp; Scale | Kola Ayonrinde</title>
 <meta name="generator" content="Jekyll v3.9.3">
-<meta property="og:title" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I">
+<meta property="og:title" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale">
 <meta property="og:locale" content="en_US">
 <meta name="description" content="The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist">
 <meta property="og:description" content="The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist">
@@ -16,11 +16,11 @@
 <meta property="og:url" content="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">
 <meta property="og:site_name" content="Kola Ayonrinde">
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2023-07-14T00:00:00+01:00">
+<meta property="article:published_time" content="2023-07-14T00:00:00-04:00">
 <meta name="twitter:card" content="summary">
-<meta property="twitter:title" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I">
+<meta property="twitter:title" content="DeepSpeed’s Bag of Tricks for Speed &amp; Scale">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-07-14T00:00:00+01:00","datePublished":"2023-07-14T00:00:00+01:00","description":"The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist","headline":"DeepSpeed’s Bag of Tricks for Speed &amp; Scale: Part I","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"},"url":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-07-14T00:00:00-04:00","datePublished":"2023-07-14T00:00:00-04:00","description":"The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist","headline":"DeepSpeed’s Bag of Tricks for Speed &amp; Scale","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"},"url":"http://localhost:4000/blog/2023/07/14/deepspeed-train.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/main.css">
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/blog/feed.xml" title="Kola Ayonrinde">
@@ -48,21 +48,35 @@
       <div class="wrapper">
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7175JLSX4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-Q7175JLSX4");
+  </script>
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">
-      DeepSpeed's Bag of Tricks for Speed &amp; Scale: Part I
+      DeepSpeed's Bag of Tricks for Speed &amp; Scale
     </h1>
     <p class="post-meta">
-      <time class="dt-published" datetime="2023-07-14T00:00:00+01:00" itemprop="datePublished">Jul 14, 2023
+      <time class="dt-published" datetime="2023-07-14T00:00:00-04:00" itemprop="datePublished">Jul 14, 2023
       </time></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
 <!-- # DeepSpeed's Bag of Tricks for Speed & Scale -->
 
-<h2 id="part-i-an-introduction-to-deepspeed-for-training">Part I: An Introduction to DeepSpeed for Training</h2>
+<h2 id="an-introduction-to-deepspeed-for-training">An Introduction to DeepSpeed for Training</h2>
 
-<p>In the literature and the public conversation around Natural Language Processing, lots has been made of the results of scaling up data, compute and model size. For example we have the <a href="https://arxiv.org/abs/2001.08361">original</a> and <a href="https://arxiv.org/abs/2203.15556">updated</a> transformer scaling laws.</p>
+<p>In the literature and the public conversation around Natural Language
+Processing, lots has been made of the results of scaling up data, compute and
+model size. For example we have the <a href="https://arxiv.org/abs/2001.08361">original</a>
+and <a href="https://arxiv.org/abs/2203.15556">updated</a> transformer scaling laws.</p>
 
 <div align="center">
   <figure>
@@ -71,15 +85,18 @@
     </figure>
 </div>
 
-<p>One sometimes overlooked point is the vital role of engineering breakthroughs in enabling large models to be trained and served on current hardware.</p>
+<p>One sometimes overlooked point is the vital role of engineering breakthroughs in
+enabling large models to be trained and served on current hardware.</p>
 
-<p>This series is about the engineering tricks that bring the research to life.</p>
+<p>This post is about the engineering tricks that bring the research to life.</p>
 
 <blockquote>
-  <p><em>Note: This post assumes some basic familiarity with PyTorch/Tensorflow and transformers. If you’ve never used
-these before check out the <a href="https://pytorch.org/docs/stable/index.html">PyTorch docs</a> and the
-<a href="https://jalammar.github.io/illustrated-transformer/">Illustrated Transformer</a>. Some background on backpropagation
-works will also be useful - check out <a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">this video</a> if you want a
+  <p><em>Note: This post assumes some basic familiarity with PyTorch/Tensorflow and
+transformers. If you’ve never used these before check out the
+<a href="https://pytorch.org/docs/stable/index.html">PyTorch docs</a> and the
+<a href="https://jalammar.github.io/illustrated-transformer/">Illustrated Transformer</a>.
+Some background on backpropagation works will also be useful - check out
+<a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">this video</a> if you want a
 refresher!</em></p>
 </blockquote>
 
@@ -131,22 +148,27 @@ refresher!</em></p>
 
 <h3 id="01-deepspeeds-three-innovation-pillars">0.1 DeepSpeed’s Three Innovation Pillars</h3>
 
-<p><a href="https://www.deepspeed.ai">DeepSpeed</a> has three main use cases: enabling large training runs, decreasing inference latency and model compression.</p>
+<p><a href="https://www.deepspeed.ai">DeepSpeed</a> has four main use cases: enabling large
+training runs, decreasing inference latency, model compression and enabling ML
+science.</p>
 
 <div align="center">
   <figure>
-  <img src="https://github.com/microsoft/DeepSpeed/raw/master/docs/assets/images/3pillars.png" width="700" alt="">
+  <img src="/blog/images/deepspeed/deepspeed-pillars.png" width="700" alt="">
   </figure>
 </div>
 
-<p>This post covers training optimizations. Future posts will detail other pillars.</p>
+<p>This post covers training optimizations.</p>
 
 <h3 id="02-problems-training-large-models">0.2 Problems Training Large Models</h3>
 
-<p>Training large models (e.g. LLMs) on huge datasets can be can be prohibitively slow, expensive, or even impossible with available hardware.</p>
+<p>Training large models (e.g. LLMs) on huge datasets can be can be prohibitively
+slow, expensive, or even impossible with available hardware.</p>
 
-<p>In particualar, very large models generally do not fit into the memory of a single GPU/TPU node. Compared to CPUs, GPUs are generally higher throughput but lower memory capacity.
-(A typical GPU may have 32GB memory versus 1TB+ for CPUs).</p>
+<p>In particular, very large models generally do not fit into the memory of a
+single GPU/TPU node. Compared to CPUs, GPUs are generally higher throughput but
+lower memory capacity. (A typical GPU may have 32GB memory versus 1TB+ for
+CPUs).</p>
 
 <p>Our aims are:</p>
 
@@ -159,7 +181,8 @@ refresher!</em></p>
 
 <p>DeepSpeed reduces compute and time to train by &gt;100x for large models.</p>
 
-<p>If you just want to see how to implement DeepSpeed in your code, see the <a href="#5-using-deepspeed">Using DeepSpeed</a> section below.</p>
+<p>If you just want to see how to implement DeepSpeed in your code, see the
+<a href="#5-using-deepspeed">Using DeepSpeed</a> section below.</p>
 
 <h2 id="1-partial-solutions">1. Partial Solutions</h2>
 
@@ -174,22 +197,30 @@ refresher!</em></p>
   </figure>
 </div>
 
-<p>We’ve spent a lot of money on GPU cores for them all to sit there idle apart from one! Unless you’re single-handedly trying to prop up the NVIDIA share price, this is a terrible idea!</p>
+<p>We’ve spent a lot of money on GPU cores for them all to sit there idle apart
+from one! Unless you’re single-handedly trying to prop up the NVIDIA share
+price, this is a terrible idea!</p>
 
-<p>One thing that we might try is splitting up the data, parallelising across devices. Here we copy the entire model onto each worker, each of which process different subsets of the training dataset.</p>
+<p>One thing that we might try is splitting up the data, parallelising across
+devices. Here we copy the entire model onto each worker, each of which process
+different subsets of the training dataset.</p>
 
 <div align="center">
   <figure>
-  <img src="/blog/images/deepspeed/data_parallel.png" width="700" alt="Data Parallisation">
+  <img src="/blog/images/deepspeed/data_parallel.png" width="700" alt="Data Parallelisation">
   <figcaption>Data Parallelisation</figcaption>
   </figure>
 </div>
 
-<p>Each device compute its own gradients and then we average out the gradients across all the nodes to update our parameters with <code class="language-plaintext highlighter-rouge">all_reduce</code>. This approach is pretty straightforward to implement and works for any model type.</p>
+<p>Each device compute its own gradients and then we average out the gradients
+across all the nodes to update our parameters with <code class="language-plaintext highlighter-rouge">all_reduce</code>. This approach
+is pretty straightforward to implement and works for any model type.</p>
 
 <p>We’ve turned more GPUs into more speed - great!</p>
 
-<p>In addition we also increase effective batch size, reducing costly parameter updates. Since with larger batch sizes there is more signal in each gradient update, this also improves convergence (up to a point).</p>
+<p>In addition we also increase effective batch size, reducing costly parameter
+updates. Since with larger batch sizes there is more signal in each gradient
+update, this also improves convergence (up to a point).</p>
 
 <div align="center">
   <figure>
@@ -198,13 +229,21 @@ refresher!</em></p>
   </figure>
 </div>
 
-<p>Unfortunately the memory bottleneck still remains. For Data Parallelism to work, the entire model has to fit on every device, which just isn’t going to happen for large models.</p>
+<p>Unfortunately the memory bottleneck still remains. For Data Parallelism to work,
+the entire model has to fit on every device, which just isn’t going to happen
+for large models.</p>
 
 <h3 id="12-naive-model-parallelism">1.2 Naive Model Parallelism</h3>
 
-<p>Another thing we could try is splitting up the computation of the model itself, putting different layers (transformer blocks) on different devices. With this model parallelism approach we aren’t limited by the size of a memory of a single GPU, but instead by all the GPUs that we have.</p>
+<p>Another thing we could try is splitting up the computation of the model itself,
+putting different layers (transformer blocks) on different devices. With this
+model parallelism approach we aren’t limited by the size of a memory of a single
+GPU, but instead by all the GPUs that we have.</p>
 
-<p>However two problems remain. Firstly how to split up a model efficiently is very dependant on the specific model architecture (for example the number of layers and attention heads). And secondly communicating <em>between</em> nodes now bottlenecks training.</p>
+<p>However two problems remain. Firstly how to split up a model efficiently is very
+dependant on the specific model architecture (for example the number of layers
+and attention heads). And secondly communicating <em>between</em> nodes now bottlenecks
+training.</p>
 
 <div align="center">
   <figure>
@@ -213,18 +252,27 @@ refresher!</em></p>
   </figure>
 </div>
 
-<p>Since each layer requires the input to the previous layer in each pass, workers spend most of their time waiting. What a waste of GPU time!
-Here it looks like the model takes the same amount of time as if we had a GPU to fit it on but it’s even worse. The communication overhead of getting data between nodes makes it even <em>slower</em> than a single GPU.</p>
+<p>Since each layer requires the input to the previous layer in each pass, workers
+spend most of their time waiting. What a waste of GPU time! Here it looks like
+the model takes the same amount of time as if we had a GPU to fit it on but it’s
+even worse. The communication overhead of getting data between nodes makes it
+even <em>slower</em> than a single GPU.</p>
 
 <p>Can we do better than this?</p>
 
 <h3 id="13-a-better-way-deepspeed">1.3 A Better Way: DeepSpeed</h3>
 
-<p>Data Parallelism gave speedups but couldn’t handle models too large for a single machine. Model Parallelism allowed us to train large models but it’s slow.</p>
+<p>Data Parallelism gave speedups but couldn’t handle models too large for a single
+machine. Model Parallelism allowed us to train large models but it’s slow.</p>
 
-<p>We really want a marriage of the ideas of both data and model parallelism - speed and scale together.</p>
+<p>We really want a marriage of the ideas of both data and model parallelism -
+speed and scale together.</p>
 
-<p>We don’t always get what we want, but in this case we do. With DeepSpeed, Microsoft packaged up a bag of tricks to allow ML engineers to train larger models more efficiently. All in, DeepSpeed enables &gt;100x lower training time and cost with minimal code changes - just 4 changed lines of PyTorch code. Let’s walk through how.</p>
+<p>We don’t always get what we want, but in this case we do. With DeepSpeed,
+Microsoft packaged up a bag of tricks to allow ML engineers to train larger
+models more efficiently. All in, DeepSpeed enables &gt;100x lower training time and
+cost with minimal code changes - just 4 changed lines of PyTorch code. Let’s
+walk through how.</p>
 
 <div align="center">
   <figure>
@@ -249,10 +297,14 @@ Here it looks like the model takes the same amount of time as if we had a GPU to
 
 <h3 id="20-mixed-precision-training">2.0 Mixed Precision Training</h3>
 
-<p>Ordinarily mathenatical operations are performed with 32 bit floats (fp32).
-Using half precision (fp16) vs full precision (fp32) halves memory and speeds up computation.</p>
+<p>Ordinarily mathematical operations are performed with 32 bit floats (fp32).
+Using half precision (fp16) vs full precision (fp32) halves memory and speeds up
+computation.</p>
 
-<p>We forward/backward pass in fp16 for speed, keeping copies of fp32 optimizer states (momentum, first order gradient etc.) for accuracy. The high precision fp32 maintains the high dynamic range so that we can still represent very slight updates.</p>
+<p>We forward/backward pass in fp16 for speed, keeping copies of fp32 optimizer
+states (momentum, first order gradient etc.) for accuracy. The high precision
+fp32 maintains the high dynamic range so that we can still represent very slight
+updates.</p>
 
 <h3 id="21-delaying-weight-updates">2.1 Delaying Weight Updates</h3>
 
@@ -269,7 +321,9 @@ Using half precision (fp16) vs full precision (fp32) halves memory and speeds up
     <span class="n">optimizer</span><span class="p">.</span><span class="n">step</span><span class="p">(</span><span class="n">average_gradients</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Note here that within every loop we’re calculating not only the local gradients but also synchronizing gradients which requires communicating with all the other nodes.</p>
+<p>Note here that within every loop we’re calculating not only the local gradients
+but also synchronizing gradients which requires communicating with all the other
+nodes.</p>
 
 <p>Delaying synchronization improves throughput e.g:</p>
 
@@ -286,17 +340,22 @@ Using half precision (fp16) vs full precision (fp32) halves memory and speeds up
 
 <h3 id="22-storing-optimiser-states-without-redundancy-zero-stage-1">2.2 Storing Optimiser States Without Redundancy (ZeRO stage 1)</h3>
 
-<p>Suppose we have a GPU with 50GB of memory and our model weights are 10GB of memory. That’s all great right?</p>
+<p>Suppose we have a GPU with 50GB of memory and our model weights are 10GB of
+memory. That’s all great right?</p>
 
 <p>For inference we feed in our input data and get out activations at each step.
-Then once we pass each layer, we can throw away activations from prior layers. Our model fits on the single GPU.</p>
+Then once we pass each layer, we can throw away activations from prior layers.
+Our model fits on the single GPU.</p>
 
-<p>For training however, it’s a different story. Each GPU needs its intermediate activations, gradients and the fp32 optimiser states for backpropagation.
-Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞</p>
+<p>For training however, it’s a different story. Each GPU needs its intermediate
+activations, gradients and the fp32 optimiser states for backpropagation. Pretty
+soon we’re overflowing the GPU with our model’s memory footprint 😞</p>
 
 <p>The biggest memory drain on our memory is the optimisation states.</p>
 
-<p>We know that we’re going to need to get multiple GPUs and do some model parallelisation here. Eventually we want to partition the whole model but a good first move would be to at least remove optimisation state redundancy.</p>
+<p>We know that we’re going to need to get multiple GPUs and do some model
+parallelisation here. Eventually we want to partition the whole model but a good
+first move would be to at least remove optimisation state redundancy.</p>
 
 <div align="center">
   <figure>
@@ -305,7 +364,12 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
   </figure>
 </div>
 
-<p>For ZeRO stage 1, in the backward pass, each device calculates the (first order) gradients for the final section of the model. The final device <code class="language-plaintext highlighter-rouge">gathers</code> all these gradients, averages them and then computes the Adam optimised gradient with the optimisation states. It then <code class="language-plaintext highlighter-rouge">broadcasts</code> back the new parameter states for the final section of the model to all devices. Then the penultimate device will do the same and so on until we reach the first device.</p>
+<p>For ZeRO stage 1, in the backward pass, each device calculates the (first order)
+gradients for the final section of the model. The final device <code class="language-plaintext highlighter-rouge">gathers</code> all
+these gradients, averages them and then computes the Adam optimised gradient
+with the optimisation states. It then <code class="language-plaintext highlighter-rouge">broadcasts</code> back the new parameter states
+for the final section of the model to all devices. Then the penultimate device
+will do the same and so on until we reach the first device.</p>
 
 <div align="center">
   <figure>
@@ -318,7 +382,8 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 <p>We can think of this as a 5 step process:</p>
 
 <ol>
-  <li>All nodes calculate gradients from their loss (note they all did a forward pass on different data so their losses will be different!)</li>
+  <li>All nodes calculate gradients from their loss (note they all did a forward
+pass on different data so their losses will be different!)</li>
   <li>Final node collects and averages the gradients from all nodes via <code class="language-plaintext highlighter-rouge">reduce</code>
 </li>
   <li>Final node calculates gradient update using optimiser states</li>
@@ -333,7 +398,8 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <h3 id="23-storing-gradients-and-parameters-without-redundancy-zero-stages-2--3">2.3 Storing Gradients and Parameters Without Redundancy (ZeRO stages 2 &amp; 3)</h3>
 
-<p>We can take the partitioning idea further and do it for parameters and gradients as well as optimisation states.</p>
+<p>We can take the partitioning idea further and do it for parameters and gradients
+as well as optimisation states.</p>
 
 <h4 id="in-the-forward-pass">In the forward pass:</h4>
 
@@ -374,7 +440,8 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <h4 id="a-breather">A breather</h4>
 
-<p>That was the most complex part so feel free to check out these resources to make sure you understand what’s going on:</p>
+<p>That was the most complex part so feel free to check out these resources to make
+sure you understand what’s going on:</p>
 
 <ul>
   <li><a href="https://www.youtube.com/watch?v=y4_bCiAsIAk&list=PLDEUW02OCkqGZ5_8jVQUK0dRJx8Um-hpc&index=1&t=20s">DeepSpeed founder at MLOps community</a></li>
@@ -385,7 +452,9 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
 
 <h4 id="benefits-of-zero">Benefits of ZeRO</h4>
 
-<p>Overall, ZeRO removes the redundancy across data parallel process by partitioning optimizer states, gradients and parameters across nodes. Look at how much memory footprint we’ve saved!</p>
+<p>Overall, ZeRO removes the redundancy across data parallel process by
+partitioning optimizer states, gradients and parameters across nodes. Look at
+how much memory footprint we’ve saved!</p>
 
 <div align="center">
   <figure>
@@ -394,8 +463,10 @@ Pretty soon we’re overflowing the GPU with our model’s memory footprint 😞
   </figure>
 </div>
 
-<p>One surprising thing about this approach is that it scales superlinearly. That is, when we double the number of GPUs that we’re using, we <em>more than</em> double the throughput of the system!
-In splitting up the model across more GPUs, we leave more space per node for activations which allows for higher batch sizes.</p>
+<p>One surprising thing about this approach is that it scales superlinearly. That
+is, when we double the number of GPUs that we’re using, we <em>more than</em> double
+the throughput of the system! In splitting up the model across more GPUs, we
+leave more space per node for activations which allows for higher batch sizes.</p>
 
 <div align="center">
   <figure>
@@ -406,11 +477,17 @@ In splitting up the model across more GPUs, we leave more space per node for act
 
 <h3 id="24-tensor-slicing">2.4 Tensor Slicing</h3>
 
-<p>Most of the operations in a large ML model are matrix multiplications followed by non-linearities. Matrix multiplication can be thought of as dot products between pairs of matrix rows and columns. So we can compute independent dot products on different GPUs and then combine the results afterwards.</p>
+<p>Most of the operations in a large ML model are matrix multiplications followed
+by non-linearities. Matrix multiplication can be thought of as dot products
+between pairs of matrix rows and columns. So we can compute independent dot
+products on different GPUs and then combine the results afterwards.</p>
 
-<p>Another way to think about this is that if we want to parallelise matrix multiplication across GPUs, we can slice up huge tensors into smaller ones and then combine the results at the end.</p>
+<p>Another way to think about this is that if we want to parallelise matrix
+multiplication across GPUs, we can slice up huge tensors into smaller ones and
+then combine the results at the end.</p>
 
-<p>For matrices $$ X = \begin{bmatrix} X_1 &amp; X_2 \end{bmatrix} $$ and $$ A = \begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $$, we note that:</p>
+<p>For matrices $$ X = \begin{bmatrix} X_1 &amp; X_2 \end{bmatrix} $$ and $$ A =
+\begin{bmatrix} A_1 \\ A_2 \end{bmatrix} $$, we note that:</p>
 
 <p>$$
 XA = \begin{bmatrix} X_1 &amp; X_2 \end{bmatrix} \begin{bmatrix} A_1 \\ A_2 \end{bmatrix}
@@ -425,8 +502,11 @@ $$</p>
   </figure>
 </div>
 
-<p>However if there is a non-linear map after the M e.g. if $$ Y = \text{ReLU}(XA) $$, this slicing isn’t going to work. $$ \text{ReLU}(X_1A_1 + X_2A_2) \neq \text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $$ in general by non-linearity.
-So we should instead split up X by columns and duplicate M across both nodes such that we have:</p>
+<p>However if there is a non-linear map after the M e.g. if $$ Y = \text{ReLU}(XA)
+$$, this slicing isn’t going to work. $$ \text{ReLU}(X_1A_1 + X_2A_2) \neq
+\text{ReLU}(X_1A_1) + \text{ReLU}(X_2A_2) $$ in general by non-linearity. So we
+should instead split up X by columns and duplicate M across both nodes such that
+we have:</p>
 
 <p>$$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $$</p>
 
@@ -439,11 +519,15 @@ So we should instead split up X by columns and duplicate M across both nodes suc
   </figure>
 </div>
 
-<p>Note: normally we think of A acting on X by left multiplication. In this case X is our data and A is the weights which we want to parallelise. Through taking transposes we can swap the order of the geometric interpretation so we can think of the above as linear map A acting on our data X and still retain the slicing.</p>
+<p>Note: normally we think of A acting on X by left multiplication. In this case X
+is our data and A is the weights which we want to parallelise. Through taking
+transposes we can swap the order of the geometric interpretation so we can think
+of the above as linear map A acting on our data X and still retain the slicing.</p>
 
 <h3 id="25-gradient-checkpointing">2.5 Gradient Checkpointing</h3>
 
-<p>In our description of ZeRO each core cached (held in memory) the activations for it’s part of the model.</p>
+<p>In our description of ZeRO each core cached (held in memory) the activations for
+it’s part of the model.</p>
 
 <div align="center">
   <figure>
@@ -452,8 +536,10 @@ So we should instead split up X by columns and duplicate M across both nodes suc
   </figure>
 </div>
 
-<p>Suppose we had extremely limited memory but were flush with compute.
-An alternative approach to storing all the activations would be to simply recompute them when we need in the backward pass. We can always recompute the activations by running the same input data through a forward pass.</p>
+<p>Suppose we had extremely limited memory but were flush with compute. An
+alternative approach to storing all the activations would be to simply recompute
+them when we need in the backward pass. We can always recompute the activations
+by running the same input data through a forward pass.</p>
 
 <div align="center">
   <figure>
@@ -462,21 +548,28 @@ An alternative approach to storing all the activations would be to simply recomp
   </figure>
 </div>
 
-<p>This recomputing approach saves lots of memory but is quite compute wasteful, incurring <code class="language-plaintext highlighter-rouge">m</code> extra forward passes for an <code class="language-plaintext highlighter-rouge">m-layer</code> transformer.</p>
+<p>This recomputing approach saves lots of memory but is quite compute wasteful,
+incurring <code class="language-plaintext highlighter-rouge">m</code> extra forward passes for an <code class="language-plaintext highlighter-rouge">m-layer</code> transformer.</p>
 
-<p>A middle ground approach to trading off compute and memory is <a href="https://github.com/cybertronai/gradient-checkpointing">gradient checkpointing</a> (sometimes known as activation checkpointing). Here we store some intermediate activations with $$\sqrt m$$ of the memory for the cost of one forward pass.</p>
+<p>A middle ground approach to trading off compute and memory is
+<a href="https://github.com/cybertronai/gradient-checkpointing">gradient checkpointing</a>
+(sometimes known as activation checkpointing). Here we store some intermediate
+activations with $$\sqrt m$$ of the memory for the cost of one forward pass.</p>
 
 <div align="center">
   <figure>
   <img src="https://github.com/cybertronai/gradient-checkpointing/raw/master/img/output2.gif" alt="Gradient Checkpointing">
-  <figcaption>Here the only the second layer activations are cached as a "checkpoint". Now for activations after the checkpoint instead of comptuting from the input data, we can compute from the checkpoint. This approach trades off memory and compute.</figcaption>
+  <figcaption>Here the only the second layer activations are cached as a "checkpoint". Now for activations after the checkpoint instead of computing from the input data, we can compute from the checkpoint. This approach trades off memory and compute.</figcaption>
   </figure>
 </div>
 
 <h3 id="26-profiling-etc">2.6 Profiling etc</h3>
 
-<p>While not strictly causing any code optimisations, DeepSpeed provides developer friendly features like convenient profiling and monitoring to track latency and performance. We also have model checkpointing so you can recover a model from different points in training.
-Developer happiness matters almost as much as loss!</p>
+<p>While not strictly causing any code optimisations, DeepSpeed provides developer
+friendly features like convenient profiling and monitoring to track latency and
+performance. We also have model checkpointing so you can recover a model from
+different points in training. Developer happiness matters almost as much as
+loss!</p>
 
 <div align="center">
   <figure>
@@ -497,9 +590,13 @@ Developer happiness matters almost as much as loss!</p>
 
 <h2 id="4-in-code">4. In Code</h2>
 
-<p>The full DeepSpeed library, with all the hardware level optimisations, is open-sourced. See the <a href="https://github.com/microsoft/DeepSpeed/">core library</a>, the <a href="https://www.deepspeed.ai/training/">docs</a> and <a href="https://github.com/microsoft/DeepSpeedExamples">examples</a>.</p>
+<p>The full DeepSpeed library, with all the hardware level optimisations, is
+open-sourced. See the <a href="https://github.com/microsoft/DeepSpeed/">core library</a>,
+the <a href="https://www.deepspeed.ai/training/">docs</a> and
+<a href="https://github.com/microsoft/DeepSpeedExamples">examples</a>.</p>
 
-<p>For an annotated and easier to follow implementation see <a href="https://nn.labml.ai/scaling/zero3/index.html">Lab ML’s version</a>.</p>
+<p>For an annotated and easier to follow implementation see
+<a href="https://nn.labml.ai/scaling/zero3/index.html">Lab ML’s version</a>.</p>
 
 <h2 id="5-using-deepspeed">5. Using DeepSpeed</h2>
 
@@ -511,7 +608,9 @@ Developer happiness matters almost as much as loss!</p>
   </figure>
 </div>
 
-<p>In PyTorch we only need to change 4 lines of code to apply DeepSpeed such that our code is optimised for training on a single GPU machine, a single machine with multiple GPUs, or on multiple machines in a distributed fashion.</p>
+<p>In PyTorch we only need to change 4 lines of code to apply DeepSpeed such that
+our code is optimised for training on a single GPU machine, a single machine
+with multiple GPUs, or on multiple machines in a distributed fashion.</p>
 
 <p>First we swap out:</p>
 
@@ -569,13 +668,16 @@ Developer happiness matters almost as much as loss!</p>
 </span>    <span class="n">model_engine</span><span class="p">.</span><span class="n">step</span><span class="p">()</span>
 </code></pre></div></div>
 
-<p>That’s all it takes! In addition, DeepSpeed’s backend has also been integrated with HuggingFace via the <a href="https://huggingface.co/docs/accelerate/index">Accelerate library</a>.</p>
+<p>That’s all it takes! In addition, DeepSpeed’s backend has also been integrated
+with HuggingFace via the
+<a href="https://huggingface.co/docs/accelerate/index">Accelerate library</a>.</p>
 
 <h2 id="thats-all-folks">That’s All Folks!</h2>
 
-<p>There’s a lot of clever improvements that go into the special sauce for training large models. And for users, with just a few simple code changes, DeepSpeed works its magic to unleash the power of all your hardware for fast, efficient model training.</p>
-
-<p>Next time we’ll talk about the engineering tricks for Inference.</p>
+<p>There’s a lot of clever improvements that go into the special sauce for training
+large models. And for users, with just a few simple code changes, DeepSpeed
+works its magic to unleash the power of all your hardware for fast, efficient
+model training.</p>
 
 <p>Happy training!</p>
 </div>
