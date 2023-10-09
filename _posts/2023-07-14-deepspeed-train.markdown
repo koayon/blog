@@ -429,7 +429,7 @@ $$, this slicing isn't going to work. $$ \text{ReLU}(X_1A_1 + X_2A_2) \neq
 should instead split up X by columns and duplicate M across both nodes such that
 we have:
 
-$$ Y = [Y_1, Y_2] = [\text{GeLU}(X A_1), \text{GeLU}(X A_2)] = XA $$
+$$ Y = [Y_1, Y_2] = [\text{ReLU}(X A_1), \text{ReLU}(X A_2)] = XA $$
 
 For example:
 
