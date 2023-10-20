@@ -4,11 +4,39 @@ title: About
 permalink: /about/
 ---
 
-Hello!
-I'm Kola!
+Hello! I'm Kola! I'm a ML Researcher based in London, UK.
+
+<!-- I currently work at Unlikely AI, an AI
+lab taking a novel approach to building safe, trustworthy and powerful
+Artificial Intelligence. -->
 
 This is my technical blog about Machine Learning.
 
-Find me on [Substack](https://lookingglassworld.substack.com/) or on [GitHub](https://github.com/koayon)
+My main current research interests are:
+
+1. Adaptive Neural Computation
+   - I'm especially interested in approaches which allow networks to spend more
+     compute on difficult tokens via exiting mechanisms, MoE and similar
+     approaches.
+   - I maintain an
+     [annotated collection of research papers](https://github.com/koayon/awesome-adaptive-computation)
+     in Adaptive Computation for the community
+2. Mechanistic Interpretability - broadly defined as the study of reverse
+   engineering neural networks from the learned weights into human-interpretable
+   algorithms.
+   - I’m particularly interested in problems of how universal representation
+     learning (and its philosophical implications), automated interpretability
+     and compositionality.
+3. Computational reasoning
+   - This can often overlap with either Adaptive Computation, search-based
+     methods and neurosymbolic approaches to computation. I'm also interested in
+     automated theorem proving and code generation as playgrounds for general
+     reasoning capabilities.
+
+Previous research interests have included the Linguistic properties of
+Mathematics, ML applied to Musicology and Logic.
+
+Find me on [Substack](https://lookingglassworld.substack.com/) for other writing
+or on [GitHub](https://github.com/koayon) for code.
 
 Send feedback by [email](mailto:koayon@gmail.com).
