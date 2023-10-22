@@ -10,8 +10,8 @@
 <meta name="generator" content="Jekyll v3.9.3">
 <meta property="og:title" content="From Sparse To Soft Mixtures of Experts">
 <meta property="og:locale" content="en_US">
-<meta name="description" content="Mixture of Expert (MoE) models have recently emerged as a key way to build larger ML models which are practical to run and train[^1].">
-<meta property="og:description" content="Mixture of Expert (MoE) models have recently emerged as a key way to build larger ML models which are practical to run and train[^1].">
+<meta name="description" content="Mixture of Expert (MoE) models have recently emerged as an ML architecture offering efficient scaling and practicality in both training and inference [^1].">
+<meta property="og:description" content="Mixture of Expert (MoE) models have recently emerged as an ML architecture offering efficient scaling and practicality in both training and inference [^1].">
 <link rel="canonical" href="http://localhost:4000/blog/2023/10/20/soft-moe.html">
 <meta property="og:url" content="http://localhost:4000/blog/2023/10/20/soft-moe.html">
 <meta property="og:site_name" content="Kola Ayonrinde">
@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary">
 <meta property="twitter:title" content="From Sparse To Soft Mixtures of Experts">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-20T00:00:00-04:00","datePublished":"2023-10-20T00:00:00-04:00","description":"Mixture of Expert (MoE) models have recently emerged as a key way to build larger ML models which are practical to run and train[^1].","headline":"From Sparse To Soft Mixtures of Experts","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023/10/20/soft-moe.html"},"url":"http://localhost:4000/blog/2023/10/20/soft-moe.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-20T00:00:00-04:00","datePublished":"2023-10-20T00:00:00-04:00","description":"Mixture of Expert (MoE) models have recently emerged as an ML architecture offering efficient scaling and practicality in both training and inference [^1].","headline":"From Sparse To Soft Mixtures of Experts","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2023/10/20/soft-moe.html"},"url":"http://localhost:4000/blog/2023/10/20/soft-moe.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/main.css">
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/blog/feed.xml" title="Kola Ayonrinde">
@@ -68,8 +68,10 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-<p>Mixture of Expert (MoE) models have recently emerged as a key way to build
-larger ML models which are practical to run and train<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
+<p>Mixture of Expert (MoE) models have recently emerged as an ML architecture
+offering efficient scaling and practicality in both training and inference <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>.</p>
+
+<h3 id="what-are-sparse-moes">What Are Sparse MoEs?</h3>
 
 <p>In traditional <a href="https://arxiv.org/pdf/2101.03961.pdf">Sparse MoEs</a>, we swap out
 the <code class="language-plaintext highlighter-rouge">MLP layers</code> of the vanilla transformer for an <code class="language-plaintext highlighter-rouge">Expert Layer</code>. The Expert
@@ -86,12 +88,14 @@ transformers.</p>
     </figure>
 </div>
 
+<h3 id="introducing-soft-moes">Introducing Soft MoEs</h3>
+
 <p>The Soft MoE paradigm was introduced by Google researchers in the paper
 <a href="https://arxiv.org/pdf/2308.00951.pdf">From Sparse To Soft Mixtures of Experts</a>.
-Soft MoEs differ from traditional MoEs by instead sending each Expert <em>linear
-combinations</em> of the input tokens rather than a <em>subset</em> of the input tokens.
-The weights of the linear combination are determined by the routing mechanism,
-similarly to Sparse Mixture of Expert models.</p>
+Unlike Sparse MoEs, Soft MoEs don’t send a <em>subset</em> of the input tokens to
+experts. Instead, each expert receives a <em>linear combination</em> of all the input
+tokens. The weights for these combinations are determined by the same dynamic
+routing mechanism as in Sparse MoEs.</p>
 
 <div align="center">
   <figure>
@@ -100,9 +104,10 @@ similarly to Sparse Mixture of Expert models.</p>
     </figure>
 </div>
 
-<p>The Soft MoE approach solves previous issues with training instability and
-discontinuities due to the discrete routing of Sparse MoEs. Soft MoEs are also
-better suited to GPU hardware and in general outperform Sparse MoEs.</p>
+<p>The discrete routing that makes Sparse MoEs so effective also makes them not
+inherently fully differentiable and can cause training issues. The Soft MoE
+approach solves these issues, are better suited to GPU hardware and in general
+outperform Sparse MoEs.</p>
 
 <p>The paper abstract reads:</p>
 

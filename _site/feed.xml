@@ -1,5 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-10-21T22:43:16-04:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">From Sparse To Soft Mixtures of Experts</title><link href="http://localhost:4000/blog/2023/10/20/soft-moe.html" rel="alternate" type="text/html" title="From Sparse To Soft Mixtures of Experts" /><published>2023-10-20T00:00:00-04:00</published><updated>2023-10-20T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/20/soft-moe</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/20/soft-moe.html">&lt;p&gt;Mixture of Expert (MoE) models have recently emerged as a key way to build
-larger ML models which are practical to run and train&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-10-21T23:30:22-04:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">From Sparse To Soft Mixtures of Experts</title><link href="http://localhost:4000/blog/2023/10/20/soft-moe.html" rel="alternate" type="text/html" title="From Sparse To Soft Mixtures of Experts" /><published>2023-10-20T00:00:00-04:00</published><updated>2023-10-20T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/20/soft-moe</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/20/soft-moe.html">&lt;p&gt;Mixture of Expert (MoE) models have recently emerged as an ML architecture
+offering efficient scaling and practicality in both training and inference &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-are-sparse-moes&quot;&gt;What Are Sparse MoEs?&lt;/h3&gt;
 
 &lt;p&gt;In traditional &lt;a href=&quot;https://arxiv.org/pdf/2101.03961.pdf&quot;&gt;Sparse MoEs&lt;/a&gt;, we swap out
 the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MLP layers&lt;/code&gt; of the vanilla transformer for an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Expert Layer&lt;/code&gt;. The Expert
@@ -16,12 +18,14 @@ transformers.&lt;/p&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
 
+&lt;h3 id=&quot;introducing-soft-moes&quot;&gt;Introducing Soft MoEs&lt;/h3&gt;
+
 &lt;p&gt;The Soft MoE paradigm was introduced by Google researchers in the paper
 &lt;a href=&quot;https://arxiv.org/pdf/2308.00951.pdf&quot;&gt;From Sparse To Soft Mixtures of Experts&lt;/a&gt;.
-Soft MoEs differ from traditional MoEs by instead sending each Expert &lt;em&gt;linear
-combinations&lt;/em&gt; of the input tokens rather than a &lt;em&gt;subset&lt;/em&gt; of the input tokens.
-The weights of the linear combination are determined by the routing mechanism,
-similarly to Sparse Mixture of Expert models.&lt;/p&gt;
+Unlike Sparse MoEs, Soft MoEs don’t send a &lt;em&gt;subset&lt;/em&gt; of the input tokens to
+experts. Instead, each expert receives a &lt;em&gt;linear combination&lt;/em&gt; of all the input
+tokens. The weights for these combinations are determined by the same dynamic
+routing mechanism as in Sparse MoEs.&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -30,9 +34,10 @@ similarly to Sparse Mixture of Expert models.&lt;/p&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
 
-&lt;p&gt;The Soft MoE approach solves previous issues with training instability and
-discontinuities due to the discrete routing of Sparse MoEs. Soft MoEs are also
-better suited to GPU hardware and in general outperform Sparse MoEs.&lt;/p&gt;
+&lt;p&gt;The discrete routing that makes Sparse MoEs so effective also makes them not
+inherently fully differentiable and can cause training issues. The Soft MoE
+approach solves these issues, are better suited to GPU hardware and in general
+outperform Sparse MoEs.&lt;/p&gt;
 
 &lt;p&gt;The paper abstract reads:&lt;/p&gt;
 
@@ -88,7 +93,7 @@ repo. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&q
 look at cleaning this up. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html">Mixture of Expert (MoE) models have recently emerged as a key way to build larger ML models which are practical to run and train[^1].</summary></entry><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale" /><published>2023-07-14T00:00:00-04:00</published><updated>2023-07-14T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
+&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html">Mixture of Expert (MoE) models have recently emerged as an ML architecture offering efficient scaling and practicality in both training and inference [^1].</summary></entry><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale" /><published>2023-07-14T00:00:00-04:00</published><updated>2023-07-14T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
 
 &lt;h2 id=&quot;an-introduction-to-deepspeed-for-training&quot;&gt;An Introduction to DeepSpeed for Training&lt;/h2&gt;
 

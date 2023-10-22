@@ -4,8 +4,10 @@ title: "From Sparse To Soft Mixtures of Experts"
 tags: machine-learning mixture-of-experts adaptive-computation
 ---
 
-Mixture of Expert (MoE) models have recently emerged as a key way to build
-larger ML models which are practical to run and train[^1].
+Mixture of Expert (MoE) models have recently emerged as an ML architecture
+offering efficient scaling and practicality in both training and inference [^1].
+
+### What Are Sparse MoEs?
 
 In traditional [Sparse MoEs](https://arxiv.org/pdf/2101.03961.pdf), we swap out
 the `MLP layers` of the vanilla transformer for an `Expert Layer`. The Expert
@@ -22,12 +24,14 @@ transformers.
     </figure>
 </div>
 
+### Introducing Soft MoEs
+
 The Soft MoE paradigm was introduced by Google researchers in the paper
 [From Sparse To Soft Mixtures of Experts](https://arxiv.org/pdf/2308.00951.pdf).
-Soft MoEs differ from traditional MoEs by instead sending each Expert _linear
-combinations_ of the input tokens rather than a _subset_ of the input tokens.
-The weights of the linear combination are determined by the routing mechanism,
-similarly to Sparse Mixture of Expert models.
+Unlike Sparse MoEs, Soft MoEs don't send a _subset_ of the input tokens to
+experts. Instead, each expert receives a _linear combination_ of all the input
+tokens. The weights for these combinations are determined by the same dynamic
+routing mechanism as in Sparse MoEs.
 
 <div align="center">
   <figure>
@@ -36,9 +40,10 @@ similarly to Sparse Mixture of Expert models.
     </figure>
 </div>
 
-The Soft MoE approach solves previous issues with training instability and
-discontinuities due to the discrete routing of Sparse MoEs. Soft MoEs are also
-better suited to GPU hardware and in general outperform Sparse MoEs.
+The discrete routing that makes Sparse MoEs so effective also makes them not
+inherently fully differentiable and can cause training issues. The Soft MoE
+approach solves these issues, are better suited to GPU hardware and in general
+outperform Sparse MoEs.
 
 The paper abstract reads:
 
