@@ -5,17 +5,19 @@ title: "From Sparse To Soft Mixtures of Experts"
 tags: machine-learning training mixture-of-experts adaptive-computation
 ---
 
-<!-- # From Sparse to Soft Mixtures of Experts -->
+In the attempt to make increasingly large transformers, Mixture of Expert (MoE)
+models have emerged good ways to larger models which are practical to run and
+train[^1].
 
-An existing development in Mixture of Expert (MoE) models has been Google
-Research's Soft MoE.
+In traditional Sparse MoEs, we swap out the MLP layers of the transformer for an
+Expert Layer containing multiple MLPs. We also have a dynamic routing mechanism
+to decide which Expert to send each input to.
 
-In traditional (Sparse) MoEs, we swap out the MLP layers of the transformer for
-an Expert Layer containing multiple MLPs. We also have a dynamic routing
-mechanism to decide which Expert to send each input to.
-
-The Soft MoE paradigm differs by instead sending each expert a linear
-combination of the tokens decided by the routing mechanism.
+The Soft MoE paradigm introduced by Google in the paper
+[From Sparse To Soft Mixtures of Experts](https://arxiv.org/pdf/2308.00951.pdf)
+differs by instead sending each expert a linear combination of the input tokens.
+This linear combination is decided by the routing mechanism, analogously to
+Sparse Mixture of Expert models.
 
 <div align="center">
   <figure>
@@ -24,7 +26,7 @@ combination of the tokens decided by the routing mechanism.
     </figure>
 </div>
 
-The Soft MoE approach solves lots of issues with instability and
+The Soft MoE approach solves lots of issues with training instability and
 discontinuities. Soft MoEs are also better suited to GPU hardware and in general
 outperform Sparse MoEs where applicable.
 
@@ -48,16 +50,28 @@ The paper abstract reads:
 > over 40× more parameters than ViT Huge/14, while inference time cost grows by
 > only 2%, and it performs substantially better.
 
+### Links to Talk and Slides
+
 I recently gave a talk at EleutherAI, the open-source AI research lab, about
 Soft MoEs.
 
 You can watch the talk back on YouTube
-[here](https://youtu.be/xCKdBC5dh_g?si=uDH8vLVII7l_X8_L)[^1] or see the slides
+[here](https://youtu.be/xCKdBC5dh_g?si=uDH8vLVII7l_X8_L) [^2] or see the slides
 [here](https://docs.google.com/presentation/d/12Sw4wRQJr3sxcJR91_UM_dlYgYxeAbf9t8es54bAYUM/edit#slide=id.p).
 
 I'm very excited about people working on expanding the SoftMoE approach to the
 autoregressive regime. Feel free to reach out if you're interested in or are
-currently researching in this area.
+currently researching in this area. <br> <br>
 
-[^1] - Unfortunately on the video the audio quality isn't as great as it could
-be, I may look at cleaning this up.
+---
+
+<br>
+
+[^1]:
+    For more details on MoE models see the
+    [Awesome Adaptive Computation](https://github.com/koayon/awesome-adaptive-computation)
+    repo.
+
+[^2]:
+    Unfortunately on the video the audio quality isn't as great as it could be,
+    I may look at cleaning this up.

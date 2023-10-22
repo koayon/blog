@@ -16,7 +16,7 @@ My main current research interests are:
 
 1. Adaptive Neural Computation
    - I'm especially interested in approaches which allow networks to spend more
-     compute on difficult tokens via exiting mechanisms, MoE and similar
+     compute on difficult tokens via early-exiting mechanisms, MoE and related
      approaches.
    - I maintain an
      [annotated collection of research papers](https://github.com/koayon/awesome-adaptive-computation)
@@ -24,9 +24,9 @@ My main current research interests are:
 2. Mechanistic Interpretability - broadly defined as the study of reverse
    engineering neural networks from the learned weights into human-interpretable
    algorithms.
-   - I’m particularly interested in problems of how universal representation
-     learning (and its philosophical implications), automated interpretability
-     and compositionality.
+   - I’m particularly interested in universal representation learning (and its
+     philosophical implications), automated interpretability and
+     compositionality.
 3. Computational reasoning
    - This can often overlap with either Adaptive Computation, search-based
      methods and neurosymbolic approaches to computation. I'm also interested in
