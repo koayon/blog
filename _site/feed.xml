@@ -1,56 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-10-22T22:57:36-04:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-10-23T00:29:47-04:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
 
-&lt;h3 id=&quot;tldr-experts-are-doctors-routers-are-gps&quot;&gt;TL;DR: Experts are Doctors, Routers are GPs&lt;/h3&gt;
+&lt;h4 id=&quot;tldr-experts-are-doctors-routers-are-gps&quot;&gt;TL;DR: Experts are Doctors, Routers are GPs&lt;/h4&gt;
 
 &lt;h2 id=&quot;motivation&quot;&gt;Motivation&lt;/h2&gt;
 
-&lt;p&gt;Ideally, we would like foundation models to solve multiple types of tasks. Ins
-the days of yore, we would build a supervised model for every individual use
-case; foundation models promise a single model which can solve a wide variety of
-general tasks.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Foundation_models&quot;&gt;Foundation models&lt;/a&gt; aim to
+solve a wide range of tasks. In the days of yore, we would build a supervised
+model for every individual use case; foundation models promise a single unified
+solution.&lt;/p&gt;
 
-&lt;p&gt;There are challenges with this however. When two tasks require different skills,
-trying to learn both can cause negative interference and make you less good at
-both of them. And similarly storing all the information for all the different
-tasks might be difficult even for large models.&lt;/p&gt;
+&lt;p&gt;There are challenges with this however. When two tasks need different skills,
+trying to learn both can make you learn neither as well as if you had focused on
+one&lt;sup id=&quot;fnref:neg&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:neg&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. Storing information for many tasks can also be a challenge, even for
+large models.&lt;/p&gt;
 
-&lt;p&gt;Moreover we might wonder if it make senses to have the same parameters used to
-compute the answer to a logic puzzle also be used to find the perfect adjective
-to describe the love interest in a romance fanfic.&lt;/p&gt;
+&lt;p&gt;Moreover we might wonder if it make sense to use the same parameters for
+computing the answer to a logic puzzle and for finding the perfect adjective to
+describe the love interest in a romance fanfic.&lt;/p&gt;
 
-&lt;p&gt;Ideally we would like to split up our model to have different independent
-functions which we can select when they are relevant (and possibly compose
-together different abilities).&lt;/p&gt;
-
-&lt;p&gt;Sparse Mixture of Expert models allow their internal “Experts” to specialise in
-certain domains rather than having to be all things to all tokens &lt;sup id=&quot;fnref:0&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:0&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; &lt;sup id=&quot;fnref:m&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:m&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;We would like our models to have modular functions. We could then select and
+even combine abilities when needed.&lt;/p&gt;
 
 &lt;h2 id=&quot;moes-for-scale&quot;&gt;MoEs For Scale&lt;/h2&gt;
 
-&lt;p&gt;Another motivation for Mixture of Expert models is that are large benefits to
-scaling up models. We can scale the number of model parameters, the amount of
-data and the amount of compute applied at train time. With regular transformers,
-in order to scale up the number of parameters, you must likewise scale the
-amount of compute applied.&lt;/p&gt;
+&lt;p&gt;Scaling up models offers various advantages. There are three main quantities to
+scale: the number of model &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parameters&lt;/code&gt;, the amount of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;data&lt;/code&gt; and the amount of
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;compute&lt;/code&gt; applied at train time. With regular transformers, to scale up the
+number of parameters, we must likewise scale the amount of compute applied.&lt;/p&gt;
 
-&lt;p&gt;Intuitively the number of parameters represent the amount of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;knowledge&lt;/code&gt; a model
-has and compute applied represents the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;intelligence&lt;/code&gt;&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Intuitively more parameters mean more &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;knowledge&lt;/code&gt;, and more compute represents
+additional &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;intelligence&lt;/code&gt; &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;There are some use cases where having more knowledge can be traded off with
-being more cognitively able. For example you may choose to memorise rather than
-re-derive the laws of physics in order to use them in a specific problem.
-Similarly we can trade off the opposite way as well - if you know you have
-access to a textbook or Wikipedia then you might not want to memorise certain
-historical facts, all you need to know is when and how to look up the facts you
-need.&lt;/p&gt;
+being more cognitively able. For example, you may choose to memorise rather than
+re-derive the laws of physics to use them in a specific problem. Similarly we
+can trade off the opposite way as well - if you know you’ll have access to a
+textbook or Wikipedia then you might not want to memorise certain historical
+facts. All you need to know is when and how to look up the facts you need.&lt;/p&gt;
 
-&lt;p&gt;So we would like to be able to scale the parameters and compute separately
-depending on whether our use case requires more knowledge or more cognitive
-ability&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;One approach to decoupling the two of these is the Mixture of Experts (MoE)
-paradigm. With MoEs, we are able to increase the number of parameters of models
-without increasing how much training compute or inference time latency.&lt;/p&gt;
+&lt;p&gt;So, dependent on whether we need more knowledge or more cognitive ability, we
+also want to scale parameters and compute separately&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;sparse-mixture-of-experts-models&quot;&gt;Sparse Mixture of Experts Models&lt;/h2&gt;
 
@@ -59,12 +50,12 @@ without increasing how much training compute or inference time latency.&lt;/p&gt
 tokens. The MLP layer contains most of the parameters of a large transformer and
 transforms the individual tokens.&lt;/p&gt;
 
-&lt;p&gt;In &lt;a href=&quot;https://arxiv.org/pdf/2101.03961.pdf&quot;&gt;Sparse MoEs&lt;/a&gt;, we swap out the
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MLP layers&lt;/code&gt; of the vanilla transformer for an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Expert Layer&lt;/code&gt;. The Expert Layer
-is made up of multiple MLPs referred to as Experts. For each input one expert is
-selected to send that input to. In this way, each token it has different
-parameters applied to it. A dynamic routing mechanism decides how to map tokens
-to Experts&lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;p&gt;In &lt;a href=&quot;https://arxiv.org/pdf/2101.03961.pdf&quot;&gt;Sparse Mixture of Experts&lt;/a&gt; (MoEs), we
+swap out the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MLP layers&lt;/code&gt; of the vanilla transformer for an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Expert Layer&lt;/code&gt;. The
+Expert Layer is made up of multiple MLPs called “Experts”. For each input we
+select one expert to send that input to. In this way, each token it has
+different parameters applied to it. A dynamic routing mechanism decides how to
+map tokens to Experts&lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -73,17 +64,26 @@ to Experts&lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a h
     &lt;/figure&gt;
 &lt;/div&gt;
 
+&lt;p&gt;Sparse MoEs solve the problems we noted earlier:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MoEs allow their internal “Experts” to specialise in certain domains rather
+than having to be all things to all tokens &lt;sup id=&quot;fnref:0&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:0&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; &lt;sup id=&quot;fnref:m&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:m&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+  &lt;li&gt;And with MoEs, we are able to increase the number of parameters of models
+without increasing how much training compute or inference time latency. This
+decouples parameter scaling from compute scaling (i.e. we decouple knowledge
+from intelligence)&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;h2 id=&quot;the-analogy&quot;&gt;The Analogy&lt;/h2&gt;
 
-&lt;p&gt;Imagine you’re not feeling well and you have no idea what kind of problem it is.
-Since your friend is a cardiologist (doctor specialising in the heart) you ask
-them for advice. They might give you some advice for treatments. The question
-that you then ask yourself is if you should follow their advice. If you weren’t
-too sure there are a few things you could try:&lt;/p&gt;
+&lt;p&gt;Imagine you’re feeling fatigued and you have no idea what’s causing this.
+Suppose the problem is with your eyes but you don’t know this yet. Since your
+friend is a cardiologist (doctor specialising in the heart), you ask them for
+advice, which they freely give. You might ask yourself if you should follow
+their advice blindly or if you should:&lt;/p&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;Get a second opinion from another cardiologist.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Approach 1: Get a second opinion from another cardiologist.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -93,15 +93,15 @@ too sure there are a few things you could try:&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;Averaging over multiple doctors who were all trained in the same way increases
+  &lt;p&gt;Averaging over multiple doctors who were trained in the same way increases
 robustness by reducing variance (maybe the first doctor was tired that day or
-something). It doesn’t help bias (in the technical statistical sense) - all
-the cardiologists are likely to be wrong in the same way, if they are wrong.&lt;/p&gt;
+something). But it doesn’t help with bias &lt;sup id=&quot;fnref:stat&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:stat&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt; - all the cardiologists are
+likely to be wrong in the same way, if they are wrong at all.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;Go to a generalist doctor that has no specialism.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Approach 2: Go to a generalist doctor that has no specialism.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -120,10 +120,10 @@ need someone who specialises in the area that we’re struggling with. Problem
 is we don’t know which area of specialism we need!&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;Ask multiple doctors who all specialise in different areas and do the thing
-most of them suggest.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Approach 3: Ask multiple doctors who all specialise in different areas and do
+the thing most of them suggest.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -142,10 +142,10 @@ would prefer is to know which one specialist (or possibly couple of
 specialists) we should see and only get advice from them.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;ol&gt;
-  &lt;li&gt;Go to your GP, tell them about your ailment and ask them which doctor you
-should go and see.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Approach 4: Go to your GP, tell them about your ailment and ask them which
+doctor you should go and see.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -155,9 +155,12 @@ should go and see.&lt;/li&gt;
 &lt;/div&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;This is of course what we do in real life and it’s better because we get the
-benefits of getting advice from the most relevant specialised doctor&lt;/p&gt;
+  &lt;p&gt;This is of course what we do in real life. Here we get the benefits of getting
+advice from the most relevant specialised doctor without having to ask every
+other doctor. This is both more accurate and time-efficient.&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;In approach 4, the GP is the routing function. They know the strengths of the
 different doctors and send you to one of them depending on your problem.&lt;/p&gt;
@@ -170,29 +173,22 @@ route us to the correct doctor for our problem.&lt;/p&gt;
 &lt;h3 id=&quot;what-are-moes-good-for&quot;&gt;What Are MoEs Good For?&lt;/h3&gt;
 
 &lt;p&gt;Viewed this way we see that Mixture of Expert models will be effective whenever
-we want a model to large amounts of information - more than a single Expert
-could hope to learn alone. Another use case is when our task can be decomposed
-into one of a number of tasks.&lt;/p&gt;
+we want a model to have access to large amounts of information - more than a
+single Expert could hope to learn alone. Another use case is when our task can
+be decomposed into one of a number of tasks.&lt;/p&gt;
 
-&lt;p&gt;In general we might imagine Mixture of Expert models which when faced with more
-difficult problems can send the input to a more powerful expert which has access
-to more resources. This starts to move us towards increasingly
+&lt;p&gt;In general we might imagine MoEs which when faced with more difficult problems
+can send the input to a more powerful expert which has access to more resources.
+This starts to move us increasingly towards
 &lt;a href=&quot;https://github.com/koayon/awesome-adaptive-computation&quot;&gt;Adaptive Computation&lt;/a&gt;.&lt;/p&gt;
 
 &lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:0&quot; role=&quot;doc-endnote&quot;&gt;
+    &lt;li id=&quot;fn:neg&quot; role=&quot;doc-endnote&quot;&gt;
 
-      &lt;p&gt;In actuality Expert might not necessarily specialise strictly by task. It
-might be beneficial for an expert to specialise in syntactic rather than
-semantic features or to combine two tasks which are different enough to not
-inference with each other. &lt;a href=&quot;#fnref:0&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:m&quot; role=&quot;doc-endnote&quot;&gt;
-
-      &lt;p&gt;This approach also has good biological precedent. Humans don’t use every
-part of their brain for every stimulus they receive - when they receive, for
-example a visual stimuli, they use only their visual cortex to process it. &lt;a href=&quot;#fnref:m&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;This phenomena is known as negative interference in learning. Jack of All
+Trades, Master of None. For other tasks we can see positive interference
+however, also known as Transfer Learning. &lt;a href=&quot;#fnref:neg&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
 
@@ -209,6 +205,22 @@ cleanly but hopefully the intuition still remains useful. &lt;a href=&quot;#fnr
 
       &lt;p&gt;The experts “compete” to process the tokens and as in Natural Selection and
 Economics, competition for niches makes them specialise. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:0&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;In actuality Expert might not necessarily specialise strictly by task. It
+might be beneficial for an expert to specialise in syntactic rather than
+semantic features or to combine two tasks which are different enough to not
+inference with each other. &lt;a href=&quot;#fnref:0&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:m&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;This approach also has good biological precedent. Humans don’t use every
+part of their brain for every stimulus they receive - when they receive, for
+example a visual stimuli, they use only their visual cortex to process it. &lt;a href=&quot;#fnref:m&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:stat&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;In the statistical sense &lt;a href=&quot;#fnref:stat&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html"></summary></entry><entry><title type="html">From Sparse To Soft Mixtures of Experts</title><link href="http://localhost:4000/blog/2023/10/20/soft-moe.html" rel="alternate" type="text/html" title="From Sparse To Soft Mixtures of Experts" /><published>2023-10-20T00:00:00-04:00</published><updated>2023-10-20T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/20/soft-moe</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/20/soft-moe.html">&lt;p&gt;Mixture of Expert (MoE) models have recently emerged as an ML architecture
