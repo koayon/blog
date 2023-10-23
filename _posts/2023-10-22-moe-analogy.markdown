@@ -150,9 +150,9 @@ doctor you should go and see.**
     </figure>
 </div>
 
-> This is of course what we do in real life. Here we get the benefits of getting
-> advice from the most relevant specialised doctor without having to ask every
-> other doctor. This is both more accurate and time-efficient.
+> Here we get the benefits of getting advice from the most relevant specialised
+> doctor without having to ask every other doctor. This is both more accurate
+> and time-efficient.
 
 <br>
 

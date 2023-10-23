@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-10-23T00:29:47-04:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-10-23T01:33:12-04:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: ML Engineer/Data Scientist</subtitle><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
 
 &lt;h4 id=&quot;tldr-experts-are-doctors-routers-are-gps&quot;&gt;TL;DR: Experts are Doctors, Routers are GPs&lt;/h4&gt;
 
@@ -155,9 +155,9 @@ doctor you should go and see.&lt;/strong&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;This is of course what we do in real life. Here we get the benefits of getting
-advice from the most relevant specialised doctor without having to ask every
-other doctor. This is both more accurate and time-efficient.&lt;/p&gt;
+  &lt;p&gt;Here we get the benefits of getting advice from the most relevant specialised
+doctor without having to ask every other doctor. This is both more accurate
+and time-efficient.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
