@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "From Sparse To Soft Mixtures of Experts"
+stub: softmoe
 tags: machine-learning mixture-of-experts adaptive-computation
 ---
 

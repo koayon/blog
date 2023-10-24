@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "An Analogy for Understanding Mixture of Expert Models"
+stub: moe-analogy
 tags: machine-learning mixture-of-experts adaptive-computation
 ---
 

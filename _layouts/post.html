@@ -50,6 +50,21 @@ layout: default
 
   <div class="post-content e-content" itemprop="articleBody">{{ content }}</div>
 
+  <!-- Citations -->
+  <!-- Add the citation section here -->
+  <div class="citation-section">
+    <h3>If you'd like to cite this article, please use:</h3>
+    <pre>
+  @misc{kayonrinde{{ page.date | date: "%Y" }}{{ page.stub }},
+    author = "Kola Ayonrinde",
+    title = "{{ page.title }}",
+    year = {{ page.date | date: "%Y" }},
+    howpublished = "Blog post",
+    url = "{{ site.url }}{{ page.url }}"
+  }
+    </pre>
+  </div>
+
   {%- if site.disqus.shortname -%} {%- include disqus_comments.html -%} {%-
   endif -%}
 

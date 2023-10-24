@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "DeepSpeed's Bag of Tricks for Speed & Scale"
-# date: 2023-07-14 20:29:35 +0100
+stub: deepspeed
 tags: machine-learning deepspeed training
 ---
 
