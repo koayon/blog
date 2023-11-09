@@ -1,4 +1,474 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-10-26T00:49:58-04:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-08T23:40:10-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h3 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h3&gt;
+
+&lt;h2 id=&quot;mechanistic-interpretability&quot;&gt;Mechanistic Interpretability&lt;/h2&gt;
+
+&lt;p&gt;Given a task that we don’t know how to solve directly in code (e.g. recognising
+a cat or writing a unique sonnet), we often write programs which in turn, (via
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Stochastic_gradient_descent&quot;&gt;SGD&lt;/a&gt;), write
+second-order programs. These second-order programs (i.e. neural network weights)
+can solve the task, given lots of data.&lt;/p&gt;
+
+&lt;p&gt;Suppose we have some neural network weights which describe how to do a task. We
+might want to know how the network solved the task. This is useful either to (1)
+understand the algorithm better for ourselves or (2) check if the algorithm
+follows some guidelines we might like e.g. not being deceptive, not invoking
+harmful bias etc.&lt;/p&gt;
+
+&lt;p&gt;The field of Mechanistic Interpretability aims to do just that - given a neural
+network&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, return a &lt;em&gt;correct&lt;/em&gt;, &lt;em&gt;parsimonious&lt;/em&gt;, &lt;em&gt;faithful&lt;/em&gt; and
+_human-understandable _explanation of the inner workings of the network when
+solving a given task. This is analogous to the problem of
+&lt;a href=&quot;https://www.neelnanda.io/mechanistic-interpretability/reverse-engineering&quot;&gt;reverse engineering software from machine code&lt;/a&gt;
+or the problem of a
+&lt;a href=&quot;https://colah.github.io/notes/interp-v-neuro/&quot;&gt;neuroscientist trying to understand the human brain&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;-the-dream&quot;&gt;💭 The Dream&lt;/h3&gt;
+
+&lt;p&gt;How are we to translate giant inscrutable matrices into neat explanations and
+high-level stories?&lt;/p&gt;
+
+&lt;p&gt;In order for a neural network to make some prediction, it uses internal neuron
+activations as “variables”. The neuron activations build up high-level,
+semantically rich concepts in later layers using lower-level concepts in earlier
+layers.&lt;/p&gt;
+
+&lt;p&gt;A dream of Mechanistic Interpretability would be this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Suppose we had some idea that each neuron corresponded to a single feature.
+For example, we could point to one neuron and say “if that neuron activates
+(or “fires”) then the network is thinking about cats!”. Then we point to
+another and say “the network is thinking about the colour blue”. Now we could
+give a neural network some inputs, look at which internal neurons activate (or
+“fire”) and use this to piece together a story about how the network came up
+with its eventual prediction. This story would involve knowing the concepts
+(“features”) the network was “thinking” about together with the weights
+(“circuits”) which connect them.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This would be great! Unfortunately, there are a couple of problems here…&lt;/p&gt;
+
+&lt;h3 id=&quot;-the-nightmare&quot;&gt;👻 The Nightmare&lt;/h3&gt;
+
+&lt;p&gt;Firstly, neural networks are freaking huge. There can be literally billions of
+weights and activations relevant for processing a single sentence in a language
+model. So with the naive approach above, it would be an incredibly difficult
+practical undertaking to actually tell a good story about the network’s internal
+workings&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;But, secondly, and more importantly, when we look at the neurons of a neural
+network we don’t see the concepts that it sees. We see a huge mess of concepts
+all enmeshed together because it’s more efficient for the network to process
+information in this way. Neurons that don’t activate on a single concept but
+instead activate on many distinct concepts are known as &lt;strong&gt;polysemantic
+neurons&lt;/strong&gt;. It turns out that basically all neurons are highly polysemantic&lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;In essence, neural networks have lots of &lt;strong&gt;features&lt;/strong&gt;, which are the
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fundamental&lt;/code&gt; units (“variables”) in neural networks. We might think of features
+as directions in neuron space corresponding to the concepts. And neurons are
+&lt;em&gt;linear combinations&lt;/em&gt; of these features in a way that makes sense to the network
+but looks very entangled to us - we can’t just read off the features from
+looking at the activations.&lt;/p&gt;
+
+&lt;h2 id=&quot;sparse-dictionary-learning-as-a-solution&quot;&gt;Sparse Dictionary Learning As A Solution&lt;/h2&gt;
+
+&lt;p&gt;So we’re given a network and we know that all the neurons are linear
+combinations of the underlying features but we don’t know what the features are.
+That is, we hypothesise that there is some linear map &lt;strong&gt;g&lt;/strong&gt; from the feature
+space to neuron space. Generally, feature space is much bigger than neuron
+space. That is to say, there are more useful concepts in language than the
+number of neurons that a network has. So our map &lt;strong&gt;g&lt;/strong&gt; is a very rectangular
+matrix: it takes in a large vector and outputs a smaller one with the number of
+neurons as the number of dimensions.&lt;/p&gt;
+
+&lt;p&gt;We want to recover the features. To do this we could try to find a linear
+function which can map from neuron space → feature space and acts as the inverse
+of &lt;strong&gt;g&lt;/strong&gt;. We go to our Linear Algebra textbook (or ask ChatGPT) how to invert a
+long rectangular matrix and it says… oh wait, yeah this actually isn’t
+possible&lt;sup id=&quot;fnref:4&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;. A general linear map from feature space → neuron space loses
+information and so cannot be inverted - we can’t recover the features given only
+the neurons.&lt;/p&gt;
+
+&lt;p&gt;This seems bad but let’s soldier on. Instead of giving up, we instead ask, “okay
+well we can’t invert a &lt;em&gt;general&lt;/em&gt; linear map &lt;strong&gt;g&lt;/strong&gt; but what constraints could we
+put on &lt;strong&gt;g&lt;/strong&gt; such that it might be invertible?” As it turns out, if most of the
+numbers in the matrix corresponding to &lt;strong&gt;g&lt;/strong&gt; are 0 (that is if &lt;strong&gt;g&lt;/strong&gt; is
+sufficiently &lt;strong&gt;sparse&lt;/strong&gt;) then we &lt;em&gt;can&lt;/em&gt; invert &lt;strong&gt;g&lt;/strong&gt;.&lt;sup id=&quot;fnref:5&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:5&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Q: Hold on, is this reasonable? Why might we expect &lt;strong&gt;g&lt;/strong&gt; to be (approximately)
+sparse?&lt;/p&gt;
+
+&lt;p&gt;In predicting the next token there will be some relevant features of the
+previous tokens which are useful. If the neural network has tens of thousands of
+features per layer (or perhaps even more), then we would expect &lt;em&gt;some&lt;/em&gt; of them
+to be useful for each prediction. But if the prediction function uses all of the
+features it would be super complex; most features should be irrelevant for each
+prediction.&lt;/p&gt;
+
+&lt;p&gt;As an example consider if you’re deciding if a picture of an animal is a dog -
+you might ask “does it have 4 legs?” - 4 legged-ness is a useful feature. The
+texture of its fur is also relevant. The question “would a rider sit within or
+on top” is probably not relevant, though it might be relevant in other
+situations for example distinguishing a motorbike from a car. In this way, not
+all of the features are needed at once&lt;sup id=&quot;fnref:6&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:6&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;To recap, so far we’ve said:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Language models use features in order to predict the next token.&lt;/li&gt;
+  &lt;li&gt;There are potentially a lot more features than there are neurons.&lt;/li&gt;
+  &lt;li&gt;If the linear map &lt;strong&gt;g&lt;/strong&gt;: features → neurons was sparse then we might be able
+to find an inverse.&lt;/li&gt;
+  &lt;li&gt;Sparse maps are relatively good approximations to the real linear map &lt;strong&gt;g&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Sparse Dictionary Learning is a method which exploits these facts to numerically
+find the inverse of g. Intuitively what we have is a lookup table (or a
+“dictionary”) which tells us how much of each feature goes into each neuron. And
+if these features look monosemantic and human-understandable then we’re getting
+very close to the dream of Mechanistic Interpretability outlined above. We could
+run a model, read off the features it used for the prediction and build a story
+of how it works!&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;blog/images/dictionary-learning/projection_g.png&quot; width=&quot;800&quot; alt=&quot;Dictionary Learning as an Inverse Problem&quot; /&gt;
+    &lt;figcaption&gt;Dictionary Learning can be seen as trying to find the inverse map to g. The map g is analogous to PCA - it’s the network’s way of trying to fit as much
+information as possible into a lower-dimensional space. &lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;dictionary-learning-set-up&quot;&gt;Dictionary Learning Set-up&lt;/h3&gt;
+
+&lt;p&gt;We’ll focus here on
+&lt;a href=&quot;https://transformer-circuits.pub/2023/monosemantic-features/index.html&quot;&gt;Anthropic’s set-up&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We start with a small 1-Layer transformer which has an embedding dimension
+of 128. Here the &lt;strong&gt;MLP&lt;/strong&gt; hidden dimension is 512.&lt;sup id=&quot;fnref:7&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:7&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt; The MLP contains:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;An up_projection to MLP neuron space (512d),&lt;/li&gt;
+  &lt;li&gt;A ReLU activation which produces activations and then&lt;/li&gt;
+  &lt;li&gt;A down_projection back to embedding space (128d)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We capture the MLP neuron activations and send those through our sparse
+autoencoder which has N dimensions for some N ≥ 512.&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;blog/images/dictionary-learning/transformer.png&quot; width=&quot;800&quot; alt=&quot;Transformer with an AutoEncoder attached&quot; /&gt;
+    &lt;figcaption&gt;The AutoEncoder set-up on a 1-Layer Transformer. The MLP activations are
+captured and sent through the AutoEncoder. &lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;An &lt;strong&gt;AutoEncoder&lt;/strong&gt; is a model which tries to reconstruct some data after putting
+it through a &lt;strong&gt;bottleneck&lt;/strong&gt;. In
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Autoencoder&quot;&gt;traditional autoencoders&lt;/a&gt;, the
+bottleneck might be mapping to a smaller dimensional space or including noise
+that the representation should be robust to. AutoEncoders aim to recreate the
+original data as closely as possible despite the bottleneck. To achieve the
+reconstruction, we use a reconstruction loss which penalises outputs by how much
+they differ from the MLP activations (the inputs to the AutoEncoder).&lt;/p&gt;
+
+&lt;p&gt;In the &lt;strong&gt;Sparse AutoEncoder&lt;/strong&gt; setting, our “bottleneck” is actually a higher
+dimensional space than neuron space (N ≥ 512), but the constraint is that the
+autoencoder features are &lt;strong&gt;sparse&lt;/strong&gt;. That is, for any given set of MLP neuron
+activations, only a small fraction of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;features&lt;/code&gt; should be activated.&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;blog/images/dictionary-learning/autoencoder.png&quot; width=&quot;800&quot; alt=&quot;Autoencoder representation&quot; /&gt;
+    &lt;figcaption&gt;The AutoEncoder passes some inputs through a hidden layer (which acts as a
+bottleneck) and tries to reconstruct the inputs. For a well-trained AutoEncoder,
+the output vector should be approximately the input vector.&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In order to make the hidden feature activations sparse, we add an L1 loss over
+the feature activations to the reconstruction loss for the AutoEncoder’s loss
+function. Since the L1 loss gives the absolute value of the vector, minimising
+L1 loss pushes as many as possible of the feature activations towards zero
+(whilst still being able to reconstruct the MLP neurons to get low
+reconstruction loss).&lt;/p&gt;
+
+&lt;p&gt;To recap:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The input of the AutoEncoder is the MLP activations.&lt;/li&gt;
+  &lt;li&gt;The goal is for the output of the AutoEncoder to be as close to the input as
+possible - the reconstruction loss penalises outputs by how much they differ
+from the MLP activation inputs.&lt;/li&gt;
+  &lt;li&gt;The bottleneck is the sparsity in the hidden layer which is induced by
+pressure from the L1 loss to minimise feature activations.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In summary, the set-up Anthropic uses is:&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;blog/images/dictionary-learning/setup.png&quot; width=&quot;800&quot; alt=&quot;Dictionary Learning Setup Table&quot; /&gt;
+    &lt;figcaption&gt;Anthropic&apos;s Dictionary Learning Setup&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;anthropics-results&quot;&gt;Anthropic’s Results&lt;/h3&gt;
+
+&lt;p&gt;The most surprising thing about this approach is that it works so well. Like
+&lt;em&gt;really&lt;/em&gt; well.&lt;/p&gt;
+
+&lt;p&gt;There are, broadly, two ways to think about features:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Features as Results&lt;/strong&gt; - the feature activates when it sees particular
+inputs. Looking at features can help us to understand the inputs to the
+model.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Features as Actions&lt;/strong&gt; - ultimately features activating leads to differences
+in the output logits. Features can be seen as up-weighting or down-weighting
+certain output tokens. In some sense, this is the more fundamental part. If
+we ask “what is a feature for?” then the answer is “to help the model in
+predicting the next token.”&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Anthropic find many features which activate strongly in a specific context (say
+Arabic script or DNA base pairs) and also (mostly) only activate when that
+context is present. In other words, the features have high
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Precision_and_recall&quot;&gt;precision and recall&lt;/a&gt;. This
+suggests that these are ~monosemantic features! In terms of
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Features as Results&lt;/code&gt;, this captures what we would hope for - the features that
+appear are mostly human-understandable.&lt;/p&gt;
+
+&lt;p&gt;The authors also find that once a feature is activated, the result is an
+increase in plausible next tokens given the input. In particular, to demonstrate
+this counterfactually, we can add a large amount of a given feature to the
+neuron activations. Theoretically, this should “steer” the model to thinking
+that context was present in the input, even if it wasn’t. This is a great test
+for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Features as Actions&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;blog/images/dictionary-learning/steering.png&quot; width=&quot;800&quot; alt=&quot;Diagram of steering LLM&quot; /&gt;
+    &lt;figcaption&gt;Once we steer the model by adding some of the Han Chinese feature, the model
+starts outputting more Han Chinese. Similarly for other identified features.
+Note: this is a very small transformer so the outputs might not completely make
+sense; it’s mainly recognising the context that it’s in.&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Additionally, if we fully replace the MLP activations with the output of our
+autoencoder&lt;sup id=&quot;fnref:8&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:8&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;8&lt;/a&gt;&lt;/sup&gt;, we get a model which explicitly uses our feature dictionary
+instead of the learned MLP neurons. Here the resulting “dictionary model” is
+able to get 95% of the performance of the regular model. The dictionary model
+achieves this despite, in the case of large autoencoders, the features being
+extremely sparse. This performance is a great sign for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Features as Actions&lt;/code&gt;; it
+suggests that the sparse features capture most of the information that the model
+is using for its prediction task! This also validates that our assumption that
+features are approximately sparse seems to be a fairly good assumption&lt;sup id=&quot;fnref:9&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:9&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;other-phenomena&quot;&gt;Other Phenomena&lt;/h3&gt;
+
+&lt;p&gt;They also note some other smaller results:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;As the number of features in the autoencoder increases, we capture more of the
+true performance of the model. This correlation suggests that models are
+probably implementing up to 100x or more features than they have neurons 🤯&lt;/li&gt;
+  &lt;li&gt;The features are generally understandable by both humans and by other Machine
+Learning models. To show this they ask Claude to do some interpretation too.&lt;/li&gt;
+  &lt;li&gt;As the number of features increases, the features themselves “split”. That is
+even though a feature is monosemantic - it activates on a single concept -
+there may be levels to concepts. For example, small autoencoders might have a
+(monosemantic) feature for the concept “dog”. But larger autoencoders have
+features for corgis and poodles and large dogs etc. which break down the
+concept of dog into smaller chunks. Scale helps with refining concepts.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;blog/images/dictionary-learning/feature_splitting.png&quot; width=&quot;800&quot; alt=&quot;FEature Splitting in LLM&quot; /&gt;
+    &lt;figcaption&gt;What was once a single feature representing the &quot;the&quot; in mathematical prose gets broken down into more specific concepts as we increase the number of features in the autoencoder&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-next&quot;&gt;What’s Next?&lt;/h2&gt;
+
+&lt;h4 id=&quot;have-all-the-problems-in-mechanistic-interpretability-been-solved&quot;&gt;Have All The Problems in Mechanistic Interpretability Been Solved?&lt;/h4&gt;
+
+&lt;p&gt;Certainly not. Although this approach is a breakthrough in approaching features
+and converting regular networks into less polysemantic ones, some problems
+remain:&lt;/p&gt;
+
+&lt;h3 id=&quot;-scaling-sparse-autoencoders&quot;&gt;📈 Scaling Sparse Autoencoders&lt;/h3&gt;
+
+&lt;p&gt;Large models are still, well … large. Dictionary learning mitigates the problem
+since we don’t have to deal with polysemantic neurons anymore. But there’s still
+a lot that could happen between doing this on a small 1-Layer model and a large
+model. In particular, since there are many more features than neurons, Sparse
+AutoEncoders for large models could be absolutely gigantic and may take as much
+compute to train as the model’s pre-training. We will very likely need ways to
+improve the efficiency of Sparse AutoEncoder training.&lt;/p&gt;
+
+&lt;h3 id=&quot;-compositionality-and-interaction-effects&quot;&gt;🤝 Compositionality and Interaction Effects&lt;/h3&gt;
+
+&lt;p&gt;In Machine Learning, as in Physics,
+&lt;a href=&quot;https://www.science.org/doi/10.1126/science.177.4047.393&quot;&gt;More Is Different&lt;/a&gt;.
+That is, there may be qualitatively different behaviours for large models as
+compared to smaller ones. One clear way this could occur is when features are
+composed of many sub-features across different layers and form complex
+interactions. This is an open problem to be explored.&lt;/p&gt;
+
+&lt;h3 id=&quot;-universality&quot;&gt;🌐 Universality&lt;/h3&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://distill.pub/2020/circuits/zoom-in&quot;&gt;Universality Hypothesis&lt;/a&gt; from
+Chris Olah states that sufficiently neural networks with different architectures
+and trained on different data will learn the same high-level features and
+concepts.&lt;/p&gt;
+
+&lt;p&gt;The authors show that when two models are trained with the same architecture but
+different random initialisations, they learn similar features. This is certainly
+a step towards universality but doesn’t show the whole thesis. A strong form of
+Universality would suggest that there are some high-level “natural”
+features/concepts which lots of &lt;em&gt;different&lt;/em&gt; architectures for predictors
+(silicon and human brains) all converge on. We’re quite a way from showing this
+in the general case.&lt;/p&gt;
+
+&lt;h3 id=&quot;-interpretability-metrics&quot;&gt;📐 Interpretability Metrics&lt;/h3&gt;
+
+&lt;p&gt;Though there are some proxy measures for interpretability, currently the best
+metric that we have is for a human to check and say “yes I can interpret this
+feature” or “no I can’t”. This seems hard to operationalise at scale as a
+concrete metric.&lt;/p&gt;
+
+&lt;p&gt;To bridge this gap large models such as GPT-4 and Claude can also help with the
+interpretability. In a process known as AutoInterpret, LLMs are given a prompt
+and how much each feature activates. They then attempt to interpret the feature.
+This works kinda okay at the moment but it feels like there should be a cleaner,
+more principled approach.&lt;/p&gt;
+
+&lt;h3 id=&quot;︎-steering&quot;&gt;☸︎ Steering&lt;/h3&gt;
+
+&lt;p&gt;The authors show that by adding more of a given feature vector in activation
+space, you can influence a model’s behaviour. When, whether, and how steering
+works reliably and efficiently are questions that could all be useful. We might
+wish to steer models as a surgical needle to balance out the more coarse tool
+that is RLHF. In the future, this may also be useful to reduce harmful behaviour
+in increasingly powerful models.&lt;/p&gt;
+
+&lt;h3 id=&quot;-modularity&quot;&gt;🔳 Modularity&lt;/h3&gt;
+
+&lt;p&gt;As mentioned above, there would be an embarrassingly large number of features
+for a model like &lt;a href=&quot;https://openai.com/research/gpt-4&quot;&gt;GPT-4&lt;/a&gt; and so it looks like
+it will be difficult to create succinct compelling stories which involve so many
+moving parts. In some sense, this is the lowest level of interpretability. It’s
+analogous to trying to understand a very complex computer program by looking
+through it character by character, if the words were all jumbled up.&lt;/p&gt;
+
+&lt;p&gt;What we would like is some slightly higher level concepts composed of multiple
+features with which we can use to think. Splitting up the network into
+macro-modules rather than the micro-level features seems like a promising path
+forward.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Anthropic are very positive about this approach and finish their blog post with
+the line:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;_For the first time, we feel that the next primary obstacle to interpreting large language models is engineering rather than science._
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There is some truth to how exciting this development is. We might ask whether
+the work ahead is purely
+&lt;a href=&quot;https://www.reddit.com/r/ProgrammerHumor/comments/8c1i45/stack_more_layers/&quot;&gt;scaling up&lt;/a&gt;.
+As we outlined in the problems for future work above, I do believe there are
+still some Science of Deep Learning problems which Mechanistic Interpretability
+can sink its teeth into. Only now, we also have a new tool which is incredibly
+powerful to help us along the way.&lt;/p&gt;
+
+&lt;p&gt;In light of the other problems that still remain to be solved, we might add the
+final sentences of
+&lt;a href=&quot;https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf&quot;&gt;Turing’s 1950 paper&lt;/a&gt;,
+as an addendum:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;_We can only see a short distance ahead, but we can see plenty there that needs to be done._
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;_Note: I am working on a replication and extension of the Sparse Autoencoders
+results supported by &lt;a href=&quot;https://cavendishlabs.org/&quot;&gt;Cavendish Labs&lt;/a&gt; - I will share
+the results here in the next few days. _&lt;/p&gt;
+
+&lt;!-- Footnotes themselves at the bottom. --&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;With both its weights and its activations on a series of input examples say &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;Of course, if it’s just a practical undertaking perhaps we would grit our
+teeth and try to do this - it appears we at least have the tools to give it
+a shot, even if it’s painfully slow. We have completed huge practical
+undertakings before as a scientific community e.g. deciphering the human
+genome or getting man to the moon. As we will see there is another concern
+as well. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;One theory of exactly how that might come about is found in the
+Superposition Hypothesis. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:4&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Thanks to Robert Huben for this useful framing &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:5&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;The proof of this and the convergence properties are analogous to how you
+can use fewer data points for linear regression if you know that the linear
+map you’re trying to find is sparse e.g. with Lasso methods for sparse
+linear regression. For this to work precisely, we add a bias and a ReLU
+non-linearity. &lt;a href=&quot;#fnref:5&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:6&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;This is similar to the intuition of the MoEification paper - MLPs naturally
+learn some sparse/modular structure, which we might hope to exploit. &lt;a href=&quot;#fnref:6&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:7&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;With the convention from GPT-2 that MLP_dim = 4 * embedding_dim &lt;a href=&quot;#fnref:7&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:8&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;which, we recall, is trying to reconstruct the MLP activations through the
+sparse bottleneck &lt;a href=&quot;#fnref:8&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:9&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;To the extent that we don’t get 100% of the performance, there are a few
+hypotheses. Firstly, we might not have the optimal autoencoder architecture
+yet or the autoencoder might not be fully trained enough to saturation.
+Secondly, altering the l1&lt;em&gt;loss coefficient hyperparameter adjusts how sparse
+we want to make our features and there may be some tuning to do there.
+Thirdly, the network might just not _fully&lt;/em&gt; sparse, this seems likely -
+there are some early results showing that as the size of the model increases
+(from the toy model we have to a large frontier model), we might expect more
+sparsity - which suggests that Dictionary Learning may get better with
+scale. The later &lt;a href=&quot;https://arxiv.org/pdf/2310.17230.pdf&quot;&gt;Cookbook Features&lt;/a&gt;
+paper also suggests this. &lt;a href=&quot;#fnref:9&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="interpretability" /><category term="dictionary-learning" /><summary type="html">Taking Features Out of Superposition</summary></entry><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
 
 &lt;h4 id=&quot;tldr-experts-are-doctors-routers-are-gps&quot;&gt;TL;DR: Experts are Doctors, Routers are GPs&lt;/h4&gt;
 

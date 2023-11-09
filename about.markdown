@@ -20,7 +20,7 @@ My main current research interests are:
      approaches.
    - I maintain an
      [annotated collection of research papers](https://github.com/koayon/awesome-adaptive-computation)
-     in Adaptive Computation for the community
+     in Adaptive Computation for the community.
 2. Mechanistic Interpretability - broadly defined as the study of reverse
    engineering neural networks from the learned weights into human-interpretable
    algorithms.
@@ -32,6 +32,9 @@ My main current research interests are:
      methods and neurosymbolic approaches to computation. I'm also interested in
      automated theorem proving and code generation as playgrounds for general
      reasoning capabilities.
+
+<!-- 4. Modularity in Neural Networks
+   - When -->
 
 Previous research interests have included the Linguistic properties of
 Mathematics, ML applied to Musicology and Logic.
