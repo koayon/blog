@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-08T23:40:10-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h3 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-09T00:13:15-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
 
 &lt;h2 id=&quot;mechanistic-interpretability&quot;&gt;Mechanistic Interpretability&lt;/h2&gt;
 
@@ -136,7 +136,7 @@ of how it works!&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-    &lt;img src=&quot;blog/images/dictionary-learning/projection_g.png&quot; width=&quot;800&quot; alt=&quot;Dictionary Learning as an Inverse Problem&quot; /&gt;
+    &lt;img src=&quot;/blog/images/dictionary-learning/projection_g.png&quot; width=&quot;800&quot; alt=&quot;Dictionary Learning as an Inverse Problem&quot; /&gt;
     &lt;figcaption&gt;Dictionary Learning can be seen as trying to find the inverse map to g. The map g is analogous to PCA - it’s the network’s way of trying to fit as much
 information as possible into a lower-dimensional space. &lt;/figcaption&gt;
     &lt;/figure&gt;
@@ -161,7 +161,7 @@ autoencoder which has N dimensions for some N ≥ 512.&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-    &lt;img src=&quot;blog/images/dictionary-learning/transformer.png&quot; width=&quot;800&quot; alt=&quot;Transformer with an AutoEncoder attached&quot; /&gt;
+    &lt;img src=&quot;/blog/images/dictionary-learning/transformer.png&quot; width=&quot;800&quot; alt=&quot;Transformer with an AutoEncoder attached&quot; /&gt;
     &lt;figcaption&gt;The AutoEncoder set-up on a 1-Layer Transformer. The MLP activations are
 captured and sent through the AutoEncoder. &lt;/figcaption&gt;
     &lt;/figure&gt;
@@ -183,7 +183,7 @@ activations, only a small fraction of the &lt;code class=&quot;language-plaintex
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-    &lt;img src=&quot;blog/images/dictionary-learning/autoencoder.png&quot; width=&quot;800&quot; alt=&quot;Autoencoder representation&quot; /&gt;
+    &lt;img src=&quot;/blog/images/dictionary-learning/autoencoder.png&quot; width=&quot;800&quot; alt=&quot;Autoencoder representation&quot; /&gt;
     &lt;figcaption&gt;The AutoEncoder passes some inputs through a hidden layer (which acts as a
 bottleneck) and tries to reconstruct the inputs. For a well-trained AutoEncoder,
 the output vector should be approximately the input vector.&lt;/figcaption&gt;
@@ -212,7 +212,7 @@ pressure from the L1 loss to minimise feature activations.&lt;/li&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-    &lt;img src=&quot;blog/images/dictionary-learning/setup.png&quot; width=&quot;800&quot; alt=&quot;Dictionary Learning Setup Table&quot; /&gt;
+    &lt;img src=&quot;/blog/images/dictionary-learning/setup.png&quot; width=&quot;800&quot; alt=&quot;Dictionary Learning Setup Table&quot; /&gt;
     &lt;figcaption&gt;Anthropic&apos;s Dictionary Learning Setup&lt;/figcaption&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
@@ -252,7 +252,7 @@ for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Features 
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-    &lt;img src=&quot;blog/images/dictionary-learning/steering.png&quot; width=&quot;800&quot; alt=&quot;Diagram of steering LLM&quot; /&gt;
+    &lt;img src=&quot;/blog/images/dictionary-learning/steering.png&quot; width=&quot;800&quot; alt=&quot;Diagram of steering LLM&quot; /&gt;
     &lt;figcaption&gt;Once we steer the model by adding some of the Han Chinese feature, the model
 starts outputting more Han Chinese. Similarly for other identified features.
 Note: this is a very small transformer so the outputs might not completely make
@@ -290,7 +290,7 @@ concept of dog into smaller chunks. Scale helps with refining concepts.&lt;/li&g
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
-    &lt;img src=&quot;blog/images/dictionary-learning/feature_splitting.png&quot; width=&quot;800&quot; alt=&quot;FEature Splitting in LLM&quot; /&gt;
+    &lt;img src=&quot;/blog/images/dictionary-learning/feature_splitting.png&quot; width=&quot;800&quot; alt=&quot;FEature Splitting in LLM&quot; /&gt;
     &lt;figcaption&gt;What was once a single feature representing the &quot;the&quot; in mathematical prose gets broken down into more specific concepts as we increase the number of features in the autoencoder&lt;/figcaption&gt;
     &lt;/figure&gt;
 &lt;/div&gt;

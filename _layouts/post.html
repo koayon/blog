@@ -2,6 +2,14 @@
 layout: default
 ---
 
+<head>
+  <link rel="stylesheet" href="{{ '/assets/css/post.css' | relative_url }}" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
+  />
+</head>
+
 <article
   class="post h-entry"
   itemscope
@@ -48,7 +56,16 @@ layout: default
     </p>
   </header>
 
-  <div class="post-content e-content" itemprop="articleBody">{{ content }}</div>
+  <div class="post-content e-content" itemprop="articleBody">
+    <!-- <nav class="sidebar"> -->
+    <!-- Table of Contents -->
+    <!-- <h4>Table of Contents</h4> -->
+    <!-- {{ toc }} -->
+    <!-- </nav> -->
+    <!-- <br /> -->
+    <!-- <br /> -->
+    {{ content }}
+  </div>
 
   <!-- Citations -->
   <!-- Add the citation section here -->

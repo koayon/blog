@@ -33,11 +33,14 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-spaceship
+  - jekyll-toc
+markdown: kramdown
 defaults:
   - scope:
       path: "images"
     values:
       image: true
+      toc: true
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to

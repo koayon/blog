@@ -45,7 +45,12 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+        
+  <link rel="stylesheet" href="/blog/assets/css/post.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css">
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7175JLSX4"></script>
@@ -68,7 +73,14 @@
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-<h3 id="taking-features-out-of-superposition">Taking Features Out of Superposition</h3>
+    <!-- <nav class="sidebar"> -->
+    <!-- Table of Contents -->
+    <!-- <h4>Table of Contents</h4> -->
+    <!--  -->
+    <!-- </nav> -->
+    <!-- <br /> -->
+    <!-- <br /> -->
+    <h4 id="taking-features-out-of-superposition">Taking Features Out of Superposition</h4>
 
 <h2 id="mechanistic-interpretability">Mechanistic Interpretability</h2>
 
@@ -206,7 +218,7 @@ of how it works!</p>
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/projection_g.png" width="800" alt="Dictionary Learning as an Inverse Problem">
+    <img src="/blog/images/dictionary-learning/projection_g.png" width="800" alt="Dictionary Learning as an Inverse Problem">
     <figcaption>Dictionary Learning can be seen as trying to find the inverse map to g. The map g is analogous to PCA - it’s the network’s way of trying to fit as much
 information as possible into a lower-dimensional space. </figcaption>
     </figure>
@@ -231,7 +243,7 @@ autoencoder which has N dimensions for some N ≥ 512.</p>
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/transformer.png" width="800" alt="Transformer with an AutoEncoder attached">
+    <img src="/blog/images/dictionary-learning/transformer.png" width="800" alt="Transformer with an AutoEncoder attached">
     <figcaption>The AutoEncoder set-up on a 1-Layer Transformer. The MLP activations are
 captured and sent through the AutoEncoder. </figcaption>
     </figure>
@@ -253,7 +265,7 @@ activations, only a small fraction of the <code class="language-plaintext highli
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/autoencoder.png" width="800" alt="Autoencoder representation">
+    <img src="/blog/images/dictionary-learning/autoencoder.png" width="800" alt="Autoencoder representation">
     <figcaption>The AutoEncoder passes some inputs through a hidden layer (which acts as a
 bottleneck) and tries to reconstruct the inputs. For a well-trained AutoEncoder,
 the output vector should be approximately the input vector.</figcaption>
@@ -282,7 +294,7 @@ pressure from the L1 loss to minimise feature activations.</li>
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/setup.png" width="800" alt="Dictionary Learning Setup Table">
+    <img src="/blog/images/dictionary-learning/setup.png" width="800" alt="Dictionary Learning Setup Table">
     <figcaption>Anthropic's Dictionary Learning Setup</figcaption>
     </figure>
 </div>
@@ -324,7 +336,7 @@ for <code class="language-plaintext highlighter-rouge">Features as Actions</code
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/steering.png" width="800" alt="Diagram of steering LLM">
+    <img src="/blog/images/dictionary-learning/steering.png" width="800" alt="Diagram of steering LLM">
     <figcaption>Once we steer the model by adding some of the Han Chinese feature, the model
 starts outputting more Han Chinese. Similarly for other identified features.
 Note: this is a very small transformer so the outputs might not completely make
@@ -362,7 +374,7 @@ concept of dog into smaller chunks. Scale helps with refining concepts.</li>
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/feature_splitting.png" width="800" alt="FEature Splitting in LLM">
+    <img src="/blog/images/dictionary-learning/feature_splitting.png" width="800" alt="FEature Splitting in LLM">
     <figcaption>What was once a single feature representing the "the" in mathematical prose gets broken down into more specific concepts as we increase the number of features in the autoencoder</figcaption>
     </figure>
 </div>
@@ -541,7 +553,8 @@ paper also suggests this. <a href="#fnref:9" class="reversefootnote" role="doc-
     </li>
   </ol>
 </div>
-</div>
+
+  </div>
 
   <!-- Citations -->
   <!-- Add the citation section here -->

@@ -3,9 +3,10 @@ layout: post
 title: "Dictionary Learning with Sparse AutoEncoders"
 stub: dictionary-learning
 tags: machine-learning interpretability dictionary-learning
+toc: true
 ---
 
-### Taking Features Out of Superposition
+#### Taking Features Out of Superposition
 
 ## Mechanistic Interpretability
 
@@ -139,7 +140,7 @@ of how it works!
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/projection_g.png" width="800" alt="Dictionary Learning as an Inverse Problem">
+    <img src="/blog/images/dictionary-learning/projection_g.png" width="800" alt="Dictionary Learning as an Inverse Problem">
     <figcaption>Dictionary Learning can be seen as trying to find the inverse map to g. The map g is analogous to PCA - it’s the network’s way of trying to fit as much
 information as possible into a lower-dimensional space. </figcaption>
     </figure>
@@ -162,7 +163,7 @@ autoencoder which has N dimensions for some N ≥ 512.
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/transformer.png" width="800" alt="Transformer with an AutoEncoder attached">
+    <img src="/blog/images/dictionary-learning/transformer.png" width="800" alt="Transformer with an AutoEncoder attached">
     <figcaption>The AutoEncoder set-up on a 1-Layer Transformer. The MLP activations are
 captured and sent through the AutoEncoder. </figcaption>
     </figure>
@@ -184,7 +185,7 @@ activations, only a small fraction of the `features` should be activated.
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/autoencoder.png" width="800" alt="Autoencoder representation">
+    <img src="/blog/images/dictionary-learning/autoencoder.png" width="800" alt="Autoencoder representation">
     <figcaption>The AutoEncoder passes some inputs through a hidden layer (which acts as a
 bottleneck) and tries to reconstruct the inputs. For a well-trained AutoEncoder,
 the output vector should be approximately the input vector.</figcaption>
@@ -211,7 +212,7 @@ In summary, the set-up Anthropic uses is:
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/setup.png" width="800" alt="Dictionary Learning Setup Table">
+    <img src="/blog/images/dictionary-learning/setup.png" width="800" alt="Dictionary Learning Setup Table">
     <figcaption>Anthropic's Dictionary Learning Setup</figcaption>
     </figure>
 </div>
@@ -249,7 +250,7 @@ for `Features as Actions`.
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/steering.png" width="800" alt="Diagram of steering LLM">
+    <img src="/blog/images/dictionary-learning/steering.png" width="800" alt="Diagram of steering LLM">
     <figcaption>Once we steer the model by adding some of the Han Chinese feature, the model
 starts outputting more Han Chinese. Similarly for other identified features.
 Note: this is a very small transformer so the outputs might not completely make
@@ -285,7 +286,7 @@ They also note some other smaller results:
 
 <div align="center">
   <figure>
-    <img src="blog/images/dictionary-learning/feature_splitting.png" width="800" alt="FEature Splitting in LLM">
+    <img src="/blog/images/dictionary-learning/feature_splitting.png" width="800" alt="FEature Splitting in LLM">
     <figcaption>What was once a single feature representing the "the" in mathematical prose gets broken down into more specific concepts as we increase the number of features in the autoencoder</figcaption>
     </figure>
 </div>
