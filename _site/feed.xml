@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-09T00:18:51-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-09T14:26:05-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
 
 &lt;h2 id=&quot;mechanistic-interpretability&quot;&gt;Mechanistic Interpretability&lt;/h2&gt;
 
@@ -17,8 +17,8 @@ follows some guidelines we might like e.g. not being deceptive, not invoking
 harmful bias etc.&lt;/p&gt;
 
 &lt;p&gt;The field of Mechanistic Interpretability aims to do just that - given a neural
-network&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, return a &lt;em&gt;correct&lt;/em&gt;, &lt;em&gt;parsimonious&lt;/em&gt;, &lt;em&gt;faithful&lt;/em&gt; and
-_human-understandable _explanation of the inner workings of the network when
+network&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, return a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;correct&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parsimonious&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;faithful&lt;/code&gt; and
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;human-understandable&lt;/code&gt; explanation of the inner workings of the network when
 solving a given task. This is analogous to the problem of
 &lt;a href=&quot;https://www.neelnanda.io/mechanistic-interpretability/reverse-engineering&quot;&gt;reverse engineering software from machine code&lt;/a&gt;
 or the problem of a
@@ -124,17 +124,18 @@ all of the features are needed at once&lt;sup id=&quot;fnref:6&quot; role=&quot;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;hr /&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;To recap, so far we’ve said:&lt;/p&gt;
 
-&lt;p&gt;To recap, so far we’ve said:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Language models use features in order to predict the next token.&lt;/li&gt;
-  &lt;li&gt;There are potentially a lot more features than there are neurons.&lt;/li&gt;
-  &lt;li&gt;If the linear map &lt;strong&gt;g&lt;/strong&gt;: features → neurons was sparse then we might be able
-to find an inverse.&lt;/li&gt;
-  &lt;li&gt;Sparse maps are relatively good approximations to the real linear map &lt;strong&gt;g&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ol&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Language models use features in order to predict the next token.&lt;/li&gt;
+    &lt;li&gt;There are potentially a lot more features than there are neurons.&lt;/li&gt;
+    &lt;li&gt;If the linear map &lt;strong&gt;g&lt;/strong&gt;: features → neurons was sparse then we might be
+able to find an inverse.&lt;/li&gt;
+    &lt;li&gt;Sparse maps are relatively good approximations to the real linear map
+&lt;strong&gt;g&lt;/strong&gt;.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
@@ -217,16 +218,20 @@ L1 loss pushes as many as possible of the feature activations towards zero
 (whilst still being able to reconstruct the MLP neurons to get low
 reconstruction loss).&lt;/p&gt;
 
-&lt;p&gt;To recap:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;To recap:&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;The input of the AutoEncoder is the MLP activations.&lt;/li&gt;
-  &lt;li&gt;The goal is for the output of the AutoEncoder to be as close to the input as
+  &lt;ul&gt;
+    &lt;li&gt;The input of the AutoEncoder is the MLP activations.&lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;The goal is for the output of the AutoEncoder to be as close to the input as
 possible - the reconstruction loss penalises outputs by how much they differ
-from the MLP activation inputs.&lt;/li&gt;
-  &lt;li&gt;The bottleneck is the sparsity in the hidden layer which is induced by
+from the MLP activation inputs.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;The bottleneck is the sparsity in the hidden layer which is induced by
 pressure from the L1 loss to minimise feature activations.&lt;/li&gt;
-&lt;/ul&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;In summary, the set-up Anthropic uses is:&lt;/p&gt;
 

@@ -25,8 +25,8 @@ follows some guidelines we might like e.g. not being deceptive, not invoking
 harmful bias etc.
 
 The field of Mechanistic Interpretability aims to do just that - given a neural
-network[^1], return a _correct_, _parsimonious_, _faithful_ and
-\_human-understandable \_explanation of the inner workings of the network when
+network[^1], return a `correct`, `parsimonious`, `faithful` and
+`human-understandable` explanation of the inner workings of the network when
 solving a given task. This is analogous to the problem of
 [reverse engineering software from machine code](https://www.neelnanda.io/mechanistic-interpretability/reverse-engineering)
 or the problem of a
@@ -130,15 +130,14 @@ all of the features are needed at once[^6].
 
 <br>
 
----
-
-To recap, so far we’ve said:
-
-1. Language models use features in order to predict the next token.
-2. There are potentially a lot more features than there are neurons.
-3. If the linear map **g**: features → neurons was sparse then we might be able
-   to find an inverse.
-4. Sparse maps are relatively good approximations to the real linear map **g**.
+> To recap, so far we’ve said:
+>
+> 1. Language models use features in order to predict the next token.
+> 2. There are potentially a lot more features than there are neurons.
+> 3. If the linear map **g**: features → neurons was sparse then we might be
+>    able to find an inverse.
+> 4. Sparse maps are relatively good approximations to the real linear map
+>    **g**.
 
 <br>
 
@@ -219,14 +218,15 @@ L1 loss pushes as many as possible of the feature activations towards zero
 (whilst still being able to reconstruct the MLP neurons to get low
 reconstruction loss).
 
-To recap:
-
-- The input of the AutoEncoder is the MLP activations.
-- The goal is for the output of the AutoEncoder to be as close to the input as
-  possible - the reconstruction loss penalises outputs by how much they differ
-  from the MLP activation inputs.
-- The bottleneck is the sparsity in the hidden layer which is induced by
-  pressure from the L1 loss to minimise feature activations.
+> To recap:
+>
+> - The input of the AutoEncoder is the MLP activations.
+> - The goal is for the output of the AutoEncoder to be as close to the input as
+>   possible - the reconstruction loss penalises outputs by how much they differ
+>   from the MLP activation inputs.
+>
+> - The bottleneck is the sparsity in the hidden layer which is induced by
+>   pressure from the L1 loss to minimise feature activations.
 
 In summary, the set-up Anthropic uses is:
 
