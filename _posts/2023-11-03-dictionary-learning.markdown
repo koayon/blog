@@ -16,6 +16,8 @@ a cat or writing a unique sonnet), we often write programs which in turn, (via
 second-order programs. These second-order programs (i.e. neural network weights)
 can solve the task, given lots of data.
 
+<br>
+
 Suppose we have some neural network weights which describe how to do a task. We
 might want to know how the network solved the task. This is useful either to (1)
 understand the algorithm better for ourselves or (2) check if the algorithm
@@ -29,6 +31,8 @@ solving a given task. This is analogous to the problem of
 [reverse engineering software from machine code](https://www.neelnanda.io/mechanistic-interpretability/reverse-engineering)
 or the problem of a
 [neuroscientist trying to understand the human brain](https://colah.github.io/notes/interp-v-neuro/).
+
+<br>
 
 ### 💭 The Dream
 
@@ -54,6 +58,8 @@ A dream of Mechanistic Interpretability would be this:
 
 This would be great! Unfortunately, there are a couple of problems here…
 
+<br>
+
 ### 👻 The Nightmare
 
 Firstly, neural networks are freaking huge. There can be literally billions of
@@ -75,6 +81,8 @@ as directions in neuron space corresponding to the concepts. And neurons are
 _linear combinations_ of these features in a way that makes sense to the network
 but looks very entangled to us - we can’t just read off the features from
 looking at the activations.
+
+<br>
 
 ## Sparse Dictionary Learning As A Solution
 
@@ -120,6 +128,8 @@ on top” is probably not relevant, though it might be relevant in other
 situations for example distinguishing a motorbike from a car. In this way, not
 all of the features are needed at once[^6].
 
+<br>
+
 ---
 
 To recap, so far we’ve said:
@@ -129,6 +139,10 @@ To recap, so far we’ve said:
 3. If the linear map **g**: features → neurons was sparse then we might be able
    to find an inverse.
 4. Sparse maps are relatively good approximations to the real linear map **g**.
+
+<br>
+
+<br>
 
 Sparse Dictionary Learning is a method which exploits these facts to numerically
 find the inverse of g. Intuitively what we have is a lookup table (or a
@@ -145,6 +159,8 @@ of how it works!
 information as possible into a lower-dimensional space. </figcaption>
     </figure>
 </div>
+
+<br>
 
 ### Dictionary Learning Set-up
 
@@ -169,6 +185,8 @@ captured and sent through the AutoEncoder. </figcaption>
     </figure>
 </div>
 
+<br>
+
 An **AutoEncoder** is a model which tries to reconstruct some data after putting
 it through a **bottleneck**. In
 [traditional autoencoders](https://en.wikipedia.org/wiki/Autoencoder), the
@@ -191,6 +209,8 @@ bottleneck) and tries to reconstruct the inputs. For a well-trained AutoEncoder,
 the output vector should be approximately the input vector.</figcaption>
     </figure>
 </div>
+
+<br>
 
 In order to make the hidden feature activations sparse, we add an L1 loss over
 the feature activations to the reconstruction loss for the AutoEncoder’s loss
@@ -233,6 +253,8 @@ There are, broadly, two ways to think about features:
    we ask "what is a feature for?" then the answer is “to help the model in
    predicting the next token.”
 
+<br>
+
 Anthropic find many features which activate strongly in a specific context (say
 Arabic script or DNA base pairs) and also (mostly) only activate when that
 context is present. In other words, the features have high
@@ -267,6 +289,8 @@ extremely sparse. This performance is a great sign for `Features as Actions`; it
 suggests that the sparse features capture most of the information that the model
 is using for its prediction task! This also validates that our assumption that
 features are approximately sparse seems to be a fairly good assumption[^9].
+
+<br>
 
 ### Other Phenomena
 
@@ -371,12 +395,14 @@ features with which we can use to think. Splitting up the network into
 macro-modules rather than the micro-level features seems like a promising path
 forward.
 
+<br>
+
 ## Conclusion
 
 Anthropic are very positive about this approach and finish their blog post with
 the line:
 
-    _For the first time, we feel that the next primary obstacle to interpreting large language models is engineering rather than science._
+    For the first time, we feel that the next primary obstacle to interpreting large language models is engineering rather than science.
 
 There is some truth to how exciting this development is. We might ask whether
 the work ahead is purely
@@ -391,13 +417,13 @@ final sentences of
 [Turing’s 1950 paper](https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf),
 as an addendum:
 
-    _We can only see a short distance ahead, but we can see plenty there that needs to be done._
+    We can only see a short distance ahead, but we can see plenty there that needs to be done.
 
----
+<!-- ---
 
 _Note: I am working on a replication and extension of the Sparse Autoencoders
 results supported by [Cavendish Labs](https://cavendishlabs.org/) - I will share
-the results here in the next few days. _
+the results here in the next few days. _ -->
 
 <!-- Footnotes themselves at the bottom. -->
 <br>

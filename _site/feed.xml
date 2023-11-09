@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-09T00:13:15-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-09T00:18:51-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
 
 &lt;h2 id=&quot;mechanistic-interpretability&quot;&gt;Mechanistic Interpretability&lt;/h2&gt;
 
@@ -7,6 +7,8 @@ a cat or writing a unique sonnet), we often write programs which in turn, (via
 &lt;a href=&quot;https://en.wikipedia.org/wiki/Stochastic_gradient_descent&quot;&gt;SGD&lt;/a&gt;), write
 second-order programs. These second-order programs (i.e. neural network weights)
 can solve the task, given lots of data.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;Suppose we have some neural network weights which describe how to do a task. We
 might want to know how the network solved the task. This is useful either to (1)
@@ -21,6 +23,8 @@ solving a given task. This is analogous to the problem of
 &lt;a href=&quot;https://www.neelnanda.io/mechanistic-interpretability/reverse-engineering&quot;&gt;reverse engineering software from machine code&lt;/a&gt;
 or the problem of a
 &lt;a href=&quot;https://colah.github.io/notes/interp-v-neuro/&quot;&gt;neuroscientist trying to understand the human brain&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;-the-dream&quot;&gt;💭 The Dream&lt;/h3&gt;
 
@@ -48,6 +52,8 @@ with its eventual prediction. This story would involve knowing the concepts
 
 &lt;p&gt;This would be great! Unfortunately, there are a couple of problems here…&lt;/p&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;-the-nightmare&quot;&gt;👻 The Nightmare&lt;/h3&gt;
 
 &lt;p&gt;Firstly, neural networks are freaking huge. There can be literally billions of
@@ -69,6 +75,8 @@ as directions in neuron space corresponding to the concepts. And neurons are
 &lt;em&gt;linear combinations&lt;/em&gt; of these features in a way that makes sense to the network
 but looks very entangled to us - we can’t just read off the features from
 looking at the activations.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;sparse-dictionary-learning-as-a-solution&quot;&gt;Sparse Dictionary Learning As A Solution&lt;/h2&gt;
 
@@ -114,6 +122,8 @@ on top” is probably not relevant, though it might be relevant in other
 situations for example distinguishing a motorbike from a car. In this way, not
 all of the features are needed at once&lt;sup id=&quot;fnref:6&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:6&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;hr /&gt;
 
 &lt;p&gt;To recap, so far we’ve said:&lt;/p&gt;
@@ -125,6 +135,10 @@ all of the features are needed at once&lt;sup id=&quot;fnref:6&quot; role=&quot;
 to find an inverse.&lt;/li&gt;
   &lt;li&gt;Sparse maps are relatively good approximations to the real linear map &lt;strong&gt;g&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;Sparse Dictionary Learning is a method which exploits these facts to numerically
 find the inverse of g. Intuitively what we have is a lookup table (or a
@@ -141,6 +155,8 @@ of how it works!&lt;/p&gt;
 information as possible into a lower-dimensional space. &lt;/figcaption&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;dictionary-learning-set-up&quot;&gt;Dictionary Learning Set-up&lt;/h3&gt;
 
@@ -167,6 +183,8 @@ captured and sent through the AutoEncoder. &lt;/figcaption&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;p&gt;An &lt;strong&gt;AutoEncoder&lt;/strong&gt; is a model which tries to reconstruct some data after putting
 it through a &lt;strong&gt;bottleneck&lt;/strong&gt;. In
 &lt;a href=&quot;https://en.wikipedia.org/wiki/Autoencoder&quot;&gt;traditional autoencoders&lt;/a&gt;, the
@@ -189,6 +207,8 @@ bottleneck) and tries to reconstruct the inputs. For a well-trained AutoEncoder,
 the output vector should be approximately the input vector.&lt;/figcaption&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;p&gt;In order to make the hidden feature activations sparse, we add an L1 loss over
 the feature activations to the reconstruction loss for the AutoEncoder’s loss
@@ -235,6 +255,8 @@ we ask “what is a feature for?” then the answer is “to help the model in
 predicting the next token.”&lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;p&gt;Anthropic find many features which activate strongly in a specific context (say
 Arabic script or DNA base pairs) and also (mostly) only activate when that
 context is present. In other words, the features have high
@@ -269,6 +291,8 @@ extremely sparse. This performance is a great sign for &lt;code class=&quot;lang
 suggests that the sparse features capture most of the information that the model
 is using for its prediction task! This also validates that our assumption that
 features are approximately sparse seems to be a fairly good assumption&lt;sup id=&quot;fnref:9&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:9&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;other-phenomena&quot;&gt;Other Phenomena&lt;/h3&gt;
 
@@ -375,12 +399,14 @@ features with which we can use to think. Splitting up the network into
 macro-modules rather than the micro-level features seems like a promising path
 forward.&lt;/p&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;Anthropic are very positive about this approach and finish their blog post with
 the line:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;_For the first time, we feel that the next primary obstacle to interpreting large language models is engineering rather than science._
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;For the first time, we feel that the next primary obstacle to interpreting large language models is engineering rather than science.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;There is some truth to how exciting this development is. We might ask whether
@@ -396,14 +422,14 @@ final sentences of
 &lt;a href=&quot;https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf&quot;&gt;Turing’s 1950 paper&lt;/a&gt;,
 as an addendum:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;_We can only see a short distance ahead, but we can see plenty there that needs to be done._
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;We can only see a short distance ahead, but we can see plenty there that needs to be done.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;hr /&gt;
+&lt;!-- ---
 
-&lt;p&gt;_Note: I am working on a replication and extension of the Sparse Autoencoders
-results supported by &lt;a href=&quot;https://cavendishlabs.org/&quot;&gt;Cavendish Labs&lt;/a&gt; - I will share
-the results here in the next few days. _&lt;/p&gt;
+_Note: I am working on a replication and extension of the Sparse Autoencoders
+results supported by [Cavendish Labs](https://cavendishlabs.org/) - I will share
+the results here in the next few days. _ --&gt;
 
 &lt;!-- Footnotes themselves at the bottom. --&gt;
 &lt;p&gt;&lt;br /&gt;
