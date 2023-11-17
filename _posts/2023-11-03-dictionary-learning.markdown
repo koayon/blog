@@ -402,7 +402,8 @@ forward.
 Anthropic are very positive about this approach and finish their blog post with
 the line:
 
-    For the first time, we feel that the next primary obstacle to interpreting large language models is engineering rather than science.
+> For the first time, we feel that the next primary obstacle to interpreting
+> large language models is engineering rather than science.
 
 There is some truth to how exciting this development is. We might ask whether
 the work ahead is purely
@@ -417,7 +418,8 @@ final sentences of
 [Turing’s 1950 paper](https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf),
 as an addendum:
 
-    We can only see a short distance ahead, but we can see plenty there that needs to be done.
+> We can only see a short distance ahead, but we can see plenty there that needs
+> to be done.
 
 <!-- ---
 

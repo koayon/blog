@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-09T14:26:05-05:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00-04:00</published><updated>2023-11-03T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-17T15:24:55+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00+00:00</published><updated>2023-11-03T00:00:00+00:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
 
 &lt;h2 id=&quot;mechanistic-interpretability&quot;&gt;Mechanistic Interpretability&lt;/h2&gt;
 
@@ -411,8 +411,10 @@ forward.&lt;/p&gt;
 &lt;p&gt;Anthropic are very positive about this approach and finish their blog post with
 the line:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;For the first time, we feel that the next primary obstacle to interpreting large language models is engineering rather than science.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;For the first time, we feel that the next primary obstacle to interpreting
+large language models is engineering rather than science.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;There is some truth to how exciting this development is. We might ask whether
 the work ahead is purely
@@ -427,8 +429,10 @@ final sentences of
 &lt;a href=&quot;https://redirect.cs.umbc.edu/courses/471/papers/turing.pdf&quot;&gt;Turing’s 1950 paper&lt;/a&gt;,
 as an addendum:&lt;/p&gt;
 
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;We can only see a short distance ahead, but we can see plenty there that needs to be done.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;We can only see a short distance ahead, but we can see plenty there that needs
+to be done.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;!-- ---
 
@@ -499,7 +503,7 @@ scale. The later &lt;a href=&quot;https://arxiv.org/pdf/2310.17230.pdf&quot;&gt;
 paper also suggests this. &lt;a href=&quot;#fnref:9&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="interpretability" /><category term="dictionary-learning" /><summary type="html">Taking Features Out of Superposition</summary></entry><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
+&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="interpretability" /><category term="dictionary-learning" /><summary type="html">Taking Features Out of Superposition</summary></entry><entry><title type="html">An Analogy for Understanding Mixture of Expert Models</title><link href="http://localhost:4000/blog/2023/10/22/moe-analogy.html" rel="alternate" type="text/html" title="An Analogy for Understanding Mixture of Expert Models" /><published>2023-10-22T00:00:00+01:00</published><updated>2023-10-22T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/10/22/moe-analogy</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/22/moe-analogy.html">&lt;!-- An Intuitive Way To Understand Mixture Of Expert Models (Sparse MoEs) --&gt;
 
 &lt;h4 id=&quot;tldr-experts-are-doctors-routers-are-gps&quot;&gt;TL;DR: Experts are Doctors, Routers are GPs&lt;/h4&gt;
 
@@ -724,7 +728,7 @@ example a visual stimuli, they use only their visual cortex to process it. &lt;
       &lt;p&gt;In the statistical sense &lt;a href=&quot;#fnref:stat&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html"></summary></entry><entry><title type="html">From Sparse To Soft Mixtures of Experts</title><link href="http://localhost:4000/blog/2023/10/20/soft-moe.html" rel="alternate" type="text/html" title="From Sparse To Soft Mixtures of Experts" /><published>2023-10-20T00:00:00-04:00</published><updated>2023-10-20T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/10/20/soft-moe</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/20/soft-moe.html">&lt;p&gt;Mixture of Expert (MoE) models have recently emerged as an ML architecture
+&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html"></summary></entry><entry><title type="html">From Sparse To Soft Mixtures of Experts</title><link href="http://localhost:4000/blog/2023/10/20/soft-moe.html" rel="alternate" type="text/html" title="From Sparse To Soft Mixtures of Experts" /><published>2023-10-20T00:00:00+01:00</published><updated>2023-10-20T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/10/20/soft-moe</id><content type="html" xml:base="http://localhost:4000/blog/2023/10/20/soft-moe.html">&lt;p&gt;Mixture of Expert (MoE) models have recently emerged as an ML architecture
 offering efficient scaling and practicality in both training and inference &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;what-are-sparse-moes&quot;&gt;What Are Sparse MoEs?&lt;/h3&gt;
@@ -819,7 +823,7 @@ repo. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&q
 look at cleaning this up. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html">Mixture of Expert (MoE) models have recently emerged as an ML architecture offering efficient scaling and practicality in both training and inference [^1].</summary></entry><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale" /><published>2023-07-14T00:00:00-04:00</published><updated>2023-07-14T00:00:00-04:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
+&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html">Mixture of Expert (MoE) models have recently emerged as an ML architecture offering efficient scaling and practicality in both training and inference [^1].</summary></entry><entry><title type="html">DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale</title><link href="http://localhost:4000/blog/2023/07/14/deepspeed-train.html" rel="alternate" type="text/html" title="DeepSpeed’s Bag of Tricks for Speed &amp;amp; Scale" /><published>2023-07-14T00:00:00+01:00</published><updated>2023-07-14T00:00:00+01:00</updated><id>http://localhost:4000/blog/2023/07/14/deepspeed-train</id><content type="html" xml:base="http://localhost:4000/blog/2023/07/14/deepspeed-train.html">&lt;!-- # DeepSpeed&apos;s Bag of Tricks for Speed &amp; Scale --&gt;
 
 &lt;h2 id=&quot;an-introduction-to-deepspeed-for-training&quot;&gt;An Introduction to DeepSpeed for Training&lt;/h2&gt;
 
