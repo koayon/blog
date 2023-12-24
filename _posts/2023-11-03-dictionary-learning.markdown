@@ -444,7 +444,7 @@ the results here in the next few days. _ -->
 
 [^3]:
     One theory of exactly how that might come about is found in the
-    Superposition Hypothesis.
+    [Superposition Hypothesis](https://transformer-circuits.pub/2022/toy_model/index.html).
 
 [^4]: Thanks to Robert Huben for this useful framing
 [^5]:
