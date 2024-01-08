@@ -1,4 +1,114 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2023-11-17T15:24:55+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00+00:00</published><updated>2023-11-03T00:00:00+00:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-08T21:57:01+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Descriptive Matrix Operations with Einops</title><link href="http://localhost:4000/blog/2024/01/08/einops.html" rel="alternate" type="text/html" title="Descriptive Matrix Operations with Einops" /><published>2024-01-08T00:00:00+00:00</published><updated>2024-01-08T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/08/einops</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/08/einops.html">&lt;h4 id=&quot;tldr-use-einopseinsum&quot;&gt;tldr; use einops.einsum&lt;/h4&gt;
+
+&lt;p&gt;Machine learning is built of matrix algebra. Einstein summation notation (or
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;einsums&lt;/code&gt; for short) makes matrix operations more intuitive and readable.&lt;/p&gt;
+
+&lt;p&gt;As you may know, the matrix multiplication that you learned in high school…&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/images/einops/matmul.png&quot; width=&quot;500&quot; alt=&quot;3x3 matrix multiplication&quot; /&gt;
+    &lt;figcaption&gt;Calculating the 0,0th element of a matrix multiplication &lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Can be written algebraically as:&lt;/p&gt;
+
+&lt;p&gt;$$A_{ik} = \sum_j B_{ij} C_{jk}$$&lt;/p&gt;
+
+&lt;p&gt;In other words in order to get the (1,2) element of A we calculate:&lt;/p&gt;
+
+&lt;p&gt;$$A_{1,2} = \sum_j B_{1j} C_{j2}$$&lt;/p&gt;
+
+&lt;p&gt;i.e. take the dot product of the 1st row of B with the 2nd column of C.&lt;/p&gt;
+
+&lt;p&gt;In Einsum notation, to avoid having so many sigmas ( $\sum s$ ) flying around we
+adopt the convention that any indices that appear more than once are being
+summed over. Hence:&lt;/p&gt;
+
+&lt;p&gt;$$A_{ik} = \sum_j B_{ij} C_{jk}$$&lt;/p&gt;
+
+&lt;p&gt;can be written more simply as…&lt;/p&gt;
+
+&lt;p&gt;$$A_{ik} = B_{ij} C_{jk}$$&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;We want to take advantage of this notation in PyTorch and NumPy code as well.
+Our question is how do you represent it in code?&lt;/p&gt;
+
+&lt;p&gt;Both torch and numpy have einsum packages so that you can do e.g. matrix
+multiplication:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;torch&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;einsum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;ij,jk-&amp;gt; ik&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However when using this it’s not necessarily super clear what each letter means:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Was e embedding dimension or expert number?&lt;/li&gt;
+  &lt;li&gt;Was h height or hidden dimension?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It’s common to see PyTorch code where in the docstring each of the letters is
+defined. This isn’t a very natural pattern it’s like if all of your variable
+names in code had to be single letters and you had another file which would act
+as a dictionary for what each letter actually meant &lt;em&gt;shudders&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;One of the most useful lines of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Zen of Python&lt;/code&gt; is
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Explicit is better than Implicit&lt;/code&gt;. Following this principle, we would like to
+be able to write the variable names in the einsum string itself. Without this,
+it’s harder to read and means you’re always looking back when trying to
+understand or debug the code.&lt;/p&gt;
+
+&lt;h3 id=&quot;enter-einops&quot;&gt;Enter einops&lt;/h3&gt;
+
+&lt;p&gt;Einops is a tensor manipulation package that can be used with PyTorch, NumPy,
+Tensorflow and Jax. It offers a nice API but we’ll focus on einsums which we can
+now use with full variable names rather than single letters! It makes your ML
+code so much clearer instantly.&lt;/p&gt;
+
+&lt;p&gt;The convention is that if a dimension only appears on the left side of the
+einsum then it’s summed over.&lt;/p&gt;
+
+&lt;p&gt;For example let’s write the multi-query attention operation.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;torch&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;einops&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;einsum&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;multi_query_attention&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;K&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tensor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tensor&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head_dim&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;K&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;attn_scores&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;einsum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Q&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;K&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;&quot;batch head seq1 head_dim, batch seq2 head_dim -&amp;gt; batch head seq1 seq2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;attn_matrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;softmax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attn_scores&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head_dim&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;einsum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;attn_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;&quot;batch head seq1 seq2, batch seq2 head_dim -&amp;gt; batch head seq1 head_dim&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The nice things about this are that we didn’t need to write a glossary for what
+random variables &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;b&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;h&lt;/code&gt; were supposed to mean, you can just read it off.&lt;/p&gt;
+
+&lt;p&gt;Also note that typically when computing attention, we need to calculate $QK^T$.
+Here we didn’t need to worry about how exactly to take the transpose - we just
+give the dimension names and the correct transposes are done for the
+multiplication to make sense!&lt;/p&gt;
+
+&lt;p&gt;Einops also offers great functions for rearranging, reducing and repeating
+tensors which are also very useful.&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/images/einops/if_everyone_used_einops.png&quot; width=&quot;800&quot; alt=&quot;The World If Everyone Used Einops&quot; /&gt;
+    &lt;figcaption&gt;&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Just trying to make those inscrutable matrix multiplications, a little more
+scrutable. ￼&lt;/p&gt;</content><author><name></name></author><category term="machine-learning" /><category term="pytorch" /><summary type="html">tldr; use einops.einsum</summary></entry><entry><title type="html">Dictionary Learning with Sparse AutoEncoders</title><link href="http://localhost:4000/blog/2023/11/03/dictionary-learning.html" rel="alternate" type="text/html" title="Dictionary Learning with Sparse AutoEncoders" /><published>2023-11-03T00:00:00+00:00</published><updated>2023-11-03T00:00:00+00:00</updated><id>http://localhost:4000/blog/2023/11/03/dictionary-learning</id><content type="html" xml:base="http://localhost:4000/blog/2023/11/03/dictionary-learning.html">&lt;h4 id=&quot;taking-features-out-of-superposition&quot;&gt;Taking Features Out of Superposition&lt;/h4&gt;
 
 &lt;h2 id=&quot;mechanistic-interpretability&quot;&gt;Mechanistic Interpretability&lt;/h2&gt;
 
@@ -462,7 +572,7 @@ as well. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role
     &lt;li id=&quot;fn:3&quot; role=&quot;doc-endnote&quot;&gt;
 
       &lt;p&gt;One theory of exactly how that might come about is found in the
-Superposition Hypothesis. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;a href=&quot;https://transformer-circuits.pub/2022/toy_model/index.html&quot;&gt;Superposition Hypothesis&lt;/a&gt;. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:4&quot; role=&quot;doc-endnote&quot;&gt;
       &lt;p&gt;Thanks to Robert Huben for this useful framing &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;

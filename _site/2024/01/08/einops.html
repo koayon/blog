@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Descriptive Matrix Operations with Einops | Kola Ayonrinde</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Descriptive Matrix Operations with Einops">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="tldr; use einops.einsum">
+<meta property="og:description" content="tldr; use einops.einsum">
+<link rel="canonical" href="http://localhost:4000/blog/2024/01/08/einops.html">
+<meta property="og:url" content="http://localhost:4000/blog/2024/01/08/einops.html">
+<meta property="og:site_name" content="Kola Ayonrinde">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-01-08T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Descriptive Matrix Operations with Einops">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-01-08T00:00:00+00:00","datePublished":"2024-01-08T00:00:00+00:00","description":"tldr; use einops.einsum","headline":"Descriptive Matrix Operations with Einops","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2024/01/08/einops.html"},"url":"http://localhost:4000/blog/2024/01/08/einops.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/main.css">
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/blog/feed.xml" title="Kola Ayonrinde">
+<script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/blog/">Kola Ayonrinde</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a></div>
+      </nav>
+</div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+  <link rel="stylesheet" href="/blog/assets/css/post.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css">
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7175JLSX4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-Q7175JLSX4");
+  </script>
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">
+      Descriptive Matrix Operations with Einops
+    </h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2024-01-08T00:00:00+00:00" itemprop="datePublished">Jan 8, 2024
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!-- <nav class="sidebar"> -->
+    <!-- Table of Contents -->
+    <!-- <h4>Table of Contents</h4> -->
+    <!--  -->
+    <!-- </nav> -->
+    <!-- <br /> -->
+    <!-- <br /> -->
+    <h4 id="tldr-use-einopseinsum">tldr; use einops.einsum</h4>
+
+<p>Machine learning is built of matrix algebra. Einstein summation notation (or
+<code class="language-plaintext highlighter-rouge">einsums</code> for short) makes matrix operations more intuitive and readable.</p>
+
+<p>As you may know, the matrix multiplication that you learned in high school…</p>
+
+<div align="center">
+  <figure>
+    <img src="/blog/images/einops/matmul.png" width="500" alt="3x3 matrix multiplication">
+    <figcaption>Calculating the 0,0th element of a matrix multiplication </figcaption>
+    </figure>
+</div>
+
+<p>Can be written algebraically as:</p>
+
+<p>$$A_{ik} = \sum_j B_{ij} C_{jk}$$</p>
+
+<p>In other words in order to get the (1,2) element of A we calculate:</p>
+
+<p>$$A_{1,2} = \sum_j B_{1j} C_{j2}$$</p>
+
+<p>i.e. take the dot product of the 1st row of B with the 2nd column of C.</p>
+
+<p>In Einsum notation, to avoid having so many sigmas ( $\sum s$ ) flying around we
+adopt the convention that any indices that appear more than once are being
+summed over. Hence:</p>
+
+<p>$$A_{ik} = \sum_j B_{ij} C_{jk}$$</p>
+
+<p>can be written more simply as…</p>
+
+<p>$$A_{ik} = B_{ij} C_{jk}$$</p>
+
+<hr>
+
+<p>We want to take advantage of this notation in PyTorch and NumPy code as well.
+Our question is how do you represent it in code?</p>
+
+<p>Both torch and numpy have einsum packages so that you can do e.g. matrix
+multiplication:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="n">t</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">einsum</span><span class="p">(</span><span class="s">"ij,jk-&gt; ik"</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>However when using this it’s not necessarily super clear what each letter means:</p>
+
+<ul>
+  <li>Was e embedding dimension or expert number?</li>
+  <li>Was h height or hidden dimension?</li>
+</ul>
+
+<p>It’s common to see PyTorch code where in the docstring each of the letters is
+defined. This isn’t a very natural pattern it’s like if all of your variable
+names in code had to be single letters and you had another file which would act
+as a dictionary for what each letter actually meant <em>shudders</em>.</p>
+
+<p>One of the most useful lines of the <code class="language-plaintext highlighter-rouge">Zen of Python</code> is
+<code class="language-plaintext highlighter-rouge">Explicit is better than Implicit</code>. Following this principle, we would like to
+be able to write the variable names in the einsum string itself. Without this,
+it’s harder to read and means you’re always looking back when trying to
+understand or debug the code.</p>
+
+<h3 id="enter-einops">Enter einops</h3>
+
+<p>Einops is a tensor manipulation package that can be used with PyTorch, NumPy,
+Tensorflow and Jax. It offers a nice API but we’ll focus on einsums which we can
+now use with full variable names rather than single letters! It makes your ML
+code so much clearer instantly.</p>
+
+<p>The convention is that if a dimension only appears on the left side of the
+einsum then it’s summed over.</p>
+
+<p>For example let’s write the multi-query attention operation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="n">t</span>
+<span class="kn">from</span> <span class="nn">einops</span> <span class="kn">import</span> <span class="n">einsum</span>
+
+<span class="k">def</span> <span class="nf">multi_query_attention</span><span class="p">(</span><span class="n">Q</span><span class="p">:</span> <span class="n">t</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">K</span><span class="p">:</span> <span class="n">t</span><span class="p">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="n">t</span><span class="p">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="p">.</span><span class="n">Tensor</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">head_dim</span> <span class="o">=</span> <span class="n">K</span><span class="p">.</span><span class="n">shape</span>
+    <span class="n">attn_scores</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span>
+        <span class="s">"batch head seq1 head_dim, batch seq2 head_dim -&gt; batch head seq1 seq2"</span><span class="p">)</span>
+    <span class="n">attn_matrix</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">attn_scores</span> <span class="o">/</span> <span class="n">head_dim</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span>  <span class="n">einsum</span><span class="p">(</span><span class="n">attn_matrix</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span>
+        <span class="s">"batch head seq1 seq2, batch seq2 head_dim -&gt; batch head seq1 head_dim"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+</code></pre></div></div>
+
+<p>The nice things about this are that we didn’t need to write a glossary for what
+random variables <code class="language-plaintext highlighter-rouge">b</code> or <code class="language-plaintext highlighter-rouge">h</code> were supposed to mean, you can just read it off.</p>
+
+<p>Also note that typically when computing attention, we need to calculate $QK^T$.
+Here we didn’t need to worry about how exactly to take the transpose - we just
+give the dimension names and the correct transposes are done for the
+multiplication to make sense!</p>
+
+<p>Einops also offers great functions for rearranging, reducing and repeating
+tensors which are also very useful.</p>
+
+<div align="center">
+  <figure>
+    <img src="/blog/images/einops/if_everyone_used_einops.png" width="800" alt="The World If Everyone Used Einops">
+    <figcaption></figcaption>
+    </figure>
+</div>
+
+<p>Just trying to make those inscrutable matrix multiplications, a little more
+scrutable. ￼</p>
+
+  </div>
+
+  <!-- Citations -->
+  <!-- Add the citation section here -->
+  <div class="citation-section">
+    <h3>If you'd like to cite this article, please use:</h3>
+    <pre>
+  @misc{kayonrinde2024einops,
+    author = "Kola Ayonrinde",
+    title = "Descriptive Matrix Operations with Einops",
+    year = 2024,
+    howpublished = "Blog post",
+    url = "http://localhost:4000/2024/01/08/einops.html"
+  }
+    </pre>
+  </div>
+<a class="u-url" href="/blog/2024/01/08/einops.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Kola Ayonrinde</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Kola Ayonrinde</li>
+<li><a class="u-email" href="mailto:koayon@gmail.com">koayon@gmail.com</a></li>
+</ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+<ul class="social-media-list"><li><a href="https://github.com/koayon"><svg class="svg-icon"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">koayon</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
