@@ -125,7 +125,7 @@ multiplication:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="n">t</span>
 
-<span class="n">A</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">einsum</span><span class="p">(</span><span class="s">"ij,jk-&gt; ik"</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">einsum</span><span class="p">(</span><span class="s">"ij,jk-&gt;ik"</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>However when using this it’s not necessarily super clear what each letter means:</p>

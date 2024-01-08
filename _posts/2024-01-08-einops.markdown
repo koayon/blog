@@ -51,7 +51,7 @@ multiplication:
 ```python
 import torch as t
 
-A = t.einsum("ij,jk-> ik", B, C)
+A = t.einsum("ij,jk->ik", B, C)
 ```
 
 However when using this it's not necessarily super clear what each letter means:
