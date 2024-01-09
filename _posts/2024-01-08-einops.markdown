@@ -110,7 +110,7 @@ tensors which are also very useful.
 
 <div align="center">
   <figure>
-    <img src="/blog/images/einops/if_everyone_used_einops.png" width="800" alt="The World If Everyone Used Einops">
+    <img src="/blog/images/einops/the_world_if_einops.jpg" width="800" alt="The World If Everyone Used Einops">
     <figcaption></figcaption>
     </figure>
 </div>
