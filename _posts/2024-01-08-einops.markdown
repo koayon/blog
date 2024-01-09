@@ -9,7 +9,7 @@ toc: true
 #### tldr; use einops.einsum
 
 Machine learning is built of matrix algebra. Einstein summation notation (or
-`einsums` for short) makes matrix operations more intuitive and readable.
+`einsum` for short) makes matrix operations more intuitive and readable.
 
 As you may know, the matrix multiplication that you learned in high school...
 
@@ -30,6 +30,12 @@ $$A_{1,2} = \sum_j B_{1j} C_{j2}$$
 
 i.e. take the dot product of the 1st row of B with the 2nd column of C.
 
+<br>
+
+---
+
+<br>
+
 In Einsum notation, to avoid having so many sigmas ( $\sum s$ ) flying around we
 adopt the convention that any indices that appear more than once are being
 summed over. Hence:
@@ -40,13 +46,15 @@ can be written more simply as...
 
 $$A_{ik} = B_{ij} C_{jk}$$
 
+<br>
+
 ---
 
-We want to take advantage of this notation in PyTorch and NumPy code as well.
-Our question is how do you represent it in code?
+<br>
 
-Both torch and numpy have einsum packages so that you can do e.g. matrix
-multiplication:
+Both torch and numpy have einsum packages to allow you to use einsum notation
+for matrix operations. For example, we can write the above matrix multiplication
+in torch as:
 
 ```python
 import torch as t
@@ -54,15 +62,25 @@ import torch as t
 A = t.einsum("ij,jk->ik", B, C)
 ```
 
-However when using this it's not necessarily super clear what each letter means:
+The convention is that if a dimension only appears on the left side of the
+einsum then it's summed over. So in the above we're summing over the j dimension
+and keeping the i and k dimensions.
 
-- Was e embedding dimension or expert number?
-- Was h height or hidden dimension?
+Great!
 
-It's common to see PyTorch code where in the docstring each of the letters is
-defined. This isn't a very natural pattern it's like if all of your variable
-names in code had to be single letters and you had another file which would act
-as a dictionary for what each letter actually meant _shudders_.
+One issue when using torch.einsum though is that it's not necessarily super
+clear what each letter means:
+
+- Was **i** a horizontal index (as in x,y coordinates) or is it a vertical index
+  (as in tensor indexing?)
+- Was **e** embedding dimension or expert number?
+- Was **h** height, head dimension or hidden dimension?
+
+To get around this ambiguity, it's common to see PyTorch code where in the
+docstring each of the letters is defined. This isn't a very natural pattern it's
+like if all of your variable names in code had to be single letters and you had
+another file which would act as a dictionary for what each letter actually
+meant! _shudders_.
 
 One of the most useful lines of the `Zen of Python` is
 `Explicit is better than Implicit`. Following this principle, we would like to
@@ -76,9 +94,6 @@ Einops is a tensor manipulation package that can be used with PyTorch, NumPy,
 Tensorflow and Jax. It offers a nice API but we'll focus on einsums which we can
 now use with full variable names rather than single letters! It makes your ML
 code so much clearer instantly.
-
-The convention is that if a dimension only appears on the left side of the
-einsum then it's summed over.
 
 For example let's write the multi-query attention operation.
 

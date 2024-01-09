@@ -84,7 +84,7 @@
     <h4 id="tldr-use-einopseinsum">tldr; use einops.einsum</h4>
 
 <p>Machine learning is built of matrix algebra. Einstein summation notation (or
-<code class="language-plaintext highlighter-rouge">einsums</code> for short) makes matrix operations more intuitive and readable.</p>
+<code class="language-plaintext highlighter-rouge">einsum</code> for short) makes matrix operations more intuitive and readable.</p>
 
 <p>As you may know, the matrix multiplication that you learned in high school…</p>
 
@@ -105,6 +105,12 @@
 
 <p>i.e. take the dot product of the 1st row of B with the 2nd column of C.</p>
 
+<p><br></p>
+
+<hr>
+
+<p><br></p>
+
 <p>In Einsum notation, to avoid having so many sigmas ( $\sum s$ ) flying around we
 adopt the convention that any indices that appear more than once are being
 summed over. Hence:</p>
@@ -115,30 +121,42 @@ summed over. Hence:</p>
 
 <p>$$A_{ik} = B_{ij} C_{jk}$$</p>
 
+<p><br></p>
+
 <hr>
 
-<p>We want to take advantage of this notation in PyTorch and NumPy code as well.
-Our question is how do you represent it in code?</p>
+<p><br></p>
 
-<p>Both torch and numpy have einsum packages so that you can do e.g. matrix
-multiplication:</p>
+<p>Both torch and numpy have einsum packages to allow you to use einsum notation
+for matrix operations. For example, we can write the above matrix multiplication
+in torch as:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="n">t</span>
 
 <span class="n">A</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">einsum</span><span class="p">(</span><span class="s">"ij,jk-&gt;ik"</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>However when using this it’s not necessarily super clear what each letter means:</p>
+<p>The convention is that if a dimension only appears on the left side of the
+einsum then it’s summed over. So in the above we’re summing over the j dimension
+and keeping the i and k dimensions.</p>
+
+<p>Great!</p>
+
+<p>One issue when using torch.einsum though is that it’s not necessarily super
+clear what each letter means:</p>
 
 <ul>
-  <li>Was e embedding dimension or expert number?</li>
-  <li>Was h height or hidden dimension?</li>
+  <li>Was <strong>i</strong> a horizontal index (as in x,y coordinates) or is it a vertical index
+(as in tensor indexing?)</li>
+  <li>Was <strong>e</strong> embedding dimension or expert number?</li>
+  <li>Was <strong>h</strong> height, head dimension or hidden dimension?</li>
 </ul>
 
-<p>It’s common to see PyTorch code where in the docstring each of the letters is
-defined. This isn’t a very natural pattern it’s like if all of your variable
-names in code had to be single letters and you had another file which would act
-as a dictionary for what each letter actually meant <em>shudders</em>.</p>
+<p>To get around this ambiguity, it’s common to see PyTorch code where in the
+docstring each of the letters is defined. This isn’t a very natural pattern it’s
+like if all of your variable names in code had to be single letters and you had
+another file which would act as a dictionary for what each letter actually
+meant! <em>shudders</em>.</p>
 
 <p>One of the most useful lines of the <code class="language-plaintext highlighter-rouge">Zen of Python</code> is
 <code class="language-plaintext highlighter-rouge">Explicit is better than Implicit</code>. Following this principle, we would like to
@@ -152,9 +170,6 @@ understand or debug the code.</p>
 Tensorflow and Jax. It offers a nice API but we’ll focus on einsums which we can
 now use with full variable names rather than single letters! It makes your ML
 code so much clearer instantly.</p>
-
-<p>The convention is that if a dimension only appears on the left side of the
-einsum then it’s summed over.</p>
 
 <p>For example let’s write the multi-query attention operation.</p>
 
