@@ -58,9 +58,9 @@ transforms the individual tokens.
 In [Sparse Mixture of Experts](https://arxiv.org/pdf/2101.03961.pdf) (MoEs), we
 swap out the `MLP layers` of the vanilla transformer for an `Expert Layer`. The
 Expert Layer is made up of multiple MLPs called "Experts". For each input we
-select one expert to send that input to. In this way, each token it has
-different parameters applied to it. A dynamic routing mechanism decides how to
-map tokens to Experts[^3].
+select one expert to send that input to. In this way, each token has different
+parameters applied to it. A dynamic routing mechanism decides how to map tokens
+to Experts[^3].
 
 <div align="center">
   <figure>

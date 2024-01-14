@@ -135,9 +135,9 @@ transforms the individual tokens.</p>
 <p>In <a href="https://arxiv.org/pdf/2101.03961.pdf">Sparse Mixture of Experts</a> (MoEs), we
 swap out the <code class="language-plaintext highlighter-rouge">MLP layers</code> of the vanilla transformer for an <code class="language-plaintext highlighter-rouge">Expert Layer</code>. The
 Expert Layer is made up of multiple MLPs called “Experts”. For each input we
-select one expert to send that input to. In this way, each token it has
-different parameters applied to it. A dynamic routing mechanism decides how to
-map tokens to Experts<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">4</a></sup>.</p>
+select one expert to send that input to. In this way, each token has different
+parameters applied to it. A dynamic routing mechanism decides how to map tokens
+to Experts<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">4</a></sup>.</p>
 
 <div align="center">
   <figure>
