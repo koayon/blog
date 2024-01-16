@@ -6,7 +6,9 @@ tags: machine-learning mixture-of-experts adaptive-computation
 toc: true
 ---
 
-### Can You Feel The MoE?
+#### Can You Feel The MoE?
+
+![alt text](image.png)
 
 Since the infamous BitTorrent link launch of Mixtral, Mistral's Mixture of
 Expert (MoE) model, there's been renewed attention [Footnote: if I may] paid to
@@ -25,8 +27,11 @@ We previously discussed the intuition behind MoE models in
 > transformer for an Expert Layer. The Expert Layer is made up of multiple MLPs
 > called “Experts”. For each input we select one expert to send that input to.
 > In this way, each token has different parameters applied to it. A dynamic
-> routing mechanism decides how to map tokens to Experts4. Sparse Expert Layer
-> (Switch Transformer)
+> routing mechanism decides how to map tokens to Experts
+
+# TK: Switch Trandsformers Image
+
+Sparse Expert Layer (Switch Transformer)
 
 This approach gives models more parameters [footnote: i.e. more knowledge in
 some sense] without requiring more compute or latency for each forward pass. MoE
@@ -69,6 +74,10 @@ forward pass) comes in at 13B.
 
 Succinctly an MoE layer is given as:
 
+$
+\sum_{i=0}^{n-1}G(x)_i \cdot E_i(x),
+$
+
 where G is a gating function which is 0 everywhere except at 2 indices and where
 each E_i is a single expert FFN. Note that in the above formula since most of
 the entries of the sum are zeros (as G(x) is zero for most i), we only have to
@@ -86,12 +95,14 @@ predictions which are aggregated at the end:
 > = 28 ways to do this. And this happens at each of the 32 layers giving 28^32
 > possible paths overall, which is huge! 🤯 [footnote: In fact this is quite the
 >
-> > understatement, all of these paths are weighted according to the router
-> > logits > so there's even more nuance than this in the possible paths that
-> > tokens can > take.] The variety of possible paths here points towards
-> > increasingly Adaptive Computation in models. In Adaptive Computation, we
-> > consider models which handle different tokens with different parameters and
-> > different amounts of compute.
+> > understatement, all of these paths are weighted according to the router > >
+> > logits > so there's even more nuance than this in the possible paths
+> > that > > tokens can > take.] The variety of possible paths here points
+> > towards increasingly Adaptive Computation in models. In Adaptive
+> > Computation, we consider models which handle different tokens with different
+> > parameters and different amounts of compute.
+
+![alt text](image-1.png)
 
 Up until now there have been a two barriers to truly performant and stably
 trainable MoEs: Problem 1: Training MoEs properly from a mathematical
@@ -104,8 +115,13 @@ encoders help with training by providing better gradient flow. Problem 2:
 Training MoEs efficiently Compared to their FLOP-class, MoEs are larger models
 and hence require careful thoughts about parallelisation and minimising
 communication costs. Many frameworks such as DeepSpeed MoE now support MoE
-training in a fairly hardware efficient way. Notes on Mixtral’s paper Evals The
-Mixtral base model outperforms Llama 2 70B, Gemini Pro and GPT-3.5 on most
+training in a fairly hardware efficient way.
+
+## Notes on Mixtral’s paper
+
+### Evals
+
+The Mixtral base model outperforms Llama 2 70B, Gemini Pro and GPT-3.5 on most
 benchmarks. Mixtral’s performance here is impressive as both of these models are
 much larger than Mixtral in both raw and active parameter count. At the time of
 writing, Mixtral is the best open-source model and the 3rd best Chat model, only
@@ -161,7 +177,7 @@ products now possible when inference is 100% free and your data stays on your
 device!” Indeed since the launch of Mixtral, it’s been used in many applications
 from the enterprise to local chatbots to DIY Home Assistants à la Siri.
 
-—
+---
 
 As many people use MoE models on-device for the first time, I expect that we
 will start to see more methods which speed up MoE inference. The Fast MoE
@@ -207,11 +223,11 @@ required to make great MoE models might be much less than previous thought.
 Researchers can take advantage of existing models like Llama 2 etc. rather than
 having to pretrain entirely from scratch.
 
-Open Source ML in the Age of Adaptive Computation
+### Open Source ML in the Age of Adaptive Computation
 
 “In 2012 we were detecting cats and dogs and in 2022 we were writing human-like
 pottery, generating beautiful and novel imagery, solving the protein folding
-problem and writing code. Why is that?” Arthur Mensch, Mistral cofounder,
+problem and writing code. Why is that?” Arthur Mensch, Mistral co-founder,
 suggests most of the reason is “the free flow of information. You had academic
 labs [and] very big industry labs communicating all the time about their results
 and building on top of others’ results. That’s the way we [significantly
