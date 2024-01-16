@@ -157,9 +157,9 @@ forward pass) comes in at 13B. <sup id="fnref:params" role="doc-noteref"><a href
 $$</p>
 
 <p>where G is a gating function which is 0 everywhere except at 2 indices and where
-each $E_i$ is a single expert FFN. Note that in the above formula since most of
-the entries of the sum are zeros (as G(x) is zero for most i), we only have to
-compute some of the $E_i$s rather than all of them. This is where MoEs have
+each $$E_i$$ is a single expert FFN. Note that in the above formula since most
+of the entries of the sum are zeros (as G(x) is zero for most i), we only have
+to compute some of the $$E_is$$ rather than all of them. This is where MoEs have
 computational efficiency advantages over using bigger models or using an
 ensemble of models.</p>
 
@@ -171,11 +171,12 @@ paths that each token could take in an MoE to these ensemble methods:</p>
 
 <blockquote>
   <p>At each layer we choose 2 of the 8 experts to process our token. There are
-$\binom{8}{2}$ = 28 ways to do this. And this happens at each of the 32 layers
-giving $28^32$ possible paths overall, which is huge<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">6</a></sup>! 🤯 The variety of
-possible paths here points towards increasingly Adaptive Computation in
-models. In Adaptive Computation, we consider models which handle different
-tokens with different parameters and different amounts of compute.</p>
+$$\binom{8}{2}$$ = 28 ways to do this. And this happens at each of the 32
+layers giving $$28^32$$ possible paths overall, which is huge<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">6</a></sup>! 🤯 The
+variety of possible paths here points towards increasingly Adaptive
+Computation in models. In Adaptive Computation, we consider models which
+handle different tokens with different parameters and different amounts of
+compute.</p>
 </blockquote>
 
 <div align="center">

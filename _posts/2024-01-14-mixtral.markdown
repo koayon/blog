@@ -105,9 +105,9 @@ $$
 $$
 
 where G is a gating function which is 0 everywhere except at 2 indices and where
-each $E_i$ is a single expert FFN. Note that in the above formula since most of
-the entries of the sum are zeros (as G(x) is zero for most i), we only have to
-compute some of the $E_i$s rather than all of them. This is where MoEs have
+each $$E_i$$ is a single expert FFN. Note that in the above formula since most
+of the entries of the sum are zeros (as G(x) is zero for most i), we only have
+to compute some of the $$E_is$$ rather than all of them. This is where MoEs have
 computational efficiency advantages over using bigger models or using an
 ensemble of models.
 
@@ -118,11 +118,12 @@ averaged, so there are 8 token paths. We can compare the number of possible
 paths that each token could take in an MoE to these ensemble methods:
 
 > At each layer we choose 2 of the 8 experts to process our token. There are
-> $\binom{8}{2}$ = 28 ways to do this. And this happens at each of the 32 layers
-> giving $28^32$ possible paths overall, which is huge[^5]! 🤯 The variety of
-> possible paths here points towards increasingly Adaptive Computation in
-> models. In Adaptive Computation, we consider models which handle different
-> tokens with different parameters and different amounts of compute.
+> $$\binom{8}{2}$$ = 28 ways to do this. And this happens at each of the 32
+> layers giving $$28^32$$ possible paths overall, which is huge[^5]! 🤯 The
+> variety of possible paths here points towards increasingly Adaptive
+> Computation in models. In Adaptive Computation, we consider models which
+> handle different tokens with different parameters and different amounts of
+> compute.
 
 [^5]:
     In fact this is quite the understatement, all of these paths are weighted
