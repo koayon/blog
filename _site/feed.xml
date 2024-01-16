@@ -1,4 +1,372 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-14T22:15:48+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Descriptive Matrix Operations with Einops</title><link href="http://localhost:4000/blog/2024/01/08/einops.html" rel="alternate" type="text/html" title="Descriptive Matrix Operations with Einops" /><published>2024-01-08T00:00:00+00:00</published><updated>2024-01-08T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/08/einops</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/08/einops.html">&lt;h4 id=&quot;tldr-use-einopseinsum&quot;&gt;tldr; use einops.einsum&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-16T13:33:38+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">The Impact of Mixtral</title><link href="http://localhost:4000/blog/2024/01/14/mixtral.html" rel="alternate" type="text/html" title="The Impact of Mixtral" /><published>2024-01-14T00:00:00+00:00</published><updated>2024-01-14T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/14/mixtral</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/14/mixtral.html">&lt;h3 id=&quot;can-you-feel-the-moe&quot;&gt;Can You Feel The MoE?&lt;/h3&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/images/mixtral/mistral_logo.png&quot; width=&quot;800&quot; alt=&quot;Mistral Logo&quot; /&gt;
+    &lt;figcaption&gt;Love a little WordArt throwback&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Since the infamous
+&lt;a href=&quot;https://x.com/MistralAI/status/1706877320844509405?s=20&quot;&gt;BitTorrent link launch&lt;/a&gt;
+of Mixtral, Mistral’s Mixture of Expert (MoE) model, there’s been renewed
+attention&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; paid to MoE models.&lt;/p&gt;
+
+&lt;p&gt;This week, Mistral released the &lt;a href=&quot;https://arxiv.org/pdf/2401.04088.pdf&quot;&gt;paper&lt;/a&gt;
+accompanying the &lt;a href=&quot;https://huggingface.co/mistralai/Mixtral-8x7B-v0.1&quot;&gt;model&lt;/a&gt;.
+This feels like a great time to dig into the details of the Mixtral model and
+the impact that it’s having on the MoE and LLM communities so far.&lt;/p&gt;
+
+&lt;h2 id=&quot;mixtral-and-the-moe-paradigm&quot;&gt;Mixtral and the MoE paradigm&lt;/h2&gt;
+
+&lt;p&gt;We discussed the intuition behind MoE models in
+&lt;a href=&quot;https://www.kolaayonrinde.com/blog/2023/10/22/moe-analogy.html&quot;&gt;An Analogy for Understanding Mixture of Expert Models&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In &lt;a href=&quot;https://arxiv.org/pdf/2101.03961.pdf&quot;&gt;Sparse Mixture of Experts&lt;/a&gt; (MoEs),
+we swap out the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MLP layers&lt;/code&gt; of the vanilla transformer for an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Expert Layer&lt;/code&gt;.
+The Expert Layer is made up of multiple MLPs called “Experts”. For each input
+we select one expert to send that input to. In this way, each token has
+different parameters applied to it. A dynamic routing mechanism decides how to
+map tokens to Experts.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/images/mixtral/switch_transformers.png&quot; width=&quot;800&quot; alt=&quot;Switch Transformer&quot; /&gt;
+    &lt;figcaption&gt;Sparse Expert Layer
+&lt;a href=&quot;https://arxiv.org/pdf/2101.03961.pdf&quot;&gt; Switch Transformer&lt;/a&gt; &lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This approach gives models more parameters &lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; without requiring more compute
+or latency for each forward pass. MoE models also typically have better sample
+efficiency - that is, their performance improves much faster than dense
+transformers in training, when given the same amount of compute. This isn’t
+quite a free lunch because it requires more memory to store the model for
+inference, but, if you have enough memory, it’s pretty great.&lt;/p&gt;
+
+&lt;p&gt;Mixtral 8x7B has the backbone of Mistral-7B (their previous model). As with
+Mistral-7B, Mixtral uses Group Query Attention and Sliding Window Attention. The
+main changes are a 32k context window out of the box and replacing the Feed
+Forward Networks (FFNs) with Mixture of Expert (MoE) layers.&lt;/p&gt;
+
+&lt;p&gt;Mixtral opts for an MoE layer with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;8 FFN experts&lt;/code&gt; which are sparsely activated
+by choosing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;top 2&lt;/code&gt; at each layer. &lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Having &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;8 experts&lt;/code&gt; means that where the original Mistral had a single FFN per
+transformer block, Mixtral has 8 separate FFNs. &lt;sup id=&quot;fnref:4&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Rather than each token rather than being processed by all the parameters, a
+routing network dynamically selects the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;top 2&lt;/code&gt; experts for each token depending
+on the content of the token itself. Hence, though the total parameter count is
+47B, the “active” parameter count (i.e. the number of parameters used for each
+forward pass) comes in at 13B. &lt;sup id=&quot;fnref:params&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:params&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Succinctly an MoE layer is given as:&lt;/p&gt;
+
+&lt;p&gt;$$
+\displaystyle \sum_{i=0}^{n-1}G(x)_i \cdot E_i(x),
+$$&lt;/p&gt;
+
+&lt;p&gt;where G is a gating function which is 0 everywhere except at 2 indices and where
+each $E_i$ is a single expert FFN. Note that in the above formula since most of
+the entries of the sum are zeros (as G(x) is zero for most i), we only have to
+compute some of the $E_i$s rather than all of them. This is where MoEs have
+computational efficiency advantages over using bigger models or using an
+ensemble of models.&lt;/p&gt;
+
+&lt;p&gt;There is an MoE layer in each of the transformer blocks (32 in this case) and
+hence we do this routing procedure 32 times for each forward pass. In a
+traditional ensemble model, N (8 in this case) models have their predictions
+averaged, so there are 8 token paths. We can compare the number of possible
+paths that each token could take in an MoE to these ensemble methods:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;At each layer we choose 2 of the 8 experts to process our token. There are
+$\binom{8}{2}$ = 28 ways to do this. And this happens at each of the 32 layers
+giving $28^32$ possible paths overall, which is huge&lt;sup id=&quot;fnref:5&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:5&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;! 🤯 The variety of
+possible paths here points towards increasingly Adaptive Computation in
+models. In Adaptive Computation, we consider models which handle different
+tokens with different parameters and different amounts of compute.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/images/mixtral/moe_layers_sketch.png&quot; width=&quot;800&quot; alt=&quot;MoE layers&quot; /&gt;
+    &lt;figcaption&gt;A diagram showing an example path that a token could take for the first two layers&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Up until now there have been a two barriers to truly performant and stably
+trainable MoEs:&lt;/p&gt;
+
+&lt;h4 id=&quot;problem-1-training-moes-properly-from-a-mathematical-perspective&quot;&gt;Problem 1: Training MoEs properly from a mathematical perspective&lt;/h4&gt;
+
+&lt;p&gt;MoE models have an inherently discrete step, the hard routing, and this
+typically harms the gradient flow. Typically we want fully differentiable
+functions for backprop and MoEs aren’t even continuous! Considering
+mathematically plausible approximations to the true gradient can hugely improve
+MoE training. Recent approaches like
+&lt;a href=&quot;https://arxiv.org/pdf/2310.00811.pdf&quot;&gt;Sparse Backpropagation&lt;/a&gt; and
+&lt;a href=&quot;https://arxiv.org/abs/2308.00951&quot;&gt;Soft MoE for encoders&lt;/a&gt; provide better
+gradient flow and hence more performant models.&lt;/p&gt;
+
+&lt;h4 id=&quot;problem-2-training-moes-efficiently&quot;&gt;Problem 2: Training MoEs efficiently&lt;/h4&gt;
+
+&lt;p&gt;Compared to their FLOP-class, MoEs are larger models. Their size means that
+there are real benefits to effective parallelisation and minimising
+communication costs. Many frameworks such as
+&lt;a href=&quot;https://arxiv.org/pdf/2201.05596.pdf&quot;&gt;DeepSpeed MoE&lt;/a&gt; now support MoE training
+in a fairly hardware efficient way. &lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Having overcome both of these issues, we’re now ready to use MoEs more in
+practise.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;notes-on-mixtrals-paper&quot;&gt;Notes on Mixtral’s paper&lt;/h2&gt;
+
+&lt;h3 id=&quot;evals&quot;&gt;Evals&lt;/h3&gt;
+
+&lt;p&gt;The Mixtral base model outperforms popular (and larger) models like Llama 2 70B,
+Gemini Pro and GPT-3.5 on most benchmarks. Note that these models are not only
+larger in total parameter count but are also larger in active parameter count
+too!&lt;/p&gt;
+
+&lt;p&gt;At the time of writing, Mixtral is the best open-source model and the 3rd best
+Chat model, only beaten by GPT-4 and Claude 2.0 variants.&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/images/mixtral/llm_leaderboard.png&quot; width=&quot;800&quot; alt=&quot;LLM Leaderboard&quot; /&gt;
+    &lt;figcaption&gt;&lt;/figcaption&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;context-window&quot;&gt;Context Window&lt;/h3&gt;
+
+&lt;p&gt;Mixtral shows impressive use of its whole 32k context window. The model has
+relatively good recall even for mid-context tokens.&lt;/p&gt;
+
+&lt;div align=&quot;center&quot;&gt;
+  &lt;figure&gt;
+    &lt;img src=&quot;/blog/images/mixtral/context_window.png&quot; width=&quot;800&quot; alt=&quot;Graph of Long Context Performance&quot; /&gt;
+    &lt;!-- &lt;figcaption&gt;Mixtral maintains good performance across its context window and seems to effectively use all of the context&lt;/figcaption&gt; --&gt;
+    &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;instruction-fine-tuning&quot;&gt;Instruction Fine-Tuning&lt;/h3&gt;
+
+&lt;p&gt;Along with the base model, Mistral also released Instruction Fine-Tuned Chat and
+Assistant models. For alignment, they opted for Direct Preference Optimisation
+(DPO) which is proving to be a powerful and less finicky alternative to the
+traditional RLHF. &lt;sup id=&quot;fnref:lambert&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:lambert&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;interpretability&quot;&gt;Interpretability&lt;/h3&gt;
+
+&lt;p&gt;One hypothesis about MoEs is that some experts might specialise in a particular
+domain (e.g. mathematics, biology, code, poetry etc.). This hypothesis is an old
+one which has consistently been shown to be mistaken in the literature. Here,
+the authors confirm, as in previous MoE papers, there is little difference in
+the distribution of experts used for different domains (although they report
+being surprised by this finding!). Often experts seem to specialise
+syntactically (e.g. an expert for punctuation or whitespace), rather than
+semantically (an expert for neuroscience). &lt;sup id=&quot;fnref:specialisation&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:specialisation&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;8&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Although the distribution of experts is fairly uniform overall, interestingly
+two adjacent tokens are much more likely to be processed by the same expert,
+than we might naively predict. In other words, once an expert sees one token,
+it’s quite likely to also see the next one - experts like to alley-oop
+themselves! 🏀&lt;/p&gt;
+
+&lt;p&gt;This recent &lt;a href=&quot;https://arxiv.org/pdf/2312.17238.pdf&quot;&gt;paper&lt;/a&gt; details ways to
+exploit this alley-oop property by caching the recently used expert weights in
+fast memory.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;As I’ve noted
+&lt;a href=&quot;https://www.kolaayonrinde.com/blog/2023/11/03/dictionary-learning.html#whatsnext:~:text=%F0%9F%94%B3-,Modularity,-As%20mentioned%20above&quot;&gt;previously&lt;/a&gt;,
+I’m excited about the explicit modularity in MoE models for increased
+interpretability&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;notable-omissions&quot;&gt;Notable omissions&lt;/h3&gt;
+
+&lt;p&gt;There’s little information in the paper about expert balancing techniques. Many
+different auxiliary losses have been proposed for expert balancing and it would
+be cool to see which loss function Mistral found to work well at this scale.&lt;/p&gt;
+
+&lt;p&gt;The authors are also quite hush about the pretrain, instruction or feedback
+datasets used to train the model. Given the impressive performance, it’s quite
+likely that there’s some secret sauce in the dataset compilation and filtering.
+It seems increasingly likely that data will be a moat for Foundation Model
+providers &lt;sup id=&quot;fnref:moat&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:moat&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;mixtral-in-the-wild&quot;&gt;Mixtral in the wild&lt;/h2&gt;
+
+&lt;h3 id=&quot;impact-for-on-device-llms&quot;&gt;Impact for On Device LLMs&lt;/h3&gt;
+
+&lt;p&gt;MoEs win by having increased performance with faster inference. Founder Sharif
+Shameem &lt;a href=&quot;https://x.com/sharifshameem/status/1734470299314459108?s=20&quot;&gt;writes&lt;/a&gt;,
+“The Mixtral MoE model genuinely feels like an inflection point — a true GPT-3.5
+level model that can run at 30 tokens/sec on an M1 MacBook Pro. Imagine all the
+products now possible when inference is 100% free and your data stays on your
+device!”&lt;/p&gt;
+
+&lt;p&gt;Indeed since the launch of Mixtral, it’s been used in many applications from
+&lt;em&gt;the enterprise&lt;/em&gt; to &lt;em&gt;local chatbots&lt;/em&gt; to &lt;em&gt;DIY Home Assistants à la Siri&lt;/em&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;As many people use MoE models on-device for the first time, I expect that we
+will start to see more methods which speed up MoE inference. The
+&lt;a href=&quot;https://arxiv.org/pdf/2312.17238.pdf&quot;&gt;Fast MoE Inference paper&lt;/a&gt; and MoE
+specific quantisation like &lt;a href=&quot;https://arxiv.org/pdf/2310.16795.pdf&quot;&gt;QMoE&lt;/a&gt; are all
+great steps in this direction.&lt;/p&gt;
+
+&lt;p&gt;In particular, Quantization can be thought of as storing a model compressed like
+we do for audio in MP3s. We degrade the quality model slightly and get massive
+decreases in the memory that it requires. We can typically quantise MoEs even
+more aggressively than dense models and retain strong performance.&lt;/p&gt;
+
+&lt;h3 id=&quot;impact-for-foundation-model-companies&quot;&gt;Impact for Foundation Model Companies&lt;/h3&gt;
+
+&lt;p&gt;Mistral was only started a matter of months ago with a super lean team and is
+already SOTA for Open Source models. This is impressive from their team but it
+may also suggest that Foundation Models are being commodified real quick.&lt;/p&gt;
+
+&lt;p&gt;Originally Mistral were offering Mixtral behind their API for \$1.96 per
+million tokens. Considering GPT-4 is $10-30 at the time of writing, this seemed
+fair for a hosted API. Within days different inference providers undercut
+Mistral
+&lt;a href=&quot;https://twitter.com/JosephJacks_/status/1735756308496667101&quot;&gt;significantly&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote class=&quot;twitter-tweet&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Last week &lt;a href=&quot;https://twitter.com/MistralAI?ref_src=twsrc%5Etfw&quot;&gt;@MistralAI&lt;/a&gt; launched pricing for the Mixtral MoE: $2.00~ / 1M tokens.&lt;br /&gt;&lt;br /&gt;Hours later &lt;a href=&quot;https://twitter.com/togethercompute?ref_src=twsrc%5Etfw&quot;&gt;@togethercompute&lt;/a&gt; took the weights and dropped pricing by 70% to $0.60 / 1M.&lt;br /&gt;&lt;br /&gt;Days later &lt;a href=&quot;https://twitter.com/abacusai?ref_src=twsrc%5Etfw&quot;&gt;@abacusai&lt;/a&gt; cut 50% deeper to $0.30 / 1M.&lt;br /&gt;&lt;br /&gt;Yesterday &lt;a href=&quot;https://twitter.com/DeepInfra?ref_src=twsrc%5Etfw&quot;&gt;@DeepInfra&lt;/a&gt; went to $0.27 / 1M.&lt;br /&gt;&lt;br /&gt;Who’s next ??? 📉&lt;/p&gt;&amp;mdash; JJ — oss/acc (@JosephJacks_) &lt;a href=&quot;https://twitter.com/JosephJacks_/status/1735756308496667101?ref_src=twsrc%5Etfw&quot;&gt;December 15, 2023&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async=&quot;&quot; src=&quot;https://platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;There was even one provider who was giving away tokens &lt;em&gt;for free&lt;/em&gt;. I know a race
+to the bottom when I see one…&lt;/p&gt;
+
+&lt;p&gt;The consumer/developer is truly winning here but it reiterates the point that
+Foundation Model companies should expect the value of tokens to fall
+&lt;em&gt;dramatically&lt;/em&gt;.
+&lt;a href=&quot;https://www.amazon.co.uk/Zero-One-Notes-Start-Future/dp/0753555204&quot;&gt;Competition is for Losers&lt;/a&gt;,
+as Peter Thiel might say; it’s very possible to compete away all the profits to
+zero. &lt;sup id=&quot;fnref:altman&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:altman&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;10&lt;/a&gt;&lt;/sup&gt;. It increasingly looks like most of the value captured from an
+LLM business perspective will likely be in the application layer (e.g.
+Perplexity, Copilot) and the infrastructure layer (e.g. AWS/Azure).&lt;/p&gt;
+
+&lt;h3 id=&quot;impact-for-the-scientific-community&quot;&gt;Impact for the Scientific Community&lt;/h3&gt;
+
+&lt;p&gt;Mixtral is a huge win for the scientific and interpretability communities. We
+now finally have a model which is comfortably better than GPT3.5 and whose
+weights are freely available to researchers.&lt;/p&gt;
+
+&lt;p&gt;In addition, given Mixtral shares the same backbone as the previous Mistral 7B,
+it seems plausible some weights were re-used as initialisations for Mixtral.
+This approach is known in the literature as
+&lt;a href=&quot;https://arxiv.org/pdf/2212.05055.pdf&quot;&gt;Sparse Upcycling&lt;/a&gt;. If Sparse Upcycling
+works, this suggests that the compute required to make great MoE models might be
+much less than previous thought. Researchers can take advantage of existing
+models like Llama 2 etc. rather than having to pretrain entirely from scratch,
+which completely changes which projects are feasible for academics and the
+GPU-poor.&lt;/p&gt;
+
+&lt;h4 id=&quot;open-source-ml-in-the-age-of-adaptive-computation&quot;&gt;Open Source ML in the Age of Adaptive Computation&lt;/h4&gt;
+
+&lt;p&gt;“In 2012 we were detecting cats and dogs and in 2022 we were writing human-like
+pottery, generating beautiful and novel imagery, solving the protein folding
+problem and writing code. Why is that?”&lt;/p&gt;
+
+&lt;p&gt;Arthur Mensch, Mistral co-founder, suggests most of the reason is “the free flow
+of information. You had academic labs [and] very big industry labs communicating
+all the time about their results and building on top of others’ results. That’s
+the way we [significantly improved] the architecture and training techniques. We
+made everything work as a community”.&lt;/p&gt;
+
+&lt;p&gt;We’re not at the end of the ML story just yet. There’s still science to be done
+and inventions to be discovered so we still need the free flow of information.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In this house we love Open Source models and papers. 🤗&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Expect MoEs to become even more important for 2024. The age of
+&lt;a href=&quot;https://github.com/koayon/awesome-adaptive-computation&quot;&gt;Adaptive Computation&lt;/a&gt;
+is here.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;If I may &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;which is more knowledge in some sense &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;This is a slight reversal of recent work as many papers had followed the
+Switch Transformer in only choosing the top 1 expert per layer. We expect
+that choosing 2 experts allows for more expressivity, more stable training
+and better gradient flow which is traded off against increased parallel
+computation in each forward pass. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:4&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;Early MoEs like the Switch Transformer were using 100s of experts per layer.
+This always seemed a little excessive and working on these models, a good
+heuristic for choosing the expert number hyperparameter is either the number
+of experts that will fit into your single GPU memory if you’re mostly doing
+single batch inference or the number of GPUs that you could do expert
+parallelism on at inference time if you’re running a high bandwidth API.
+With this in mind 8 experts seems like a nice middle ground right now for
+users of an open-source product. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:params&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;This is slightly less than 8x7 =56 total parameters as because attention and
+embedding parameters are &lt;em&gt;not&lt;/em&gt; duplicated). &lt;a href=&quot;#fnref:params&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:5&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;In fact this is quite the understatement, all of these paths are weighted
+according to the router logits so there’s even more nuance than this in the
+possible paths that tokens can take. &lt;a href=&quot;#fnref:5&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:lambert&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;Nathan Lambert has a great explainer on DPO
+&lt;a href=&quot;https://www.interconnects.ai/p/the-dpo-debate&quot;&gt;here&lt;/a&gt; &lt;a href=&quot;#fnref:lambert&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:specialisation&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;It may also be the case that their natural semantic specialisation is not
+very clear to human researchers &lt;a href=&quot;#fnref:specialisation&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:moat&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;at least for companies that don’t produce applications built on top of the
+models. &lt;a href=&quot;#fnref:moat&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:altman&quot; role=&quot;doc-endnote&quot;&gt;
+
+      &lt;p&gt;Sam Altman has colourfully referred to this as the marginal cost of
+intelligence going to zero &lt;a href=&quot;#fnref:altman&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><category term="machine-learning" /><category term="mixture-of-experts" /><category term="adaptive-computation" /><summary type="html">Can You Feel The MoE?</summary></entry><entry><title type="html">Descriptive Matrix Operations with Einops</title><link href="http://localhost:4000/blog/2024/01/08/einops.html" rel="alternate" type="text/html" title="Descriptive Matrix Operations with Einops" /><published>2024-01-08T00:00:00+00:00</published><updated>2024-01-08T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/08/einops</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/08/einops.html">&lt;h4 id=&quot;tldr-use-einopseinsum&quot;&gt;tldr; use einops.einsum&lt;/h4&gt;
 
 &lt;p&gt;Machine learning is built of matrix algebra. Einstein summation notation (or
 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;einsum&lt;/code&gt; for short) makes matrix operations more intuitive and readable.&lt;/p&gt;
