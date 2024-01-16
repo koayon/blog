@@ -1,0 +1,353 @@
+---
+layout: post
+title: "The Impact of Mixtral"
+stub: mixtral
+tags: machine-learning mixture-of-experts adaptive-computation
+toc: true
+---
+
+### Can You Feel The MoE?
+
+Since the infamous BitTorrent link launch of Mixtral, Mistral's Mixture of
+Expert (MoE) model, there's been renewed attention [Footnote: if I may] paid to
+MoE models.
+
+This week, Mistral released the paper accompanying the model which is a great
+time to dig into the details of the Mixtral model and the impact that it’s
+having on the MoE and LLM communities so far.
+
+## Mixtral and the MoE paradigm
+
+We previously discussed the intuition behind MoE models in
+[An Analogy for Understanding Mixture of Expert Models](https://www.kolaayonrinde.com/blog/2023/10/22/moe-analogy.html):
+
+> In Sparse Mixture of Experts (MoEs), we swap out the MLP layers of the vanilla
+> transformer for an Expert Layer. The Expert Layer is made up of multiple MLPs
+> called “Experts”. For each input we select one expert to send that input to.
+> In this way, each token has different parameters applied to it. A dynamic
+> routing mechanism decides how to map tokens to Experts4. Sparse Expert Layer
+> (Switch Transformer)
+
+This approach gives models more parameters [footnote: i.e. more knowledge in
+some sense] without requiring more compute or latency for each forward pass. MoE
+models also typically have better sample efficiency - that is, their performance
+improves much faster than dense transformers in training, when given the same
+amount of compute. This isn’t quite a free lunch because it requires more memory
+to store the model for inference, but, if you have enough memory, it’s pretty
+great.
+
+Mixtral 8x7B has the backbone of Mistral-7B (their previous model) with most of
+the same properties like Group Query Attention and Sliding Window Attention. The
+main changes are a 32k context window out of the box and replacing the Feed
+Forward Networks (FFNs) with Mixture of Expert (MoE) layers.
+
+Mixtral opts for an MoE layer with 8 FFN experts which are sparsely activated by
+choosing the top 2 at each layer. [Footnote: This is a slight reversal of recent
+work as many papers had followed the Switch Transformer in only choosing the top
+1 expert per layer. We expect that choosing 2 experts allows for more
+expressivity, more stable training and better gradient flow which is traded off
+against increased parallel computation in each forward pass.]
+
+Having 8 experts means that where the original Mistral had a single FFN per
+transformer block, Mixtral has 8 separate FFNs. It thus has 8x the FFN
+parameters (although slightly less than 8x the overall parameter count because
+attention and embedding parameters are not duplicated). [Footnote: Early MoEs
+like the Switch Transformer were using 100s of experts per layer. This always
+seemed a little excessive and working on these models, a good heuristic for
+choosing the expert number hyperparameter is either the number of experts that
+will fit into your single GPU memory if you’re mostly doing single batch
+inference or the number of GPUs that you could do expert parallelism on at
+inference time if you’re running a high bandwidth API. With this in mind 8
+experts seems like a nice middle ground right now for users of an open-source
+product.]
+
+Rather than each token rather than being processed by all the parameters, a
+routing network dynamically selects the top 2 experts for each token depending
+on the content of the token itself. Hence, though the total parameter count is
+47B, the “active” parameter count (i.e. the number of parameters used for each
+forward pass) comes in at 13B.
+
+Succinctly an MoE layer is given as:
+
+where G is a gating function which is 0 everywhere except at 2 indices and where
+each E_i is a single expert FFN. Note that in the above formula since most of
+the entries of the sum are zeros (as G(x) is zero for most i), we only have to
+compute some of the E_i s rather than all of them. This is where MoEs have
+computational efficiency advantages over using bigger models or using an
+ensemble of models.
+
+There is an MoE layer in each of the transformer blocks (32 in this case) and
+hence we do this routing procedure 32 times for each forward pass. It’s
+illustrative to compare the number of possible paths that each token could take
+in an MoE compared to in traditional ensemble methods which might have 8 model
+predictions which are aggregated at the end:
+
+> At each layer we choose 2 of the 8 experts to process our token. There are 8C2
+> = 28 ways to do this. And this happens at each of the 32 layers giving 28^32
+> possible paths overall, which is huge! 🤯 [footnote: In fact this is quite the
+>
+> > understatement, all of these paths are weighted according to the router
+> > logits > so there's even more nuance than this in the possible paths that
+> > tokens can > take.] The variety of possible paths here points towards
+> > increasingly Adaptive Computation in models. In Adaptive Computation, we
+> > consider models which handle different tokens with different parameters and
+> > different amounts of compute.
+
+Up until now there have been a two barriers to truly performant and stably
+trainable MoEs: Problem 1: Training MoEs properly from a mathematical
+perspective MoE models have an inherently discrete step, the hard routing, and
+this typically harms the gradient flow. Typically we want fully differentiable
+functions for backprop and MoEs aren’t even continuous! Thinking carefully about
+mathematically plausible approximations to the true gradient can hugely improve
+MoE training. Recent approaches like Sparse Backpropagation and Soft MoE for
+encoders help with training by providing better gradient flow. Problem 2:
+Training MoEs efficiently Compared to their FLOP-class, MoEs are larger models
+and hence require careful thoughts about parallelisation and minimising
+communication costs. Many frameworks such as DeepSpeed MoE now support MoE
+training in a fairly hardware efficient way. Notes on Mixtral’s paper Evals The
+Mixtral base model outperforms Llama 2 70B, Gemini Pro and GPT-3.5 on most
+benchmarks. Mixtral’s performance here is impressive as both of these models are
+much larger than Mixtral in both raw and active parameter count. At the time of
+writing, Mixtral is the best open-source model and the 3rd best Chat model, only
+beaten by GPT-4 and Claude 2.0 variants.
+
+Context Window Mixtral shows impressive use of its whole 32k context window,
+rather than suffering from poor recall for mid-context tokens.
+
+Instruction Fine-Tuning Along with the base model, Mistral also released
+Instruction Fine-Tuned Chat and Assistant models. Instead of RLHF, they opted
+for Direct Preference Optimisation (DPO) which is proving to be a powerful and
+less finicky alternative to the traditional RLHF. [Footnote: Nathan Lambert has
+a great explainer on DPO here]
+
+Not much information is given on either the pretrain, instruction or feedback
+datasets - given the impressive performance it’s quite likely that there’s some
+secret sauce in the dataset compilation and filtering. Interpretability One
+hypothesis about MoEs is that some experts might specialise in a particular
+domain (e.g. mathematics, biology, code, poetry etc.). This hypothesis is an old
+one which has consistently been shown to be mistaken in the literature. Here,
+the authors confirm, as in previous MoE papers, there is little difference in
+the distribution of experts used for different domains (although they report
+being surprised by this finding!). Often experts seem to specialise
+syntactically (e.g. an expert for punctuation or whitespace), rather than
+semantically (an expert for neuroscience). [Footnote: It may also be the case
+that their natural semantic specialisation is not very clear to human
+researchers]
+
+Although the distribution of experts is fairly uniform overall, interestingly
+two adjacent tokens are much more likely to be processed by the same expert,
+than we might naively predict. In other words, once an expert sees one token,
+it’s quite likely to also see the next one - experts like to alley-oop
+themselves! 🏀
+
+This recent paper details ways to exploit this property by caching the recently
+used expert weights in fast memory.
+
+As I've noted previously, I’m excited about the explicit modularity in MoE
+models for increased interpretability. Notable omissions No information is given
+on which, if any, techniques were used to ensure that the distribution of expert
+usage was balanced across training. Many different auxiliary losses have been
+proposed for this and it would be cool to see which loss function Mistral found
+to work well at this scale.
+
+The authors are also quite hush about the data used to train the model. It seems
+increasingly likely that data will be a moat for Foundation Model providers
+[footnote: at least for companies that don’t produce applications built on top
+of the models.] Mixtral in the wild Impact for On Device LLMs MoEs win by having
+increased performance with faster inference. Founder Sharif Shameem writes, “The
+Mixtral MoE model genuinely feels like an inflection point — a true GPT-3.5
+level model that can run at 30 tokens/sec on an M1 MacBook Pro. Imagine all the
+products now possible when inference is 100% free and your data stays on your
+device!” Indeed since the launch of Mixtral, it’s been used in many applications
+from the enterprise to local chatbots to DIY Home Assistants à la Siri.
+
+—
+
+As many people use MoE models on-device for the first time, I expect that we
+will start to see more methods which speed up MoE inference. The Fast MoE
+Inference paper and MoE specific quantisation like QMoE are all great steps in
+this direction.
+
+In particular, Quantization can be thought of as storing a model compressed like
+we do for audio in MP3s. We degrade the quality model slightly and get massive
+decreases in the memory that it requires. MoEs can typically be quantised even
+more aggressively than dense models and retain the same performance. Impact for
+Foundation Model Companies Mistral was only started a matter of months ago with
+a super lean team and is already SOTA for Open Source models. This is super
+impressive from their quite incredible team but it may also suggest that
+Foundation Models are being commodified real quick.
+
+Originally Mistral were offering Mixtral behind their API for $1.96/million
+tokens. Considering GPT-4 is $10-30 at the time of writing (and used to be more
+than this!), Mistral’s price point makes sense for a hosted API. Within days
+different inference providers undercut Mistral significantly…
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Last week <a href="https://twitter.com/MistralAI?ref_src=twsrc%5Etfw">@MistralAI</a> launched pricing for the Mixtral MoE: $2.00~ / 1M tokens.<br><br>Hours later <a href="https://twitter.com/togethercompute?ref_src=twsrc%5Etfw">@togethercompute</a> took the weights and dropped pricing by 70% to $0.60 / 1M.<br><br>Days later <a href="https://twitter.com/abacusai?ref_src=twsrc%5Etfw">@abacusai</a> cut 50% deeper to $0.30 / 1M.<br><br>Yesterday <a href="https://twitter.com/DeepInfra?ref_src=twsrc%5Etfw">@DeepInfra</a> went to $0.27 / 1M.<br><br>Who’s next ??? 📉</p>&mdash; JJ — oss/acc (@JosephJacks_) <a href="https://twitter.com/JosephJacks_/status/1735756308496667101?ref_src=twsrc%5Etfw">December 15, 2023</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+There was even one provider who was giving away tokens for free. I know a race
+to the bottom when I see one…
+
+The consumer/developer is truly winning here but it reiterates the point that
+Foundation Model companies should expect the value of tokens to fall
+dramatically. Competition is for Losers, as Peter Theil might say; it’s very
+possible to compete away all the profits to zero. [Footnote: Sam Altman has
+colourfully referred to this as the marginal cost of intelligence going to
+zero]. It increasingly looks like most of the value captured from an LLM
+business perspective will likely be in the application layers (e.g. Perplexity,
+Copilot) and the infrastructure layers (e.g. AWS/Azure). Impact for the
+Scientific Community Mixtral is a huge win for the scientific and
+interpretability communities. We now finally have a model which is comfortably
+better than GPT3.5 and whose weights are freely available to researchers.
+
+In addition, given Mixtral shares the same backbone as the previous Mistral 7B,
+it seems plausible some weights were re-used as initialisations in order to
+accelerate the training of Mixtral. This approach is known in the literature as
+Sparse Upcycling. If Sparse Upcycling works, this suggests that the compute
+required to make great MoE models might be much less than previous thought.
+Researchers can take advantage of existing models like Llama 2 etc. rather than
+having to pretrain entirely from scratch.
+
+Open Source ML in the Age of Adaptive Computation
+
+“In 2012 we were detecting cats and dogs and in 2022 we were writing human-like
+pottery, generating beautiful and novel imagery, solving the protein folding
+problem and writing code. Why is that?” Arthur Mensch, Mistral cofounder,
+suggests most of the reason is “the free flow of information. You had academic
+labs [and] very big industry labs communicating all the time about their results
+and building on top of others’ results. That’s the way we [significantly
+improved] the architecture and training techniques. We made everything work as a
+community”.
+
+We’re not at the end of the ML story just yet. There’s still science to be done
+and inventions to be discovered so we still need the free flow of information.
+In this house we love Open Source models and papers. 🤗
+
+Expect MoEs to become even more important for 2024. The age of Adaptive
+Computation is here.
+
+#### tldr; use einops.einsum
+
+Machine learning is built of matrix algebra. Einstein summation notation (or
+`einsum` for short) makes matrix operations more intuitive and readable.
+
+As you may know, the matrix multiplication that you learned in high school...
+
+<div align="center">
+  <figure>
+    <img src="/blog/images/einops/matmul.png" width="500" alt="3x3 matrix multiplication">
+    <figcaption>Calculating the 0,0th element of a matrix multiplication </figcaption>
+    </figure>
+</div>
+
+Can be written algebraically as:
+
+$$A_{ik} = \sum_j B_{ij} C_{jk}$$
+
+In other words in order to get the (1,2) element of A we calculate:
+
+$$A_{1,2} = \sum_j B_{1j} C_{j2}$$
+
+i.e. take the dot product of the 1st row of B with the 2nd column of C.
+
+<br>
+
+---
+
+<br>
+
+In Einsum notation, to avoid having so many sigmas ( $\sum s$ ) flying around we
+adopt the convention that any indices that appear more than once are being
+summed over. Hence:
+
+$$A_{ik} = \sum_j B_{ij} C_{jk}$$
+
+can be written more simply as...
+
+$$A_{ik} = B_{ij} C_{jk}$$
+
+<br>
+
+---
+
+<br>
+
+Both torch and numpy have einsum packages to allow you to use einsum notation
+for matrix operations. For example, we can write the above matrix multiplication
+in torch as:
+
+```python
+import torch as t
+
+A = t.einsum("ij,jk->ik", B, C)
+```
+
+The convention is that if a dimension only appears on the left side of the
+einsum then it's summed over. So in the above we're summing over the j dimension
+and keeping the i and k dimensions.
+
+Great!
+
+One issue when using torch.einsum though is that it's not necessarily super
+clear what each letter means:
+
+- Was **i** a horizontal index (as in x,y coordinates) or is it a vertical index
+  (as in tensor indexing?)
+- Was **e** embedding dimension or expert number?
+- Was **h** height, head dimension or hidden dimension?
+
+To get around this ambiguity, it's common to see PyTorch code where in the
+docstring each of the letters is defined. This isn't a very natural pattern it's
+like if all of your variable names in code had to be single letters and you had
+another file which would act as a dictionary for what each letter actually
+meant! _shudders_.
+
+One of the most useful lines of the `Zen of Python` is
+`Explicit is better than Implicit`. Following this principle, we would like to
+be able to write the variable names in the einsum string itself. Without this,
+it's harder to read and means you're always looking back when trying to
+understand or debug the code.
+
+### Enter einops
+
+Einops is a tensor manipulation package that can be used with PyTorch, NumPy,
+Tensorflow and Jax. It offers a nice API but we'll focus on einsums which we can
+now use with full variable names rather than single letters! It makes your ML
+code so much clearer instantly.
+
+For example let's write the multi-query attention operation.
+
+```python
+import torch as t
+from einops import einsum
+
+def multi_query_attention(Q: t.Tensor, K: t.Tensor, V: t.Tensor) -> t.Tensor
+    _, _, head_dim = K.shape
+    attn_scores = einsum(Q, K,
+        "batch head seq1 head_dim, batch seq2 head_dim -> batch head seq1 seq2")
+    attn_matrix = t.softmax(attn_scores / head_dim ** 0.5)
+    out =  einsum(attn_matrix, V,
+        "batch head seq1 seq2, batch seq2 head_dim -> batch head seq1 head_dim")
+    return out
+
+```
+
+The nice things about this are that we didn't need to write a glossary for what
+random variables `b` or `h` were supposed to mean, you can just read it off.
+
+Also note that typically when computing attention, we need to calculate $QK^T$.
+Here we didn't need to worry about how exactly to take the transpose - we just
+give the dimension names and the correct transposes are done for the
+multiplication to make sense!
+
+Einops also offers great functions for rearranging, reducing and repeating
+tensors which are also very useful.
+
+<div align="center">
+  <figure>
+    <img src="/blog/images/einops/the_world_if_einops.jpg" width="800" alt="The World If Everyone Used Einops">
+    <figcaption></figcaption>
+    </figure>
+</div>
+
+Just trying to make those inscrutable matrix multiplications, a little more
+scrutable. ￼
