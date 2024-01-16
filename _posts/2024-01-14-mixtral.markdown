@@ -158,7 +158,9 @@ Compared to their FLOP-class, MoEs are larger models. Their size means that
 there are real benefits to effective parallelisation and minimising
 communication costs. Many frameworks such as
 [DeepSpeed MoE](https://arxiv.org/pdf/2201.05596.pdf) now support MoE training
-in a fairly hardware efficient way. <br>
+in a fairly hardware efficient way.
+
+<br>
 
 Having overcome both of these issues, we're now ready to use MoEs more in
 practise.
