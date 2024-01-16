@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-16T13:33:38+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">The Impact of Mixtral</title><link href="http://localhost:4000/blog/2024/01/14/mixtral.html" rel="alternate" type="text/html" title="The Impact of Mixtral" /><published>2024-01-14T00:00:00+00:00</published><updated>2024-01-14T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/14/mixtral</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/14/mixtral.html">&lt;h3 id=&quot;can-you-feel-the-moe&quot;&gt;Can You Feel The MoE?&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-16T19:49:38+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">The Impact of Mixtral</title><link href="http://localhost:4000/blog/2024/01/14/mixtral.html" rel="alternate" type="text/html" title="The Impact of Mixtral" /><published>2024-01-14T00:00:00+00:00</published><updated>2024-01-14T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/14/mixtral</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/14/mixtral.html">&lt;h3 id=&quot;can-you-feel-the-moe&quot;&gt;Can You Feel The MoE?&lt;/h3&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -285,7 +285,7 @@ GPU-poor.&lt;/p&gt;
 &lt;h4 id=&quot;open-source-ml-in-the-age-of-adaptive-computation&quot;&gt;Open Source ML in the Age of Adaptive Computation&lt;/h4&gt;
 
 &lt;p&gt;“In 2012 we were detecting cats and dogs and in 2022 we were writing human-like
-pottery, generating beautiful and novel imagery, solving the protein folding
+poetry, generating beautiful and novel imagery, solving the protein folding
 problem and writing code. Why is that?”&lt;/p&gt;
 
 &lt;p&gt;Arthur Mensch, Mistral co-founder, suggests most of the reason is “the free flow

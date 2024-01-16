@@ -334,7 +334,7 @@ GPU-poor.
 #### Open Source ML in the Age of Adaptive Computation
 
 “In 2012 we were detecting cats and dogs and in 2022 we were writing human-like
-pottery, generating beautiful and novel imagery, solving the protein folding
+poetry, generating beautiful and novel imagery, solving the protein folding
 problem and writing code. Why is that?”
 
 Arthur Mensch, Mistral co-founder, suggests most of the reason is “the free flow
