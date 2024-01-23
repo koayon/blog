@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-16T20:57:22+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">The Impact of Mixtral</title><link href="http://localhost:4000/blog/2024/01/14/mixtral.html" rel="alternate" type="text/html" title="The Impact of Mixtral" /><published>2024-01-14T00:00:00+00:00</published><updated>2024-01-14T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/14/mixtral</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/14/mixtral.html">&lt;h3 id=&quot;can-you-feel-the-moe&quot;&gt;Can You Feel The MoE?&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-23T01:09:43+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">The Impact of Mixtral</title><link href="http://localhost:4000/blog/2024/01/14/mixtral.html" rel="alternate" type="text/html" title="The Impact of Mixtral" /><published>2024-01-14T00:00:00+00:00</published><updated>2024-01-14T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/14/mixtral</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/14/mixtral.html">&lt;h3 id=&quot;can-you-feel-the-moe&quot;&gt;Can You Feel The MoE?&lt;/h3&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -355,8 +355,9 @@ possible paths that tokens can take. &lt;a href=&quot;#fnref:5&quot; class=&quo
     &lt;/li&gt;
     &lt;li id=&quot;fn:specialisation&quot; role=&quot;doc-endnote&quot;&gt;
 
-      &lt;p&gt;It may also be the case that their natural semantic specialisation is not
-very clear to human researchers &lt;a href=&quot;#fnref:specialisation&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;It may also be the case that experts indeed do specialise semantically but
+that their natural semantic specialisation is not very clear to human
+researchers &lt;a href=&quot;#fnref:specialisation&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
     &lt;li id=&quot;fn:moat&quot; role=&quot;doc-endnote&quot;&gt;
 

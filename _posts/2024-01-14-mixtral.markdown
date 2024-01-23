@@ -223,8 +223,9 @@ syntactically (e.g. an expert for punctuation or whitespace), rather than
 semantically (an expert for neuroscience). [^specialisation]
 
 [^specialisation]:
-    It may also be the case that their natural semantic specialisation is not
-    very clear to human researchers
+    It may also be the case that experts indeed do specialise semantically but
+    that their natural semantic specialisation is not very clear to human
+    researchers
 
 Although the distribution of experts is fairly uniform overall, interestingly
 two adjacent tokens are much more likely to be processed by the same expert,
