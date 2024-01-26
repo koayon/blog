@@ -176,12 +176,16 @@ code so much clearer instantly.</p>
 <a href="https://paperswithcode.com/method/multi-query-attention">multi-query attention</a>
 operation.</p>
 
+<p><br></p>
+
 <div align="center">
   <figure>
     <img src="/blog/images/einops/multi-query-attention.png" width="800" alt="Multi Query Attention">
     <figcaption>Multi-Query Attention is a type of attention where we have multiple query heads (like in Multi-Head Attention) but only a single key and value head per layer</figcaption>
     </figure>
 </div>
+
+<p><br></p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="n">t</span>
 <span class="kn">from</span> <span class="nn">einops</span> <span class="kn">import</span> <span class="n">einsum</span>
@@ -201,6 +205,8 @@ operation.</p>
 for</em> $$QK^T$$ <em>but we don’t want to sum over it. To solve this we give them two
 different names like <code class="language-plaintext highlighter-rouge">seq1</code> and <code class="language-plaintext highlighter-rouge">seq2</code></em></p>
 
+<hr>
+
 <p>The nice things about this are that we didn’t need to write a glossary for what
 random variables <code class="language-plaintext highlighter-rouge">b</code> or <code class="language-plaintext highlighter-rouge">h</code> were supposed to mean, we can just read it off.</p>
 
@@ -219,8 +225,8 @@ tensors which are also very useful.</p>
     </figure>
 </div>
 
-<p>Just trying to make those inscrutable matrix multiplications, a little more
-scrutable. ￼</p>
+<p>That’s all! Just trying to make those inscrutable matrix multiplications, a
+little more scrutable. ￼</p>
 
 <p><br>
 <br></p>

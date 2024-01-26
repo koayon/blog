@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-26T08:30:41+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">The Impact of Mixtral</title><link href="http://localhost:4000/blog/2024/01/14/mixtral.html" rel="alternate" type="text/html" title="The Impact of Mixtral" /><published>2024-01-14T00:00:00+00:00</published><updated>2024-01-14T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/14/mixtral</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/14/mixtral.html">&lt;h3 id=&quot;can-you-feel-the-moe&quot;&gt;Can You Feel The MoE?&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-01-26T08:37:37+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">The Impact of Mixtral</title><link href="http://localhost:4000/blog/2024/01/14/mixtral.html" rel="alternate" type="text/html" title="The Impact of Mixtral" /><published>2024-01-14T00:00:00+00:00</published><updated>2024-01-14T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/01/14/mixtral</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/14/mixtral.html">&lt;h3 id=&quot;can-you-feel-the-moe&quot;&gt;Can You Feel The MoE?&lt;/h3&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -465,12 +465,16 @@ code so much clearer instantly.&lt;/p&gt;
 &lt;a href=&quot;https://paperswithcode.com/method/multi-query-attention&quot;&gt;multi-query attention&lt;/a&gt;
 operation.&lt;/p&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
     &lt;img src=&quot;/blog/images/einops/multi-query-attention.png&quot; width=&quot;800&quot; alt=&quot;Multi Query Attention&quot; /&gt;
     &lt;figcaption&gt;Multi-Query Attention is a type of attention where we have multiple query heads (like in Multi-Head Attention) but only a single key and value head per layer&lt;/figcaption&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;torch&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;einops&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;einsum&lt;/span&gt;
@@ -490,6 +494,8 @@ operation.&lt;/p&gt;
 for&lt;/em&gt; $$QK^T$$ &lt;em&gt;but we don’t want to sum over it. To solve this we give them two
 different names like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;seq1&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;seq2&lt;/code&gt;&lt;/em&gt;&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;p&gt;The nice things about this are that we didn’t need to write a glossary for what
 random variables &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;b&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;h&lt;/code&gt; were supposed to mean, we can just read it off.&lt;/p&gt;
 
@@ -508,8 +514,8 @@ tensors which are also very useful.&lt;/p&gt;
     &lt;/figure&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Just trying to make those inscrutable matrix multiplications, a little more
-scrutable. ￼&lt;/p&gt;
+&lt;p&gt;That’s all! Just trying to make those inscrutable matrix multiplications, a
+little more scrutable. ￼&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;
 &lt;br /&gt;&lt;/p&gt;
