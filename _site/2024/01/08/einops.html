@@ -111,7 +111,7 @@
 
 <p><br></p>
 
-<p>In Einsum notation, to avoid having so many sigmas ( $\sum s$ ) flying around we
+<p>In Einsum notation, to avoid having so many sigmas ($$\sum$$) flying around we
 adopt the convention that any indices that appear more than once are being
 summed over. Hence:</p>
 
@@ -138,7 +138,8 @@ in torch as:</p>
 
 <p>The convention is that if a dimension only appears on the left side of the
 einsum then it’s summed over. So in the above we’re summing over the j dimension
-and keeping the i and k dimensions.</p>
+and keeping the i and k dimensions. That’s our classic matrix multiplication
+written in torch einsum notation<sup id="fnref:chef" role="doc-noteref"><a href="#fn:chef" class="footnote" rel="footnote">1</a></sup>.</p>
 
 <p>Great!</p>
 
@@ -187,12 +188,16 @@ code so much clearer instantly.</p>
 
 </code></pre></div></div>
 
+<p><em>One catch here is that we want to have the sequence length represented twice
+for</em> $$QK^T$$ <em>but we don’t want to sum over it. To solve this we give them two
+different names like <code class="language-plaintext highlighter-rouge">seq1</code> and <code class="language-plaintext highlighter-rouge">seq2</code></em></p>
+
 <p>The nice things about this are that we didn’t need to write a glossary for what
 random variables <code class="language-plaintext highlighter-rouge">b</code> or <code class="language-plaintext highlighter-rouge">h</code> were supposed to mean, you can just read it off.</p>
 
-<p>Also note that typically when computing attention, we need to calculate $QK^T$.
-Here we didn’t need to worry about how exactly to take the transpose - we just
-give the dimension names and the correct transposes are done for the
+<p>Also note that typically when computing attention, we need to calculate
+$$QK^T$$. Here we didn’t need to worry about how exactly to take the transpose -
+we just give the dimension names and the correct transposes are done for the
 multiplication to make sense!</p>
 
 <p>Einops also offers great functions for rearranging, reducing and repeating
@@ -207,6 +212,15 @@ tensors which are also very useful.</p>
 
 <p>Just trying to make those inscrutable matrix multiplications, a little more
 scrutable. ￼</p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:chef" role="doc-endnote">
+
+      <p>I feel like a fancy chef here. For our appetiser we have <em>Matrix
+Multiplication Done Four Ways</em> and so on… <a href="#fnref:chef" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+  </ol>
+</div>
 
   </div>
 
