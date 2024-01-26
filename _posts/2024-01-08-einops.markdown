@@ -82,9 +82,9 @@ clear what each letter means:
 - Was **h** height, head dimension or hidden dimension?
 
 To get around this ambiguity, it's common to see PyTorch code where in the
-docstring each of the letters is defined. This isn't a very natural pattern it's
-like if all of your variable names in code had to be single letters and you had
-another file which would act as a dictionary for what each letter actually
+docstring each of the letters is defined. This isn't a very natural pattern -
+it's like if all of your variable names in code had to be single letters and you
+had another file which would act as a dictionary for what each letter actually
 meant! _shudders_.
 
 One of the most useful lines of the `Zen of Python` is
@@ -100,7 +100,16 @@ Tensorflow and Jax. It offers a nice API but we'll focus on einsums which we can
 now use with full variable names rather than single letters! It makes your ML
 code so much clearer instantly.
 
-For example let's write the multi-query attention operation.
+For example let's write the
+[multi-query attention](https://paperswithcode.com/method/multi-query-attention)
+operation.
+
+<div align="center">
+  <figure>
+    <img src="/blog/images/einops/multi-query-attention.png" width="800" alt="Multi Query Attention">
+    <figcaption>Multi-Query Attention is a type of attention where we have multiple query heads (like in Multi-Head Attention) but only a single key and value head per layer</figcaption>
+    </figure>
+</div>
 
 ```python
 import torch as t
@@ -122,7 +131,7 @@ for_ $$QK^T$$ _but we don't want to sum over it. To solve this we give them two
 different names like `seq1` and `seq2`_
 
 The nice things about this are that we didn't need to write a glossary for what
-random variables `b` or `h` were supposed to mean, you can just read it off.
+random variables `b` or `h` were supposed to mean, we can just read it off.
 
 Also note that typically when computing attention, we need to calculate
 $$QK^T$$. Here we didn't need to worry about how exactly to take the transpose -
@@ -134,10 +143,13 @@ tensors which are also very useful.
 
 <div align="center">
   <figure>
-    <img src="/blog/images/einops/the_world_if_einops.jpg" width="800" alt="The World If Everyone Used Einops">
+    <img src="/blog/images/einops/the_world_if_einops.jpg" width="500" alt="The World If Everyone Used Einops">
     <figcaption></figcaption>
     </figure>
 </div>
 
 Just trying to make those inscrutable matrix multiplications, a little more
 scrutable. ￼
+
+<br>
+<br>

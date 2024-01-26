@@ -154,9 +154,9 @@ clear what each letter means:</p>
 </ul>
 
 <p>To get around this ambiguity, it’s common to see PyTorch code where in the
-docstring each of the letters is defined. This isn’t a very natural pattern it’s
-like if all of your variable names in code had to be single letters and you had
-another file which would act as a dictionary for what each letter actually
+docstring each of the letters is defined. This isn’t a very natural pattern -
+it’s like if all of your variable names in code had to be single letters and you
+had another file which would act as a dictionary for what each letter actually
 meant! <em>shudders</em>.</p>
 
 <p>One of the most useful lines of the <code class="language-plaintext highlighter-rouge">Zen of Python</code> is
@@ -172,7 +172,16 @@ Tensorflow and Jax. It offers a nice API but we’ll focus on einsums which we c
 now use with full variable names rather than single letters! It makes your ML
 code so much clearer instantly.</p>
 
-<p>For example let’s write the multi-query attention operation.</p>
+<p>For example let’s write the
+<a href="https://paperswithcode.com/method/multi-query-attention">multi-query attention</a>
+operation.</p>
+
+<div align="center">
+  <figure>
+    <img src="/blog/images/einops/multi-query-attention.png" width="800" alt="Multi Query Attention">
+    <figcaption>Multi-Query Attention is a type of attention where we have multiple query heads (like in Multi-Head Attention) but only a single key and value head per layer</figcaption>
+    </figure>
+</div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="n">t</span>
 <span class="kn">from</span> <span class="nn">einops</span> <span class="kn">import</span> <span class="n">einsum</span>
@@ -193,7 +202,7 @@ for</em> $$QK^T$$ <em>but we don’t want to sum over it. To solve this we give 
 different names like <code class="language-plaintext highlighter-rouge">seq1</code> and <code class="language-plaintext highlighter-rouge">seq2</code></em></p>
 
 <p>The nice things about this are that we didn’t need to write a glossary for what
-random variables <code class="language-plaintext highlighter-rouge">b</code> or <code class="language-plaintext highlighter-rouge">h</code> were supposed to mean, you can just read it off.</p>
+random variables <code class="language-plaintext highlighter-rouge">b</code> or <code class="language-plaintext highlighter-rouge">h</code> were supposed to mean, we can just read it off.</p>
 
 <p>Also note that typically when computing attention, we need to calculate
 $$QK^T$$. Here we didn’t need to worry about how exactly to take the transpose -
@@ -205,13 +214,16 @@ tensors which are also very useful.</p>
 
 <div align="center">
   <figure>
-    <img src="/blog/images/einops/the_world_if_einops.jpg" width="800" alt="The World If Everyone Used Einops">
+    <img src="/blog/images/einops/the_world_if_einops.jpg" width="500" alt="The World If Everyone Used Einops">
     <figcaption></figcaption>
     </figure>
 </div>
 
 <p>Just trying to make those inscrutable matrix multiplications, a little more
 scrutable. ￼</p>
+
+<p><br>
+<br></p>
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:chef" role="doc-endnote">
