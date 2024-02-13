@@ -165,11 +165,15 @@ you can figure out y.
 More concretely, h, the state, can be represented as a differential equation (Eq
 1a):
 
-\\( h’(t) = Ah(t) + Bx(t) \\)
+$$
+h’(t) = Ah(t) + Bx(t)
+$$
 
 Knowing h allows you to determine your next move y, by some function (Eq 1b):
 
-\\( y(t) = Ch(t) + Dx(t)\\)
+$$
+y(t) = Ch(t) + Dx(t)
+$$
 
 The system evolves as a function of the current state and new observations. A
 small new observation is enough because we can determine most of the state by
@@ -177,8 +181,8 @@ applying known state dynamics to the previous state. That is, most of the screen
 isn’t new, it’s just the natural downward movement of the previous state. Fully
 knowing the state would allow us to pick the best next move, y.
 
-You can learn a lot about the system dynamics by observing the top of the screen
-\- if it's moving faster, we can infer the whole screen is and the game is
+You can learn a lot about the system dynamics by observing the top of the
+screen - if it's moving faster, we can infer the whole screen is and the game is
 speeding up \[footnote: here we assume the environment is sufficiently smooth\].
 In this way, even if we start off knowing nothing about the game except our
 limited observation, pretty soon we could understand the whole screen.
@@ -211,7 +215,12 @@ continuous here. But in real life, we get new inputs and take new actions at
 discrete time steps \[footnote: concretely consider the case of Language
 Models - each token is a discrete step\].
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/6e65b3cc-1fe1-4591-a06a-fee091977f30-RackMultipart20240211-159-1nxi41.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/quantised.png" width="800" alt="Reality is Quantised">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 We would like to convert this _continuous-time differential equation_ into a
 _discrete-time difference equation_. This conversion process is known as
@@ -227,25 +236,34 @@ discretisation in the literature\].
 
 From Equation 1a, we have
 
-\\( h’(t) = Ah(t) + Bx(t) \\)
+$$
+h’(t) = Ah(t) + Bx(t)
+$$
 
 And for small ∆,
 
-\\( h’(t) \\approx \\frac{h(t+\\Delta) - h(t)}{\\Delta} \\)
+$$
+h’(t) \\approx \\frac{h(t+\\Delta) - h(t)}{\\Delta}
+$$
 
 by the definition of the derivative.
 
-We let \\( h_t = h(t)\\ \\textup{and} \\ h\_{t+1} = h(t + \\Delta) \\)and
-substitute into Equation 1a giving:
+We let $$ h*t = h(t) $$ and $$ h*{t+1} = h(t + \\Delta) $$ and substitute into
+Equation 1a giving:
 
-\\( h\_{t+1} - h_t \\approx \\Delta (Ah_t + Bx_t) \\)
+$$ h\_{t+1} - h_t \\approx \\Delta (Ah_t + Bx_t) $$
 
-\\( \\Rightarrow h\_{t+1} \\approx (I + \\Delta A)h_t + (\\Delta B)x_t \\)
+$$ \\Rightarrow h\_{t+1} \\approx (I + \\Delta A)h_t + (\\Delta B)x_t $$
 
 Hence, after renaming the coefficients and relabelling indices, we have the
 discrete representations:
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/fcb617fe-b48e-45da-8def-ce5707a5854d-RackMultipart20240211-189-7lvszg.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/equation_2" width="800" alt="Equation 2">
+    <figcaption>The Discretised Version of the SSM Equation</figcaption>
+  </figure>
+</div>
 
 If you've ever looked at an RNN before \[footnote: it's wild to note that some
 readers might not have, we're so far into the age of Attention that RNNs have
@@ -269,14 +287,24 @@ Now, we can interpret the A, B, C, D matrices more intuitively:
 - D is how the new input passes through to the output. It's a kind of modified
   skip connection that asks “How can I use the new input in my prediction?”
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/0b68dc7a-d62e-447b-835b-d36407b841f8-RackMultipart20240211-145-qxx4h0.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/graphical_matmuls.png" width="800" alt="Visual SSM Equations">
+    <figcaption>Visual Representation of The SSM Equations</figcaption>
+  </figure>
+</div>
 
 Additionally, ∆ has a nice interpretation - it's the step size, or what we might
 call the "linger time" or the “dwell time”. For large ∆, you focus more on that
 token; for small ∆, you skip past the token immediately and don't include it
 much in the next state.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/09997a3d-027f-4da4-a3f1-3627236eb4ab-RackMultipart20240210-150-2ql00f.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/mamba_hardware_diagram.png" width="800" alt="Hardware Diagram">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 And that’s it! That’s the SSM, our ~drop-in replacement for Attention
 (Communication) in the Mamba block. The Computation in the Mamba architecture
@@ -309,7 +337,12 @@ Answer:
 > The brain solves this problem by focusing your “attention” on a particular
 > stimulus _and hence_ drowning out all other sounds as much as possible.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/fea8e536-e6d4-4dc4-85c2-cca893008cb8-RackMultipart20240210-139-y6mn1v.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/cocktail_party.png" width="800" alt="Cocktail Party">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 ---
 
@@ -332,7 +365,12 @@ We’d like something closer to the Pareto frontier of the
 effectiveness/efficiency tradeoff. Something that’s more effective than
 traditional RNNs and more efficient than transformers.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/b9f1ae8d-4cc7-47aa-90a0-1d86fdf53b2c-RackMultipart20240211-189-l8ar6g.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/pareto_frontier.png" width="800" alt="Pareto Frontier">
+    <figcaption>The Mamba Architecture seems to offer a solution which pushes out the Pareto frontier of effectiveness/efficiency.</figcaption>
+  </figure>
+</div>
 
 SSMs are as **efficient** as RNNs, but we might wonder how **effective** they
 are. After all, it seems like they would have a hard time discarding only
@@ -348,13 +386,19 @@ is unique to its own needs. Selectivity is what takes us from vanilla SSM models
 (applying the same A (forgetting) and B (remembering) matrices to every input)
 to Mamba, the **_Selective_** _State Space Model_.
 
-In regular SSMs, A, B, C and D are learned matrices - that is \\( A = A\_\\theta
-\\) etc. (where theta represents the learned parameters)
+In regular SSMs, A, B, C and D are learned matrices - that is $$ A = A\_\theta$$
+etc. (where theta represents the learned parameters)
 
 With the Selection Mechanism in Mamba, A, B, C and D are also functions of x.
-That is \\( A = A\_\\theta(x) \\) etc.
+That is $$ A = A\_\theta(x) $$ etc; the matrices are context dependent rather
+than static.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/f2854ec9-ec6e-4d6d-8a68-5cac9c5a9a46-RackMultipart20240210-125-qihuy6.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/ssm_algorithm.png" width="800" alt="SSM Algorithm">
+    <figcaption>Mamba (right) differs from traditional SSMs by allowing A,B,C matrices to be <b> selective </b> i.e. context dependent </figcaption>
+  </figure>
+</div>
 
 Making A and B functions of x allows us to get the best of both worlds:
 
@@ -404,19 +448,24 @@ long-range sequences.\]
 
 Applying the Selection Mechanism does have its gotchas though. Non-selective
 SSMs (i.e. A,B not dependent on x) are fast to compute in training. This is
-because the component of \\( y_t \\ \\textup{which depends on} \\ x_i \\) can be
-expressed as a linear map, i.e. a single matrix that can be precomputed!
+because the component of $$ y_t $$ which depends on $$ x_i $$ can be expressed
+as a linear map, i.e. a single matrix that can be precomputed!
 
 For example (ignoring the D component, the skip connection):
 
-\\( y_2 = CBx_2 + CABx_1 + CAABx_0 \\)
+$$ y_2 = CBx_2 + CABx_1 + CAABx_0 $$
 
 If you’re paying attention, you might spot something even better here - this
 expression can be written as a convolution. Hence we can apply the Fast Fourier
 Transform and the Convolution Theorem to compute this _very_ efficiently on
 hardware as in Equation 3 below.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/13ebc206-21a3-4735-9953-cdbceedbf76a-RackMultipart20240210-125-kljunn.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/equations_2_3.png" width="800" alt="Equations 2 and 3">
+    <figcaption>We can calculate Equation 2, the SSM equations, efficiently in the Convolutional Form, Equation 3. </figcaption>
+  </figure>
+</div>
 
 Unfortunately, with the Selection Mechanism, we lose the convolutional form.
 Much attention is given to making Mamba efficient on modern GPU hardware using
@@ -447,7 +496,12 @@ fundamental question is how you manage your state.
 > effective. \[footnote: implications to actual Political Economy are left to
 > the reader but maybe Gu and Dao accidentally solved politics!?\]
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/9df5248e-cf67-402d-8946-1155ffd4d087-RackMultipart20240211-93-x8z1fv.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/political_spectrum.png" width="800" alt="Language Models and State Size">
+    <figcaption>Language Models and State Size</figcaption>
+  </figure>
+</div>
 
 The upshot is **state representation is critical**. A smaller state is more
 efficient; a larger state is more effective. The key is to **selectively** and
@@ -500,7 +554,12 @@ compressed/filtered similar to retrieval data for transformers. This in-context
 data is also accessible for look-up like for transformers (although with
 somewhat lower fidelity).
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/e333f1ed-1bf8-4eb8-bb84-9ac317b0713f-RackMultipart20240211-100-nytvtv.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/information_flow.png" width="800" alt="The Information Flow in Mamba">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 Transformer context is to Mamba states what short-term is to long-term memory.
 Mamba doesn’t just have “RAM”, it has a hard drive. \[Footnote: Albeit a pretty
@@ -580,11 +639,19 @@ the paragraph. In the chart below we can see that information is passed from the
 \[Shelby/Emma\] position to the final position via the hidden state (see the two
 blue lines in the top chart).
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/bc3ae841-a11b-44fe-9a47-aabbc44edcb1-RackMultipart20240211-138-5mskpz.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/patching_state.png" width="800" alt="Patching State">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/272a674c-564f-4e8a-8725-865bf1c9f405-RackMultipart20240211-174-fpjnar.png)
-
-^Credit to Tessa for the charts above - can roll my own patching if preferable!
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/patching_residual_stream.png" width="800" alt="Patching Residual Stream">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 Since it’s hypothesised that much of In-Context Learning in Transformers is
 downstream of more primitive sequence position operations (like
@@ -632,9 +699,12 @@ The implications for Assistants are clear:
 
 Your chatbot co-evolves with you. It remembers.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/ec4bfd1b-ba53-412f-b737-005ea51866bb-RackMultipart20240210-189-qp4v5h.png)
-
-Caption: Movie HER
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/her.png" width="800" alt="Her">
+    <figcaption>The film HER is looking better and better as time goes on 😳</figcaption>
+  </figure>
+</div>
 
 ### Agents & AI Safety
 
@@ -681,7 +751,12 @@ Two ML researchers, Sasha Rush (HuggingFace, Annotated Transformer, Cornell
 Professor) and Jonathan Frankle (Lottery Ticket Hypothesis, MosaicML, Harvard
 Professor), currently have a bet [here](http://www.isattentionallyouneed.com/).
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/c064c339-aacd-4154-8aa8-8569556fa56a-RackMultipart20240210-169-1001ji.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/attention_wager.png" width="800" alt="Attention Wager">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 Currently Transformers are far and away in the lead. With 3 years left, there’s
 now a research direction with a fighting chance.
@@ -691,8 +766,9 @@ All that remains to ask is: `Is Attention All We Need?`
 <br>
 <br>
 
-_Thanks to Gonçalo for reading an early draft and Jaden for the nnsight library
-used for the Interpretability analysis._
+_Thanks to Gonçalo for reading an early draft, Jaden for the nnsight library
+used for the Interpretability analysis and Tessa for Mamba patching
+visualisations._
 
 _Also see: [Mamba paper](https://arxiv.org/pdf/2312.00752.pdf), Mamba Python
 code, [Annotated S4](https://srush.github.io/annotated-s4/),
