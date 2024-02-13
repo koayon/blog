@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-02-13T22:44:13+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-02-13T22:47:54+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -471,21 +471,26 @@ models is characterised by how well they compress their state”. In other words
 like in political economy&lt;sup id=&quot;fnref:oop&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:oop&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;15&lt;/a&gt;&lt;/sup&gt;, the fundamental question is how you manage your
 state.&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;🔁 &lt;strong&gt;Traditional RNNs are anarchic&lt;/strong&gt; - they have a small, minimal state. The
-size of the state is bounded. The compression of state is poor.&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;🔁 &lt;strong&gt;Traditional RNNs are anarchic&lt;/strong&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;🤖 Transformers are communist&lt;/strong&gt; - they have a maximally large state. The
-“state” is just a cache of the entire history with no compression. Every
-context token is treated equally until recall time.&lt;/p&gt;
+  &lt;p&gt;They have a small, minimal state. The size of the state is bounded. The
+compression of state is poor.&lt;/p&gt;
 &lt;/blockquote&gt;
 
+&lt;p&gt;🤖 &lt;strong&gt;Transformers are communist&lt;/strong&gt;&lt;/p&gt;
+
 &lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;🐍 Mamba has a compressed state,&lt;/strong&gt; but it’s selective about what goes in.
-Mamba says we can get away with a small state if the state is well focused and
-effective &lt;sup id=&quot;fnref:politik&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:politik&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;16&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+  &lt;p&gt;They have a maximally large state. The “state” is just a cache of the entire
+history with no compression. Every context token is treated equally until
+recall time.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;🐍&lt;strong&gt;Mamba has a compressed state&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;But it’s selective about what goes in. Mamba says we can get away with a small
+state if the state is well focused and effective &lt;sup id=&quot;fnref:politik&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:politik&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;16&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;div align=&quot;center&quot;&gt;

@@ -521,16 +521,21 @@ state.
 
 [^oop]: or in Object Oriented Programming
 
-> 🔁 **Traditional RNNs are anarchic** - they have a small, minimal state. The
-> size of the state is bounded. The compression of state is poor.
+🔁 **Traditional RNNs are anarchic**
 
-> **🤖 Transformers are communist** - they have a maximally large state. The
-> "state" is just a cache of the entire history with no compression. Every
-> context token is treated equally until recall time.
+> They have a small, minimal state. The size of the state is bounded. The
+> compression of state is poor.
 
-> **🐍 Mamba has a compressed state,** but it’s selective about what goes in.
-> Mamba says we can get away with a small state if the state is well focused and
-> effective [^politik].
+🤖 **Transformers are communist**
+
+> They have a maximally large state. The "state" is just a cache of the entire
+> history with no compression. Every context token is treated equally until
+> recall time.
+
+🐍**Mamba has a compressed state**
+
+> But it’s selective about what goes in. Mamba says we can get away with a small
+> state if the state is well focused and effective [^politik].
 
 [^politik]:
     implications to actual Political Economy are left to the reader but maybe Gu
