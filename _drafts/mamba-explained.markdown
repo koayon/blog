@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Mamba Explained"
-stub: mixtral
+stub: mamba
 tags: machine-learning state-space-models mamba ssm
 toc: true
 ---
