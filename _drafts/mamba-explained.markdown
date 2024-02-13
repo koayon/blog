@@ -22,9 +22,13 @@ similar performance (and crucially similar
 whilst being feasible at long sequence lengths (say 1 million tokens). We
 achieve this long context by removing the “quadratic bottleneck” in the
 Attention Mechanism. It also runs _fast_ - like up to 5x faster than Transformer
-fast \[footnote: see Figure 8 in the Mamba paper\].
+fast[^figure].
+
+[^figure]: see Figure 8 in the Mamba paper.
 
 ![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/6d2eadc9-af92-4228-af7a-da42cc691617-RackMultipart20240211-159-fp1m2s.png)
+
+<!-- Mamba enjoys fast inference (5× higher throughput than Transformers) and linear scaling in sequence length, and its performance improves on real data up to million-length sequences. As a general sequence model backbone, Mamba achieves state-of-the-art performance across several modalities such as language, audio, and genomics. On language modeling, our Mamba-3B model outperforms Transformers of the same size and matches Transformers twice its size, both in pretraining and downstream evaluation. -->
 
 Here we'll discuss:
 
@@ -649,9 +653,12 @@ now a research direction with a fighting chance.
 
 All that remains to ask is: `Is Attention All We Need?`
 
-Thanks to Gonçalo for reading an early draft and Jaden for the nnsight library
-used for the Interpretability analysis.
+<br>
+<br>
 
-Also see: [Mamba paper](https://arxiv.org/pdf/2312.00752.pdf), Mamba Python
+_Thanks to Gonçalo for reading an early draft and Jaden for the nnsight library
+used for the Interpretability analysis._
+
+_Also see: [Mamba paper](https://arxiv.org/pdf/2312.00752.pdf), Mamba Python
 code, [Annotated S4](https://srush.github.io/annotated-s4/),
-[Labenz podcast](https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/)
+[Labenz podcast](https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/)_
