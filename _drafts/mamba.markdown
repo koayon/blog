@@ -8,7 +8,12 @@ toc: true
 
 ### The State Space Model taking on Transformers
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/c28c819e-18bd-43b4-9ce6-4f6e2b746c66-RackMultipart20240210-150-g5wqqs.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/snake.png" width="800" alt="Mamba vs Transformer">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 Right now, AI is eating the world.
 
@@ -26,7 +31,12 @@ fast[^figure].
 
 [^figure]: see Figure 8 in the Mamba paper.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/6d2eadc9-af92-4228-af7a-da42cc691617-RackMultipart20240211-159-fp1m2s.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/scaling.png" width="800" alt="Scaling Laws for Mamba vs other Language Models">
+    <figcaption>Mamba performs similarly (or slightly better than) other Language Models on The Pile</figcaption>
+  </figure>
+</div>
 
 <!-- Mamba enjoys fast inference (5× higher throughput than Transformers) and linear scaling in sequence length, and its performance improves on real data up to million-length sequences. As a general sequence model backbone, Mamba achieves state-of-the-art performance across several modalities such as language, audio, and genomics. On language modeling, our Mamba-3B model outperforms Transformers of the same size and matches Transformers twice its size, both in pretraining and downstream evaluation. -->
 
@@ -49,7 +59,12 @@ But Transformers have one core problem. In a transformer, every token can look
 back at every previous token when making predictions. So, we cache detailed
 information about each token in the so-called KV cache.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/83c83d9a-3b1a-4240-bad4-f3766c3ab482-RackMultipart20240210-150-v31nde.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/attention.png" width="800" alt="attention">
+    <figcaption>When using the Attention Mechanism, information from all previous tokens can be passed to the current token</figcaption>
+  </figure>
+</div>
 
 This pairwise communication means a forward pass is O(n²) time complexity in
 training (the dreaded “quadratic bottleneck”) and each new token generated
@@ -74,7 +89,12 @@ important operations:
 1. **Computation** _within_ a token
 2. **Communication** _between_ tokens
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/6893c3cc-9c27-41d9-8f4f-0234feacc4c0-RackMultipart20240210-96-tmrp3i.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/transformer_block.png" width="800" alt="Transformer Block">
+    <figcaption>The Transformer Block</figcaption>
+  </figure>
+</div>
 
 In transformers, this is MLPs (computation) and Attention (communication). We
 improve transformers by optimising these two operations (and scaling up with
@@ -86,7 +106,12 @@ method for communicating between tokens. **Mamba** uses the (Control Theory
 inspired) **SSM** for Communication and keeps MLP-style projections for
 Computation.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/414d6ce7-4cf9-4489-b586-a2afb3466d82-RackMultipart20240210-139-5ze4ks.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/mamba_block.png" width="800" alt="Mamba Block">
+    <figcaption>The Mamba Block</figcaption>
+  </figure>
+</div>
 
 Like a Transformer made up of stacked transformer blocks, Mamba is made up of
 stacked Mamba blocks as above.
@@ -101,7 +126,12 @@ Temple Run as the cultural cornerstone it is 🤣 Temple Run was an iPhone game
 from 2011 similar to Subway Surfer\]. It chooses if the runner should move left
 or right at any time.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/b710cce8-aa5f-486c-ab57-c27e0374b462-RackMultipart20240210-115-3n90zs.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/temple_run.png" width="800" alt="Temple Run">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 To successfully pick the correct direction, we need information about our
 surroundings. Let’s call the collection of relevant information the `state`.
@@ -116,7 +146,12 @@ figure out what will happen to most of the screen by noting that as you run, the
 obstacles move down the screen. You only need to look at the top of the screen
 to understand the new information and then simulate the rest.
 
-![](https://lex-img-p.s3.us-west-2.amazonaws.com/img/d14b2b90-72eb-4418-97fb-f2e56cc10ca9-RackMultipart20240210-105-erd1of.png)
+<div align="center">
+  <figure>
+    <img src="blog/images/mamba/temple_run_annotated.png" width="800" alt="Temple Run">
+    <figcaption></figcaption>
+  </figure>
+</div>
 
 This lends itself to a natural formulation. Let h be the hidden state, relevant
 knowledge about the world. Also let x be the input, the observation that you get
@@ -661,4 +696,4 @@ used for the Interpretability analysis._
 
 _Also see: [Mamba paper](https://arxiv.org/pdf/2312.00752.pdf), Mamba Python
 code, [Annotated S4](https://srush.github.io/annotated-s4/),
-[Labenz podcast](https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/)_
+[Nathan Labenz podcast](https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/)_
