@@ -89,6 +89,8 @@
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br>
+<br></p>
 
 <p>Right now, AI is eating the world.</p>
 
@@ -101,8 +103,8 @@ similar performance (and crucially similar
 <a href="https://arxiv.org/pdf/2203.15556.pdf"><em>scaling laws</em></a>) as the Transformer
 whilst being feasible at long sequence lengths (say 1 million tokens). We
 achieve this long context by removing the “quadratic bottleneck” in the
-Attention Mechanism. It also runs <em>fast</em> - like up to 5x faster than Transformer
-fast<sup id="fnref:figure" role="doc-noteref"><a href="#fn:figure" class="footnote" rel="footnote">1</a></sup>.</p>
+Attention Mechanism. Mamba also runs <em>fast</em> - like up to 5x faster than
+Transformer fast<sup id="fnref:figure" role="doc-noteref"><a href="#fn:figure" class="footnote" rel="footnote">1</a></sup>.</p>
 
 <div align="center">
   <figure>
@@ -110,6 +112,7 @@ fast<sup id="fnref:figure" role="doc-noteref"><a href="#fn:figure" class="footno
     <figcaption>Mamba performs similarly (or slightly better than) other Language Models on The Pile</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Gu and Dao, the Mamba authors write:</p>
 
@@ -122,6 +125,8 @@ language, audio, and genomics. On language modeling, our Mamba-3B model
 outperforms Transformers of the same size and matches Transformers twice its
 size, both in pretraining and downstream evaluation.</p>
 </blockquote>
+
+<p><br></p>
 
 <p>Here we’ll discuss:</p>
 
@@ -150,6 +155,7 @@ information about each token in the so-called KV cache.</p>
     <figcaption>When using the Attention Mechanism, information from all previous tokens can be passed to the current token</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>This pairwise communication means a forward pass is O(n²) time complexity in
 training (the dreaded “quadratic bottleneck”) and each new token generated
@@ -166,7 +172,11 @@ sliding window attention or clever CUDA optimisations like FlashAttention. But
 ultimately, for super long context windows (like a chatbot which remembers every
 conversation you’ve shared), we need a different approach.</p>
 
+<p><br></p>
+
 <hr>
+
+<p><br></p>
 
 <p>Fundamentally, all good ML architecture backbones have components for two
 important operations:</p>
@@ -184,6 +194,7 @@ important operations:</p>
     <figcaption>The Transformer Block</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>In transformers, this is MLPs (computation) and Attention (communication). We
 improve transformers by optimising these two operations (and scaling up with
@@ -200,6 +211,7 @@ Computation.</p>
     <figcaption>The Mamba Block</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Like a Transformer made up of stacked transformer blocks, Mamba is made up of
 stacked Mamba blocks as above.</p>
@@ -218,6 +230,7 @@ runner should move left or right at any time.</p>
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>To successfully pick the correct direction, we need information about our
 surroundings. Let’s call the collection of relevant information the <code class="language-plaintext highlighter-rouge">state</code>.
@@ -240,6 +253,7 @@ to understand the new information and then simulate the rest.</p>
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>This lends itself to a natural formulation. Let h be the hidden state, relevant
 knowledge about the world. Also let x be the input, the observation that you get
@@ -254,13 +268,13 @@ you can figure out y.</p>
 1a):</p>
 
 <p>$$
-h’(t) = Ah(t) + Bx(t)
+h’(t) = \mathbf{A}h(t) + \mathbf{B}x(t)
 $$</p>
 
 <p>Knowing h allows you to determine your next move y, by some function (Eq 1b):</p>
 
 <p>$$
-y(t) = Ch(t) + Dx(t)
+y(t) = \mathbf{C}h(t) + \mathbf{D}x(t)
 $$</p>
 
 <p>The system evolves as a function of the current state and new observations. A
@@ -300,6 +314,7 @@ discrete time steps <sup id="fnref:discrete" role="doc-noteref"><a href="#fn:dis
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>We would like to convert this <em>continuous-time differential equation</em> into a
 <em>discrete-time difference equation</em>. This conversion process is known as
@@ -311,7 +326,7 @@ morally, consider a naive first-order approximation <sup id="fnref:Euler" role="
 <p>From Equation 1a, we have</p>
 
 <p>$$
-h’(t) = Ah(t) + Bx(t)
+h’(t) = \mathbf{A}h(t) + \mathbf{B}x(t)
 $$</p>
 
 <p>And for small ∆,</p>
@@ -325,9 +340,9 @@ $$</p>
 <p>We let $$ h*t = h(t) \text{and} h*{t+1} = h(t + \Delta) $$ and substitute
 into Equation 1a giving:</p>
 
-<p>$$ h_{t+1} - h_t \approx \Delta (Ah_t + Bx_t) $$</p>
+<p>$$ h_{t+1} - h_t \approx \Delta (\mathbf{A}h_t + \mathbf{B}x_t) $$</p>
 
-<p>$$ \Rightarrow h_{t+1} \approx (I + \Delta A)h_t + (\Delta B)x_t $$</p>
+<p>$$ \Rightarrow h_{t+1} \approx (I + \Delta A)h_t + (\Delta \mathbf{B})x_t $$</p>
 
 <p>Hence, after renaming the coefficients and relabelling indices, we have the
 discrete representations:</p>
@@ -338,6 +353,7 @@ discrete representations:</p>
     <figcaption>The Discretised Version of the SSM Equation</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>If you’ve ever looked at an RNN before <sup id="fnref:rnn" role="doc-noteref"><a href="#fn:rnn" class="footnote" rel="footnote">9</a></sup> and this feels familiar - trust
 your instincts:</p>
@@ -370,6 +386,7 @@ skip connection that asks “How can I use the new input in my prediction?”</l
     <figcaption>Visual Representation of The SSM Equations</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Additionally, ∆ has a nice interpretation - it’s the step size, or what we might
 call the “linger time” or the “dwell time”. For large ∆, you focus more on that
@@ -382,6 +399,7 @@ much in the next state.</p>
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>And that’s it! That’s the SSM, our ~drop-in replacement for Attention
 (Communication) in the Mamba block. The Computation in the Mamba architecture
@@ -422,8 +440,11 @@ stimulus <em>and hence</em> drowning out all other sounds as much as possible.</
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <hr>
+
+<p><br></p>
 
 <p>Transformers use dot-product attention to focus in on the most relevant tokens.
 The reason attention is so great is that you have the potential to look back at
@@ -449,6 +470,7 @@ traditional RNNs and more efficient than transformers.</p>
     <figcaption>The Mamba Architecture seems to offer a solution which pushes out the Pareto frontier of effectiveness/efficiency.</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>SSMs are as <strong>efficient</strong> as RNNs, but we might wonder how <strong>effective</strong> they
 are. After all, it seems like they would have a hard time discarding only
@@ -464,12 +486,12 @@ is unique to its own needs. Selectivity is what takes us from vanilla SSM models
 (applying the same A (forgetting) and B (remembering) matrices to every input)
 to Mamba, the <strong><em>Selective</em></strong> <em>State Space Model</em>.</p>
 
-<p>In regular SSMs, A, B, C and D are learned matrices - that is $$ A = A_\theta$$
-etc. (where theta represents the learned parameters)</p>
+<p>In regular SSMs, A, B, C and D are learned matrices - that is $$ \mathbf{A} =
+\mathbf{A}_\theta$$ etc. (where theta represents the learned parameters)</p>
 
 <p>With the Selection Mechanism in Mamba, A, B, C and D are also functions of x.
-That is $$ A = A_\theta(x) $$ etc; the matrices are context dependent rather
-than static.</p>
+That is $$ \mathbf{A} = \mathbf{A}_\theta(x) $$ etc; the matrices are context
+dependent rather than static.</p>
 
 <div align="center">
   <figure>
@@ -477,6 +499,7 @@ than static.</p>
     <figcaption>Mamba (right) differs from traditional SSMs by allowing A,B,C matrices to be <b> selective </b> i.e. context dependent </figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Making A and B functions of x allows us to get the best of both worlds:</p>
 
@@ -501,7 +524,11 @@ selection mechanism controls how information propagates or interacts along the
 sequence dimension.</p>
 </blockquote>
 
+<p><br></p>
+
 <hr>
+
+<p><br></p>
 
 <p>Humans (obviously) don’t have photographic memory for everything they experience
 within a lifetime - or even within a day! There’s just way too much information
@@ -529,7 +556,8 @@ as a linear map, i.e. a single matrix that can be precomputed!</p>
 
 <p>For example (ignoring the D component, the skip connection):</p>
 
-<p>$$ y_2 = CBx_2 + CABx_1 + CAABx_0 $$</p>
+<p>$$ y_2 = \mathbf{C}\mathbf{B}x_2 + \mathbf{C}\mathbf{A}\mathbf{B}x_1 +
+\mathbf{C}\mathbf{A}\mathbf{A}\mathbf{B}x_0 $$</p>
 
 <p>If you’re paying attention, you might spot something even better here - this
 expression can be written as a convolution. Hence we can apply the Fast Fourier
@@ -542,6 +570,7 @@ hardware as in Equation 3 below.</p>
     <figcaption>We can calculate Equation 2, the SSM equations, efficiently in the Convolutional Form, Equation 3. </figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Unfortunately, with the Selection Mechanism, we lose the convolutional form.
 Much attention is given to making Mamba efficient on modern GPU hardware using
@@ -574,8 +603,8 @@ recall time.</p>
 <p>🐍<strong>Mamba has a compressed state</strong></p>
 
 <blockquote>
-  <p>But it’s selective about what goes in. Mamba says we can get away with a small
-state if the state is well focused and effective <sup id="fnref:politik" role="doc-noteref"><a href="#fn:politik" class="footnote" rel="footnote">16</a></sup>.</p>
+  <p>…but it’s selective about what goes in. Mamba says we can get away with a
+small state if the state is well focused and effective <sup id="fnref:politik" role="doc-noteref"><a href="#fn:politik" class="footnote" rel="footnote">16</a></sup>.</p>
 </blockquote>
 
 <div align="center">
@@ -584,6 +613,7 @@ state if the state is well focused and effective <sup id="fnref:politik" role="d
     <figcaption>Language Models and State Size</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>The upshot is <strong>state representation is critical</strong>. A smaller state is more
 efficient; a larger state is more effective. The key is to <strong>selectively</strong> and
@@ -643,6 +673,7 @@ somewhat lower fidelity).</p>
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Transformer context is to Mamba states what short-term is to long-term memory.
 Mamba doesn’t just have “RAM”, it has a hard drive<sup id="fnref:hard-drive" role="doc-noteref"><a href="#fn:hard-drive" class="footnote" rel="footnote">18</a></sup> <sup id="fnref:ssd" role="doc-noteref"><a href="#fn:ssd" class="footnote" rel="footnote">19</a></sup>.</p>
@@ -727,6 +758,7 @@ blue lines in the top chart).</p>
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <div align="center">
   <figure>
@@ -734,6 +766,7 @@ blue lines in the top chart).</p>
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Since it’s hypothesised that much of In-Context Learning in Transformers is
 downstream of more primitive sequence position operations (like
@@ -776,7 +809,11 @@ learns to keep what’s important.
 what’s useful to predict what’s coming next inevitably leads to building a
 useful compression of the previous tokens.</p>
 
+<p><br></p>
+
 <hr>
+
+<p><br></p>
 
 <p>The implications for Assistants are clear:</p>
 
@@ -788,6 +825,7 @@ useful compression of the previous tokens.</p>
     <figcaption>The film HER is looking better and better as time goes on 😳</figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <h3 id="agents--ai-safety">Agents &amp; AI Safety</h3>
 
@@ -810,7 +848,11 @@ likely can’t fit a whole movie into a Transformer’s context for attention
 short-term fluidity and an SSM for long-term narrative consistency
 <sup id="fnref:optimisation" role="doc-noteref"><a href="#fn:optimisation" class="footnote" rel="footnote">24</a></sup>.</p>
 
+<p><br></p>
+
 <hr>
+
+<p><br></p>
 
 <p>This isn’t the end of Transformers. Their high effectiveness is exactly what’s
 needed for many tasks. But now Transformers aren’t the only option. Other
@@ -831,6 +873,7 @@ Professor), currently have a bet <a href="http://www.isattentionallyouneed.com/"
     <figcaption></figcaption>
   </figure>
 </div>
+<p><br></p>
 
 <p>Currently Transformers are far and away in the lead. With 3 years left, there’s
 now a research direction with a fighting chance.</p>
@@ -847,9 +890,6 @@ visualisations.</em></p>
 <p><em>Also see: <a href="https://arxiv.org/pdf/2312.00752.pdf">Mamba paper</a>, Mamba Python
 code, <a href="https://srush.github.io/annotated-s4/">Annotated S4</a>,
 <a href="https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/">Nathan Labenz podcast</a></em></p>
-
-<p>$$
-$$</p>
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:figure" role="doc-endnote">
