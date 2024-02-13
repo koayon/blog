@@ -248,8 +248,8 @@ $$
 
 by the definition of the derivative.
 
-We let $$ h*t = h(t) $$ and $$ h*{t+1} = h(t + \\Delta) $$ and substitute into
-Equation 1a giving:
+We let $$ h\*t = h(t) \text{and} h\*{t+1} = h(t + \\Delta) $$ and substitute
+into Equation 1a giving:
 
 $$ h\_{t+1} - h_t \\approx \\Delta (Ah_t + Bx_t) $$
 
@@ -773,3 +773,6 @@ visualisations._
 _Also see: [Mamba paper](https://arxiv.org/pdf/2312.00752.pdf), Mamba Python
 code, [Annotated S4](https://srush.github.io/annotated-s4/),
 [Nathan Labenz podcast](https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/)_
+
+$$
+$$
