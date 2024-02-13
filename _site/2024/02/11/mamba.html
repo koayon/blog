@@ -94,8 +94,8 @@
 
 <p>Right now, AI is eating the world.</p>
 
-<p>And by AI, I mean Transformers. All the big breakthroughs in AI over the last
-few years are due to Transformers.</p>
+<p>And by AI, I mean Transformers. Practically all the big breakthroughs in AI over
+the last few years are due to Transformers.</p>
 
 <p><strong>Mamba</strong>, however, is one of an alternative class of models called <strong>State
 Space Models</strong> (<strong>SSMs</strong>). Importantly, for the first time, Mamba promises
@@ -103,8 +103,8 @@ similar performance (and crucially similar
 <a href="https://arxiv.org/pdf/2203.15556.pdf"><em>scaling laws</em></a>) as the Transformer
 whilst being feasible at long sequence lengths (say 1 million tokens). We
 achieve this long context by removing the “quadratic bottleneck” in the
-Attention Mechanism. Mamba also runs <em>fast</em> - like up to 5x faster than
-Transformer fast<sup id="fnref:figure" role="doc-noteref"><a href="#fn:figure" class="footnote" rel="footnote">1</a></sup>.</p>
+Attention Mechanism. Mamba also runs <em>fast</em> - like “up to 5x faster than
+Transformer fast”<sup id="fnref:figure" role="doc-noteref"><a href="#fn:figure" class="footnote" rel="footnote">1</a></sup>.</p>
 
 <div align="center">
   <figure>
@@ -117,13 +117,13 @@ Transformer fast<sup id="fnref:figure" role="doc-noteref"><a href="#fn:figure" c
 <p>Gu and Dao, the Mamba authors write:</p>
 
 <blockquote>
-  <p>Mamba enjoys fast inference (5× higher throughput than Transformers) and
-linear scaling in sequence length, and its performance improves on real data
-up to million-length sequences. As a general sequence model backbone, Mamba
-achieves state-of-the-art performance across several modalities such as
-language, audio, and genomics. On language modeling, our Mamba-3B model
-outperforms Transformers of the same size and matches Transformers twice its
-size, both in pretraining and downstream evaluation.</p>
+  <p>Mamba enjoys fast inference and linear scaling in sequence length, and its
+performance improves on real data up to million-length sequences. As a general
+sequence model backbone, Mamba achieves state-of-the-art performance across
+several modalities such as language, audio, and genomics. On language
+modeling, our Mamba-3B model outperforms Transformers of the same size and
+matches Transformers twice its size, both in pretraining and downstream
+evaluation.</p>
 </blockquote>
 
 <p><br></p>
@@ -138,7 +138,7 @@ size, both in pretraining and downstream evaluation.</p>
 
 <h2 id="problems-with-transformers---maybe-attention-isnt-all-you-need">Problems with Transformers - Maybe Attention <em>Isn’t</em> All You Need</h2>
 
-<p>We’re very much in the Transformer era of history. ML used to be about detecting
+<p>We’re very much in the Transformer-era of history. ML used to be about detecting
 cats and dogs. Now, with Transformers, we’re
 <a href="https://openai.com/research/gpt-4">generating human-like poetry</a>,
 <a href="https://storage.googleapis.com/deepmind-media/AlphaCode2/AlphaCode2_Tech_Report.pdf">coding better than the median competitive programmer</a>,
@@ -146,8 +146,8 @@ and
 <a href="https://www.nature.com/articles/s41586-021-03819-2">solving the protein folding problem</a>.</p>
 
 <p>But Transformers have one core problem. In a transformer, every token can look
-back at every previous token when making predictions. So, we cache detailed
-information about each token in the so-called KV cache.</p>
+back at every previous token when making predictions. For this lookback, we
+cache detailed information about each token in the so-called KV cache.</p>
 
 <div align="center">
   <figure>
@@ -158,34 +158,32 @@ information about each token in the so-called KV cache.</p>
 <p><br></p>
 
 <p>This pairwise communication means a forward pass is O(n²) time complexity in
-training (the dreaded “quadratic bottleneck”) and each new token generated
+training (the dreaded <code class="language-plaintext highlighter-rouge">quadratic bottleneck</code>) and each new token generated
 autoregressively takes O(n) time. That is to say, as the context gets larger,
 the model gets <em>slower</em>.</p>
 
-<p>To add insult to injury, storing this KV cache to compute new tokens efficiently
-requires O(n) space. The fateful CUDA OOM error looms large as the memory
-footprint balloons. If space were the only issue, we might just add more GPUs
-but with latency growing quadratically, perhaps not.</p>
+<p>To add insult to injury, storing this KV cache requires O(n) space. The fateful
+<code class="language-plaintext highlighter-rouge">CUDA OOM</code> error looms large as the memory footprint balloons. If space were the
+only issue, we might just add more GPUs but with latency growing
+quadratically… perhaps not.</p>
 
 <p>On the margin, we can mitigate the quadratic bottleneck with techniques like
-sliding window attention or clever CUDA optimisations like FlashAttention. But
-ultimately, for super long context windows (like a chatbot which remembers every
-conversation you’ve shared), we need a different approach.</p>
+<a href="https://paperswithcode.com/method/sliding-window-attention">Sliding Window Attention</a>
+or clever CUDA optimisations like
+<a href="https://arxiv.org/pdf/2205.14135.pdf">FlashAttention</a>. But ultimately, for
+super long context windows (like a chatbot which remembers every conversation
+you’ve shared), we need a different approach.</p>
 
-<p><br></p>
-
-<hr>
-
-<p><br></p>
+<h3 id="foundation-model-backbones">Foundation Model Backbones</h3>
 
 <p>Fundamentally, all good ML architecture backbones have components for two
 important operations:</p>
 
 <ol>
   <li>
-<strong>Computation</strong> <em>within</em> a token</li>
-  <li>
 <strong>Communication</strong> <em>between</em> tokens</li>
+  <li>
+<strong>Computation</strong> <em>within</em> a token</li>
 </ol>
 
 <div align="center">
@@ -196,14 +194,14 @@ important operations:</p>
 </div>
 <p><br></p>
 
-<p>In transformers, this is MLPs (computation) and Attention (communication). We
-improve transformers by optimising these two operations (and scaling up with
-massive compute).</p>
+<p>In transformers, this is <strong>Attention</strong> (<code class="language-plaintext highlighter-rouge">communication</code>) and <strong>MLPs</strong>
+(<code class="language-plaintext highlighter-rouge">computation</code>). We improve transformers by optimising these two
+operations<sup id="fnref:scale" role="doc-noteref"><a href="#fn:scale" class="footnote" rel="footnote">2</a></sup>.</p>
 
-<p>We would like to replace the Attention component <sup id="fnref:attention" role="doc-noteref"><a href="#fn:attention" class="footnote" rel="footnote">2</a></sup> with some other
-method for communicating between tokens. <strong>Mamba</strong> uses the (Control Theory
-inspired) <strong>SSM</strong> for Communication and keeps MLP-style projections for
-Computation.</p>
+<p>We would like to replace the Attention component <sup id="fnref:attention" role="doc-noteref"><a href="#fn:attention" class="footnote" rel="footnote">3</a></sup> with some other
+method for communicating between tokens. <strong>Mamba</strong> uses the Control Theory
+inspired <strong>SSM</strong> for <code class="language-plaintext highlighter-rouge">Communication</code> and keeps MLP-style projections for
+<code class="language-plaintext highlighter-rouge">Computation</code>.</p>
 
 <div align="center">
   <figure>
@@ -216,12 +214,12 @@ Computation.</p>
 <p>Like a Transformer made up of stacked transformer blocks, Mamba is made up of
 stacked Mamba blocks as above.</p>
 
-<p>We would like to understand and motivate the choice of the SSM sequence
-transformation.</p>
+<p>We would like to understand and motivate the choice of the SSM for sequence
+transformations.</p>
 
 <h2 id="motivating-mamba---a-throwback-to-temple-run">Motivating Mamba - A Throwback to Temple Run</h2>
 
-<p>Imagine we’re building a Temple Run agent <sup id="fnref:temple-run" role="doc-noteref"><a href="#fn:temple-run" class="footnote" rel="footnote">3</a></sup>. It chooses if the
+<p>Imagine we’re building a Temple Run agent <sup id="fnref:temple-run" role="doc-noteref"><a href="#fn:temple-run" class="footnote" rel="footnote">4</a></sup>. It chooses if the
 runner should move left or right at any time.</p>
 
 <div align="center">
@@ -261,8 +259,8 @@ each time. h’ then represents the derivative of the hidden state, i.e. how the
 state is evolving. We’re trying to predict y, the optimal next move (right or
 left).</p>
 
-<p>Now, Claim 1 states that from the hidden state h, h’, and the new observation x,
-you can figure out y.</p>
+<p>Now, Claim 1 states that
+<code class="language-plaintext highlighter-rouge">from the hidden state h, h’, and the new observation x, you can figure out y</code>.</p>
 
 <p>More concretely, h, the state, can be represented as a differential equation (Eq
 1a):</p>
@@ -271,7 +269,7 @@ you can figure out y.</p>
 h’(t) = \mathbf{A}h(t) + \mathbf{B}x(t)
 $$</p>
 
-<p>Knowing h allows you to determine your next move y, by some function (Eq 1b):</p>
+<p>Knowing h allows you to determine your next move y (Eq 1b):</p>
 
 <p>$$
 y(t) = \mathbf{C}h(t) + \mathbf{D}x(t)
@@ -285,7 +283,7 @@ knowing the state would allow us to pick the best next move, y.</p>
 
 <p>You can learn a lot about the system dynamics by observing the top of the
 screen - if it’s moving faster, we can infer the whole screen is and the game is
-speeding up<sup id="fnref:smooth" role="doc-noteref"><a href="#fn:smooth" class="footnote" rel="footnote">4</a></sup>. In this way, even if we start off knowing nothing about
+speeding up<sup id="fnref:smooth" role="doc-noteref"><a href="#fn:smooth" class="footnote" rel="footnote">5</a></sup>. In this way, even if we start off knowing nothing about
 the game except our limited observation, pretty soon we could understand the
 whole screen.</p>
 
@@ -297,7 +295,7 @@ the state, there’s nothing else we need to know about the past to predict the
 future. With this choice of state, the system is converted to a <strong>Markov
 Decision Process</strong>. Ideally, the state is a fairly small amount of information
 which captures the essential properties of the system. That is, <strong>the state is a
-compression of the past</strong> <sup id="fnref:diagonal" role="doc-noteref"><a href="#fn:diagonal" class="footnote" rel="footnote">5</a></sup></p>
+compression of the past</strong> <sup id="fnref:diagonal" role="doc-noteref"><a href="#fn:diagonal" class="footnote" rel="footnote">6</a></sup></p>
 
 <h2 id="discretisation---how-to-deal-with-living-in-a-quantised-world">Discretisation - How To Deal With Living in a Quantised World</h2>
 
@@ -305,8 +303,8 @@ compression of the past</strong> <sup id="fnref:diagonal" role="doc-noteref"><a 
 autoregressive-style system to determine the next action. Amazing!</p>
 
 <p>In practice though, there’s a little snag here. We’re modelling time as
-continuous here. But in real life, we get new inputs and take new actions at
-discrete time steps <sup id="fnref:discrete" role="doc-noteref"><a href="#fn:discrete" class="footnote" rel="footnote">6</a></sup>.</p>
+continuous. But in real life, we get new inputs and take new actions at discrete
+time steps <sup id="fnref:discrete" role="doc-noteref"><a href="#fn:discrete" class="footnote" rel="footnote">7</a></sup>.</p>
 
 <div align="center">
   <figure>
@@ -318,10 +316,10 @@ discrete time steps <sup id="fnref:discrete" role="doc-noteref"><a href="#fn:dis
 
 <p>We would like to convert this <em>continuous-time differential equation</em> into a
 <em>discrete-time difference equation</em>. This conversion process is known as
-<code class="language-plaintext highlighter-rouge">discretisation</code>. It turns out there are many ways to do this in the literature.
+<code class="language-plaintext highlighter-rouge">discretisation</code>. Discretisation is a well-studied problem in the literature.
 Mamba uses the <a href="https://en.wikipedia.org/wiki/Zero-order_hold">Zero-Order Hold</a>
-(ZOH) discretisation described here <sup id="fnref:zoh" role="doc-noteref"><a href="#fn:zoh" class="footnote" rel="footnote">7</a></sup>. To give an idea of what’s happening
-morally, consider a naive first-order approximation <sup id="fnref:Euler" role="doc-noteref"><a href="#fn:Euler" class="footnote" rel="footnote">8</a></sup></p>
+(ZOH) discretisation<sup id="fnref:zoh" role="doc-noteref"><a href="#fn:zoh" class="footnote" rel="footnote">8</a></sup>. To give an idea of what’s happening morally,
+consider a naive first-order approximation<sup id="fnref:Euler" role="doc-noteref"><a href="#fn:Euler" class="footnote" rel="footnote">9</a></sup>.</p>
 
 <p>From Equation 1a, we have</p>
 
@@ -337,12 +335,15 @@ $$</p>
 
 <p>by the definition of the derivative.</p>
 
-<p>We let $$ h*t = h(t) \text{and} h*{t+1} = h(t + \Delta) $$ and substitute
+<p>We let $$ h_t = h(t) \ \text{and} \ h_{t+1} = h(t + \Delta) $$ and substitute
 into Equation 1a giving:</p>
 
 <p>$$ h_{t+1} - h_t \approx \Delta (\mathbf{A}h_t + \mathbf{B}x_t) $$</p>
 
-<p>$$ \Rightarrow h_{t+1} \approx (I + \Delta A)h_t + (\Delta \mathbf{B})x_t $$</p>
+<p>$$
+\Rightarrow h_{t+1} \approx (I + \Delta \mathbf{A})h_t + (\Delta
+\mathbf{B})x_t
+$$</p>
 
 <p>Hence, after renaming the coefficients and relabelling indices, we have the
 discrete representations:</p>
@@ -355,8 +356,8 @@ discrete representations:</p>
 </div>
 <p><br></p>
 
-<p>If you’ve ever looked at an RNN before <sup id="fnref:rnn" role="doc-noteref"><a href="#fn:rnn" class="footnote" rel="footnote">9</a></sup> and this feels familiar - trust
-your instincts:</p>
+<p>If you’ve ever looked at an RNN before <sup id="fnref:rnn" role="doc-noteref"><a href="#fn:rnn" class="footnote" rel="footnote">10</a></sup> and this feels familiar - <em>trust
+your instincts</em>:</p>
 
 <blockquote>
   <p>We have some input x, which is combined with the previous hidden state by some
@@ -373,9 +374,11 @@ calculate the output at each time step.</p>
 state into the next state. It asks “How should I forget the less relevant
 parts of the state over time?”</li>
   <li>B is mapping the new input into the state, asking “What part of my new input
-should I remember?”</li>
+should I remember?”. <sup id="fnref:B" role="doc-noteref"><a href="#fn:B" class="footnote" rel="footnote">11</a></sup>
+</li>
   <li>C is mapping the state to the output of the SSM. It asks, “How can I use the
-state to make a good next prediction?”</li>
+state to make a good next prediction?”. <sup id="fnref:C" role="doc-noteref"><a href="#fn:C" class="footnote" rel="footnote">12</a></sup>
+</li>
   <li>D is how the new input passes through to the output. It’s a kind of modified
 skip connection that asks “How can I use the new input in my prediction?”</li>
 </ul>
@@ -389,7 +392,7 @@ skip connection that asks “How can I use the new input in my prediction?”</l
 <p><br></p>
 
 <p>Additionally, ∆ has a nice interpretation - it’s the step size, or what we might
-call the “linger time” or the “dwell time”. For large ∆, you focus more on that
+call the <code class="language-plaintext highlighter-rouge">linger time</code> or the <code class="language-plaintext highlighter-rouge">dwell time</code>. For large ∆, you focus more on that
 token; for small ∆, you skip past the token immediately and don’t include it
 much in the next state.</p>
 
@@ -402,9 +405,9 @@ much in the next state.</p>
 <p><br></p>
 
 <p>And that’s it! That’s the SSM, our ~drop-in replacement for Attention
-(Communication) in the Mamba block. The Computation in the Mamba architecture
-comes from regular linear projections, non-linearities, and local convolutions -
-the regular ML building blocks we know and love!</p>
+(<code class="language-plaintext highlighter-rouge">Communication</code>) in the Mamba block. The <code class="language-plaintext highlighter-rouge">Computation</code> in the Mamba
+architecture comes from regular linear projections, non-linearities, and local
+convolutions - the regular ML building blocks we know and love!</p>
 
 <p>Okay great, that’s the theory - but does this work? Well…</p>
 
@@ -418,13 +421,13 @@ instead frame Attention <em>negatively</em> as choosing what to <em>discard</em>
 
 <p>There’s a classic intuition pump in Machine Learning known as the
 <a href="https://ieeexplore.ieee.org/document/8555495">Cocktail Party Problem</a>
-<sup id="fnref:alcohol" role="doc-noteref"><a href="#fn:alcohol" class="footnote" rel="footnote">10</a></sup>. Imagine a party with dozens of simultaneous loud conversations:</p>
+<sup id="fnref:alcohol" role="doc-noteref"><a href="#fn:alcohol" class="footnote" rel="footnote">13</a></sup>. Imagine a party with dozens of simultaneous loud conversations:</p>
 
 <p>Question:</p>
 
 <blockquote>
   <p>How do we recognise what one person is saying when others are talking at the
-same time? <sup id="fnref:frequency" role="doc-noteref"><a href="#fn:frequency" class="footnote" rel="footnote">11</a></sup></p>
+same time? <sup id="fnref:frequency" role="doc-noteref"><a href="#fn:frequency" class="footnote" rel="footnote">14</a></sup></p>
 </blockquote>
 
 <p>Answer:</p>
@@ -446,10 +449,10 @@ stimulus <em>and hence</em> drowning out all other sounds as much as possible.</
 
 <p><br></p>
 
-<p>Transformers use dot-product attention to focus in on the most relevant tokens.
-The reason attention is so great is that you have the potential to look back at
-everything that ever happened in its context. This is like photographic memory
-when done right. <sup id="fnref:photo" role="doc-noteref"><a href="#fn:photo" class="footnote" rel="footnote">12</a></sup></p>
+<p>Transformers use Dot-Product Attention to focus in on the most relevant tokens.
+A big reason Attention is so great is that you have the potential to look back
+at everything that ever happened in its context. This is like photographic
+memory when done right. <sup id="fnref:photo" role="doc-noteref"><a href="#fn:photo" class="footnote" rel="footnote">15</a></sup></p>
 
 <p>Transformers (🤖) are extremely <strong>effective</strong>. But they aren’t very
 <strong>efficient</strong>. They store everything from the past so that they can look back at
@@ -457,8 +460,8 @@ tokens with theoretically perfect recall.</p>
 
 <p>Traditional RNNs (🔁) are the opposite - they forget a lot, only recalling a
 small amount in their hidden state and discarding the rest. They are very
-<strong>efficient</strong> - their state is small. Yet they are less effective as discarded
-information cannot be recovered.</p>
+<strong>efficient</strong> - their state is small. Yet they are less <strong>effective</strong> as
+discarded information cannot be recovered.</p>
 
 <p>We’d like something closer to the Pareto frontier of the
 effectiveness/efficiency tradeoff. Something that’s more effective than
@@ -474,10 +477,11 @@ traditional RNNs and more efficient than transformers.</p>
 
 <p>SSMs are as <strong>efficient</strong> as RNNs, but we might wonder how <strong>effective</strong> they
 are. After all, it seems like they would have a hard time discarding only
-<em>unnecessary</em> information and keeping everything relevant. Each token is being
-processed the same way, applying the same A and B matrices as if in a factory
-assembly line for tokens. We would like the forgetting and remembering matrices
-(A and B respectively) to vary and dynamically adapt to inputs.</p>
+<em>unnecessary</em> information and keeping everything relevant. If each token is
+being processed the same way, applying the same A and B matrices as if in a
+factory assembly line for tokens, there is no context-dependence. We would like
+the forgetting and remembering matrices (A and B respectively) to vary and
+dynamically adapt to inputs.</p>
 
 <h3 id="the-selection-mechanism">The Selection Mechanism</h3>
 
@@ -487,7 +491,7 @@ is unique to its own needs. Selectivity is what takes us from vanilla SSM models
 to Mamba, the <strong><em>Selective</em></strong> <em>State Space Model</em>.</p>
 
 <p>In regular SSMs, A, B, C and D are learned matrices - that is $$ \mathbf{A} =
-\mathbf{A}_\theta$$ etc. (where theta represents the learned parameters)</p>
+\mathbf{A}_\theta$$ etc. (where θ represents the learned parameters)</p>
 
 <p>With the Selection Mechanism in Mamba, A, B, C and D are also functions of x.
 That is $$ \mathbf{A} = \mathbf{A}_\theta(x) $$ etc; the matrices are context
@@ -506,7 +510,7 @@ dependent rather than static.</p>
 <ul>
   <li>We’re selective about what we include in the state, which improves
 <strong>effectiveness</strong> vs traditional SSMs.</li>
-  <li>Yet, since the state size is bounded, we improve on <em>efficiency</em> relative to
+  <li>Yet, since the state size is bounded, we improve on <strong>efficiency</strong> relative to
 the Transformer. We have O(1), not O(n) space and O(n) not O(n²) time
 requirements.</li>
 </ul>
@@ -530,7 +534,7 @@ sequence dimension.</p>
 
 <p><br></p>
 
-<p>Humans (obviously) don’t have photographic memory for everything they experience
+<p>Humans (mostly) don’t have photographic memory for everything they experience
 within a lifetime - or even within a day! There’s just way too much information
 to retain it all. Subconsciously, we select what to remember by choosing to
 forget, throwing away most information as we encounter it. Transformers (🤖)
@@ -538,14 +542,14 @@ decide what to focus on at <strong>recall time</strong>. Humans (🧑) also deci
 throw away at <strong>memory-making time</strong>. Humans filter out information early and
 often.</p>
 
-<p>If you had infinite capacity for memorisation, it’s clear the transformer
+<p>If we had infinite capacity for memorisation, it’s clear the transformer
 approach is better than the human approach - it truly is more effective. But
 it’s less efficient - transformers have to store so much information about the
 past that might not be relevant. Transformers (🤖) only decide what’s relevant
 at <strong>recall time</strong>. The innovation of Mamba (🐍) is allowing the model better
 ways of forgetting earlier - it’s focusing by choosing what to <em>discard</em> using
 <strong>Selectivity</strong>, throwing away less relevant information at <strong>memory-making
-time</strong><sup id="fnref:seq_len" role="doc-noteref"><a href="#fn:seq_len" class="footnote" rel="footnote">13</a></sup>.</p>
+time</strong><sup id="fnref:seq_len" role="doc-noteref"><a href="#fn:seq_len" class="footnote" rel="footnote">16</a></sup>.</p>
 
 <h3 id="the-problems-of-selectivity">The Problems of Selectivity</h3>
 
@@ -556,10 +560,12 @@ as a linear map, i.e. a single matrix that can be precomputed!</p>
 
 <p>For example (ignoring the D component, the skip connection):</p>
 
-<p>$$ y_2 = \mathbf{C}\mathbf{B}x_2 + \mathbf{C}\mathbf{A}\mathbf{B}x_1 +
-\mathbf{C}\mathbf{A}\mathbf{A}\mathbf{B}x_0 $$</p>
+<p>$$
+y_2 = \mathbf{C}\mathbf{B}x_2 + \mathbf{C}\mathbf{A}\mathbf{B}x_1 +
+\mathbf{C}\mathbf{A}\mathbf{A}\mathbf{B}x_0
+$$</p>
 
-<p>If you’re paying attention, you might spot something even better here - this
+<p>If we’re paying attention, we might spot something even better here - this
 expression can be written as a convolution. Hence we can apply the Fast Fourier
 Transform and the Convolution Theorem to compute this <em>very</em> efficiently on
 hardware as in Equation 3 below.</p>
@@ -574,7 +580,7 @@ hardware as in Equation 3 below.</p>
 
 <p>Unfortunately, with the Selection Mechanism, we lose the convolutional form.
 Much attention is given to making Mamba efficient on modern GPU hardware using
-similar hardware optimisation tricks to Tri Dao’s Flash Attention <sup id="fnref:cuda" role="doc-noteref"><a href="#fn:cuda" class="footnote" rel="footnote">14</a></sup>. With
+similar hardware optimisation tricks to Tri Dao’s Flash Attention <sup id="fnref:cuda" role="doc-noteref"><a href="#fn:cuda" class="footnote" rel="footnote">17</a></sup>. With
 the hardware optimisations, Mamba is able to run faster than comparably sized
 Transformers.</p>
 
@@ -582,7 +588,7 @@ Transformers.</p>
 
 <p>The Mamba authors write, “the efficiency vs. effectiveness tradeoff of sequence
 models is characterised by how well they compress their state”. In other words,
-like in political economy<sup id="fnref:oop" role="doc-noteref"><a href="#fn:oop" class="footnote" rel="footnote">15</a></sup>, the fundamental question is how you manage your
+like in political economy<sup id="fnref:oop" role="doc-noteref"><a href="#fn:oop" class="footnote" rel="footnote">18</a></sup>, the fundamental problem is how to manage the
 state.</p>
 
 <p>🔁 <strong>Traditional RNNs are anarchic</strong></p>
@@ -604,7 +610,7 @@ recall time.</p>
 
 <blockquote>
   <p>…but it’s selective about what goes in. Mamba says we can get away with a
-small state if the state is well focused and effective <sup id="fnref:politik" role="doc-noteref"><a href="#fn:politik" class="footnote" rel="footnote">16</a></sup>.</p>
+small state if the state is well focused and effective <sup id="fnref:politik" role="doc-noteref"><a href="#fn:politik" class="footnote" rel="footnote">19</a></sup>.</p>
 </blockquote>
 
 <div align="center">
@@ -637,7 +643,7 @@ smart. It learns in two ways:</p>
 input data into the weights. We can think of the effect of pretraining data on
 the transformer kinda like the effect of your ancestor’s experiences on your
 genetics - you can’t recall their experiences, you just have vague instincts
-about them <sup id="fnref:analogy" role="doc-noteref"><a href="#fn:analogy" class="footnote" rel="footnote">17</a></sup>.</p>
+about them <sup id="fnref:analogy" role="doc-noteref"><a href="#fn:analogy" class="footnote" rel="footnote">20</a></sup>.</p>
 
 <h4 id="in-context-data">In Context-Data</h4>
 
@@ -676,7 +682,7 @@ somewhat lower fidelity).</p>
 <p><br></p>
 
 <p>Transformer context is to Mamba states what short-term is to long-term memory.
-Mamba doesn’t just have “RAM”, it has a hard drive<sup id="fnref:hard-drive" role="doc-noteref"><a href="#fn:hard-drive" class="footnote" rel="footnote">18</a></sup> <sup id="fnref:ssd" role="doc-noteref"><a href="#fn:ssd" class="footnote" rel="footnote">19</a></sup>.</p>
+Mamba doesn’t just have “RAM”, it has a hard drive<sup id="fnref:hard-drive" role="doc-noteref"><a href="#fn:hard-drive" class="footnote" rel="footnote">21</a></sup> <sup id="fnref:ssd" role="doc-noteref"><a href="#fn:ssd" class="footnote" rel="footnote">22</a></sup>.</p>
 
 <h3 id="swapping-states-as-a-new-prompting-paradigm">Swapping States as a New Prompting Paradigm</h3>
 
@@ -684,18 +690,20 @@ Mamba doesn’t just have “RAM”, it has a hard drive<sup id="fnref:hard-driv
 
 <p>With Mamba-like models, you could instead imagine having a library of states
 created by running the model over specialised data. States could be shared kinda
-like LoRAs for image models.</p>
+like
+<a href="https://paperswithcode.com/paper/lora-low-rank-adaptation-of-large-language">LoRAs</a>
+for image models.</p>
 
 <p>For example, I could do inference on 20 physics textbooks and, say, 100 physics
 questions and answers. Then I have a state which I can give to you. Now you
-don’t need to add any few-shot examples; you just simply ask your question. The
-in-context learning is in the state.</p>
+don’t need to add any few-shot examples; you just simply ask your question.
+<strong>The in-context learning is in the state</strong>.</p>
 
-<p>In other words, you can drag and drop states from others into your model, like
+<p>In other words, you can drag and drop downloaded states into your model, like
 literal plug-in cartridges. And note that “training” a state doesn’t require any
 backprop. It’s more like a highly specialised one-pass fixed-size compression
 algorithm. This is unlimited in-context learning applied at inference time for
-zero-compute or latency. <sup id="fnref:steering" role="doc-noteref"><a href="#fn:steering" class="footnote" rel="footnote">20</a></sup></p>
+zero-compute or latency. <sup id="fnref:steering" role="doc-noteref"><a href="#fn:steering" class="footnote" rel="footnote">23</a></sup></p>
 
 <p>The structure of an effective LLM call goes from…</p>
 
@@ -739,8 +747,9 @@ between tokens via hidden states instead of the Attention Mechanism which can
 “teleport” information from one sequence position to another.</p>
 
 <p>For understanding in-context learning (ICL) tasks with Mamba, we will look to
-intervene on the SSM state. A classic task in-context learning task is Indirect
-Object Identification in which a model has to finish a paragraph like:</p>
+intervene on the SSM state. A classic task in-context learning task is
+<a href="https://arxiv.org/pdf/2211.00593.pdf">Indirect Object Identification</a> in which
+a model has to finish a paragraph like:</p>
 
 <blockquote>
   <p><em>Then, Shelby and Emma had a lot of fun at the school. [Shelby/Emma] gave an
@@ -749,7 +758,7 @@ apple to [BLANK]</em></p>
 
 <p>The model is expected to fill in the blank with the name that is not repeated in
 the paragraph. In the chart below we can see that information is passed from the
-[Shelby/Emma] position to the final position via the hidden state (see the two
+<code class="language-plaintext highlighter-rouge">[Shelby/Emma]</code> position to the final position via the hidden state (see the two
 blue lines in the top chart).</p>
 
 <div align="center">
@@ -798,7 +807,7 @@ task is language, LLMs are actually fairly good at summaries - okay, yeah,
 you’ll lose some information, but the most important stuff can be retained.</p>
 
   <p>However, for other disciplines, it might not be clear how to summarise. For
-example, what’s the best way to summarise a 2 hour movie? <sup id="fnref:movie" role="doc-noteref"><a href="#fn:movie" class="footnote" rel="footnote">21</a></sup>. Could the
+example, what’s the best way to summarise a 2 hour movie? <sup id="fnref:movie" role="doc-noteref"><a href="#fn:movie" class="footnote" rel="footnote">24</a></sup>. Could the
 model itself learn to do this naturally rather than a hacky workaround like
 trying to describe the aesthetics of the movie in text?</p>
 </blockquote>
@@ -832,7 +841,7 @@ useful compression of the previous tokens.</p>
 <p>One reason for positive updates in existential risk from AGI is Language Models.
 Previously, Deep-RL agents trained via self-play looked set to be the first
 AGIs. Language models are inherently much safer since they aren’t trained with
-long-term goals. <sup id="fnref:safe" role="doc-noteref"><a href="#fn:safe" class="footnote" rel="footnote">22</a></sup></p>
+long-term goals. <sup id="fnref:safe" role="doc-noteref"><a href="#fn:safe" class="footnote" rel="footnote">25</a></sup></p>
 
 <p>The potential for long-term sequence reasoning here brings back the importance
 of agent-based AI safety. Few agent worries are relevant to Transformers with an
@@ -841,12 +850,12 @@ memories and possible instrumental goals.</p>
 
 <h3 id="the-best-collab-since-taco-bell--kfc--x-">The Best Collab Since Taco Bell &amp; KFC: 🤖 x 🐍</h3>
 
-<p>We might want to combine Mamba’s long context with the Transformer’s high
-fidelity over short sequences. For example, if you’re making long videos, you
-likely can’t fit a whole movie into a Transformer’s context for attention
-<sup id="fnref:image" role="doc-noteref"><a href="#fn:image" class="footnote" rel="footnote">23</a></sup>. You can imagine having Attention look at the most recent frames for
-short-term fluidity and an SSM for long-term narrative consistency
-<sup id="fnref:optimisation" role="doc-noteref"><a href="#fn:optimisation" class="footnote" rel="footnote">24</a></sup>.</p>
+<p>The Mamba authors show that there’s value in combining Mamba’s long context with
+the Transformer’s high fidelity over short sequences. For example, if you’re
+making long videos, you likely can’t fit a whole movie into a Transformer’s
+context for attention <sup id="fnref:image" role="doc-noteref"><a href="#fn:image" class="footnote" rel="footnote">26</a></sup>. You could imagine having Attention look at the
+most recent frames for short-term fluidity and an SSM for long-term narrative
+consistency <sup id="fnref:optimisation" role="doc-noteref"><a href="#fn:optimisation" class="footnote" rel="footnote">27</a></sup>.</p>
 
 <p><br></p>
 
@@ -854,12 +863,12 @@ short-term fluidity and an SSM for long-term narrative consistency
 
 <p><br></p>
 
-<p>This isn’t the end of Transformers. Their high effectiveness is exactly what’s
+<p>This isn’t the end for Transformers. Their high effectiveness is exactly what’s
 needed for many tasks. But now Transformers aren’t the only option. Other
 architectures are genuinely feasible.</p>
 
-<p>So we’re not in the post-Transformer era. But for the first time, we’re living
-in the post-”<em>only</em>-Transformers” era <sup id="fnref:other-models" role="doc-noteref"><a href="#fn:other-models" class="footnote" rel="footnote">25</a></sup>. And this blows the
+<p>So we’re not in the post-<code class="language-plaintext highlighter-rouge">Transformer</code> era. But for the first time, we’re living
+in the post-<code class="language-plaintext highlighter-rouge">only-Transformers</code> era <sup id="fnref:other-models" role="doc-noteref"><a href="#fn:other-models" class="footnote" rel="footnote">28</a></sup>. And this blows the
 possibilities wide open for sequence modelling with extreme context lengths and
 native long-term memory.</p>
 
@@ -890,10 +899,16 @@ visualisations.</em></p>
 <p><em>Also see: <a href="https://arxiv.org/pdf/2312.00752.pdf">Mamba paper</a>, Mamba Python
 code, <a href="https://srush.github.io/annotated-s4/">Annotated S4</a>,
 <a href="https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/">Nathan Labenz podcast</a></em></p>
+
+<p><br>
+<br></p>
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:figure" role="doc-endnote">
       <p>see Figure 8 in the Mamba paper. <a href="#fnref:figure" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:scale" role="doc-endnote">
+      <p>And scaling up with massive compute. <a href="#fnref:scale" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:attention" role="doc-endnote">
 
@@ -931,24 +946,30 @@ timestep to timestep if desired. ZOH gives A_bar as an exponential so any
 diagonal element initialisations close to zero give values close to 1 <a href="#fnref:zoh" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:Euler" role="doc-endnote">
-      <p>this is known as the Euler discretisation in the literature <a href="#fnref:Euler" class="reversefootnote" role="doc-backlink">↩</a></p>
+      <p>This is known as the Euler discretisation in the literature <a href="#fnref:Euler" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:rnn" role="doc-endnote">
 
       <p>It’s wild to note that some readers might not have, we’re so far into the
 age of Attention that RNNs have been forgotten! <a href="#fnref:rnn" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
+    <li id="fn:B" role="doc-endnote">
+      <p>B is like the Query (Q) matrix for Transformers. <a href="#fnref:B" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:C" role="doc-endnote">
+      <p>C is like the Output (O) matrix for Transformers. <a href="#fnref:C" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
     <li id="fn:alcohol" role="doc-endnote">
-      <p>non-alcoholic options also available! <a href="#fnref:alcohol" class="reversefootnote" role="doc-backlink">↩</a></p>
+      <p>Non-alcoholic options also available! <a href="#fnref:alcohol" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:frequency" role="doc-endnote">
 
-      <p>especially as all voices roughly occupy the same space on the audio
+      <p>Especially as all voices roughly occupy the same space on the audio
 frequency spectrum Intuitively this seems really hard! <a href="#fnref:frequency" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:photo" role="doc-endnote">
 
-      <p>note that photographic memory doesn’t necessarily imply perfect inferences
+      <p>Note that photographic memory doesn’t necessarily imply perfect inferences
 from that memory! <a href="#fnref:photo" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:seq_len" role="doc-endnote">
@@ -972,7 +993,7 @@ are good resources for understanding the Hardware-Aware Scan <a href="#fnref:cu
     </li>
     <li id="fn:politik" role="doc-endnote">
 
-      <p>implications to actual Political Economy are left to the reader but maybe Gu
+      <p>Implications to actual Political Economy are left to the reader but maybe Gu
 and Dao accidentally solved politics!? <a href="#fnref:politik" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:analogy" role="doc-endnote">
@@ -987,9 +1008,10 @@ being a fixed representation. <a href="#fnref:hard-drive" class="reversefootnot
     </li>
     <li id="fn:ssd" role="doc-endnote">
 
-      <p>I’ve started calling the hidden_state the state space dimension (or
-selective state dimension) which shortens to <code class="language-plaintext highlighter-rouge">SSD,</code> a nice reminder for what
-this object represents - the long-term memory of the system. <a href="#fnref:ssd" class="reversefootnote" role="doc-backlink">↩</a></p>
+      <p>As a backronym, I’ve started calling the hidden_state the state space
+dimension (or selective state dimension) which shortens to <code class="language-plaintext highlighter-rouge">SSD</code>, a nice
+reminder for what this object represents - the long-term memory of the
+system. <a href="#fnref:ssd" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
     <li id="fn:steering" role="doc-endnote">
 
