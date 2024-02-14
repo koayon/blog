@@ -10,7 +10,7 @@ toc: true
 
 <div align="center">
   <figure>
-    <img src="/blog/images/mamba/snake.png" width="800" alt="Mamba vs Transformer">
+    <img src="/blog/images/mamba/snake.png" width="400" alt="Mamba vs Transformer">
     <figcaption></figcaption>
   </figure>
 </div>
@@ -35,7 +35,7 @@ Transformer fast"[^figure].
 
 <div align="center">
   <figure>
-    <img src="/blog/images/mamba/scaling.png" width="800" alt="Scaling Laws for Mamba vs other Language Models">
+    <img src="/blog/images/mamba/mamba_scaling.png" width="800" alt="Scaling Laws for Mamba vs other Language Models">
     <figcaption>Mamba performs similarly (or slightly better than) other Language Models on The Pile</figcaption>
   </figure>
 </div>
@@ -153,7 +153,7 @@ runner should move left or right at any time.
 
 <div align="center">
   <figure>
-    <img src="/blog/images/mamba/temple_run.png" width="800" alt="Temple Run">
+    <img src="/blog/images/mamba/temple_run.png" width="400" alt="Temple Run">
     <figcaption></figcaption>
   </figure>
 </div>
@@ -250,7 +250,7 @@ time steps [^discrete].
 
 <div align="center">
   <figure>
-    <img src="/blog/images/mamba/quantised.png" width="800" alt="Reality is Quantised">
+    <img src="/blog/images/mamba/quantised.png" width="600" alt="Reality is Quantised">
     <figcaption></figcaption>
   </figure>
 </div>
@@ -299,7 +299,7 @@ discrete representations:
 
 <div align="center">
   <figure>
-    <img src="/blog/images/mamba/equation_2" width="800" alt="Equation 2">
+    <img src="/blog/images/mamba/equation_2.png" width="800" alt="Equation 2">
     <figcaption>The Discretised Version of the SSM Equation</figcaption>
   </figure>
 </div>
@@ -335,7 +335,7 @@ Now, we can interpret the A, B, C, D matrices more intuitively:
 
 <div align="center">
   <figure>
-    <img src="/blog/images/mamba/graphical_matmuls.png" width="800" alt="Visual SSM Equations">
+    <img src="/blog/images/mamba/graphical_matmuls.png" width="600" alt="Visual SSM Equations">
     <figcaption>Visual Representation of The SSM Equations</figcaption>
   </figure>
 </div>
@@ -391,7 +391,7 @@ Answer:
 
 <div align="center">
   <figure>
-    <img src="/blog/images/mamba/cocktail_party.png" width="800" alt="Cocktail Party">
+    <img src="/blog/images/mamba/cocktail_party.png" width="450" alt="Cocktail Party">
     <figcaption></figcaption>
   </figure>
 </div>
