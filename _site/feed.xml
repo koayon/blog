@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-02-14T00:48:06+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-02-15T20:10:35+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -250,10 +250,23 @@ $$&lt;/p&gt;
 
 &lt;p&gt;by the definition of the derivative.&lt;/p&gt;
 
-&lt;p&gt;We let $$ h_t = h(t) \ \text{and} \ h_{t+1} = h(t + \Delta) $$ and substitute
-into Equation 1a giving:&lt;/p&gt;
+&lt;p&gt;We let:&lt;/p&gt;
 
-&lt;p&gt;$$ h_{t+1} - h_t \approx \Delta (\mathbf{A}h_t + \mathbf{B}x_t) $$&lt;/p&gt;
+&lt;p&gt;$$
+h_t = h(t)
+$$&lt;/p&gt;
+
+&lt;p&gt;and&lt;/p&gt;
+
+&lt;p&gt;$$
+h_{t+1} = h(t + \Delta)
+$$&lt;/p&gt;
+
+&lt;p&gt;and substitute into Equation 1a giving:&lt;/p&gt;
+
+&lt;p&gt;$$
+h_{t+1} - h_t \approx \Delta (\mathbf{A}h_t + \mathbf{B}x_t)
+$$&lt;/p&gt;
 
 &lt;p&gt;$$
 \Rightarrow h_{t+1} \approx (I + \Delta \mathbf{A})h_t + (\Delta

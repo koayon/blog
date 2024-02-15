@@ -279,18 +279,31 @@ $$
 And for small ∆,
 
 $$
-h’(t) \\approx \\frac{h(t+\\Delta) - h(t)}{\\Delta}
+h’(t) \approx \frac{h(t+\Delta) - h(t)}{\Delta}
 $$
 
 by the definition of the derivative.
 
-We let $$ h_t = h(t) \ \text{and} \ h\_{t+1} = h(t + \\Delta) $$ and substitute
-into Equation 1a giving:
-
-$$ h\_{t+1} - h_t \approx \Delta (\mathbf{A}h_t + \mathbf{B}x_t) $$
+We let:
 
 $$
-\Rightarrow h\_{t+1} \approx (I + \Delta \mathbf{A})h_t + (\Delta
+h_t = h(t)
+$$
+
+and
+
+$$
+h_{t+1} = h(t + \Delta)
+$$
+
+and substitute into Equation 1a giving:
+
+$$
+h_{t+1} - h_t \approx \Delta (\mathbf{A}h_t + \mathbf{B}x_t)
+$$
+
+$$
+\Rightarrow h_{t+1} \approx (I + \Delta \mathbf{A})h_t + (\Delta
 \mathbf{B})x_t
 $$
 
