@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-02-15T20:10:35+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-02-19T16:10:14+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -416,11 +416,15 @@ is unique to its own needs. Selectivity is what takes us from vanilla SSM models
 (applying the same A (forgetting) and B (remembering) matrices to every input)
 to Mamba, the &lt;strong&gt;&lt;em&gt;Selective&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;State Space Model&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;In regular SSMs, A, B, C and D are learned matrices - that is $$ \mathbf{A} =
-\mathbf{A}_\theta$$ etc. (where θ represents the learned parameters)&lt;/p&gt;
+&lt;p&gt;In regular SSMs, A, B, C and D are learned matrices - that is&lt;/p&gt;
+
+&lt;p&gt;$$
+\mathbf{A} =
+\mathbf{A}_{\theta}$$ etc. (where θ represents the learned
+parameters)&lt;/p&gt;
 
 &lt;p&gt;With the Selection Mechanism in Mamba, A, B, C and D are also functions of x.
-That is $$ \mathbf{A} = \mathbf{A}_\theta(x) $$ etc; the matrices are context
+That is $$\mathbf{A} = \mathbf{A}_{\theta(x)}$$ etc; the matrices are context
 dependent rather than static.&lt;/p&gt;
 
 &lt;div align=&quot;center&quot;&gt;
@@ -827,7 +831,8 @@ code, &lt;a href=&quot;https://srush.github.io/annotated-s4/&quot;&gt;Annotated 
 &lt;a href=&quot;https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/&quot;&gt;Nathan Labenz podcast&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;&lt;/p&gt;
+&lt;br /&gt;
+$$&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:figure&quot; role=&quot;doc-endnote&quot;&gt;

@@ -459,12 +459,18 @@ is unique to its own needs. Selectivity is what takes us from vanilla SSM models
 (applying the same A (forgetting) and B (remembering) matrices to every input)
 to Mamba, the **_Selective_** _State Space Model_.
 
-In regular SSMs, A, B, C and D are learned matrices - that is $$ \mathbf{A} =
-\mathbf{A}\_\theta$$ etc. (where θ represents the learned parameters)
+In regular SSMs, A, B, C and D are learned matrices - that is
+
+$$
+\mathbf{A} =
+\mathbf{A}_{\theta}$$ etc. (where θ represents the learned
+parameters)
 
 With the Selection Mechanism in Mamba, A, B, C and D are also functions of x.
-That is $$ \mathbf{A} = \mathbf{A}\_\theta(x) $$ etc; the matrices are context
+That is $$\mathbf{A} = \mathbf{A}_{\theta(x)}$$ etc; the matrices are context
 dependent rather than static.
+
+
 
 <div align="center">
   <figure>
@@ -913,3 +919,4 @@ code, [Annotated S4](https://srush.github.io/annotated-s4/),
 
 <br>
 <br>
+$$

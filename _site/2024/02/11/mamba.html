@@ -503,11 +503,15 @@ is unique to its own needs. Selectivity is what takes us from vanilla SSM models
 (applying the same A (forgetting) and B (remembering) matrices to every input)
 to Mamba, the <strong><em>Selective</em></strong> <em>State Space Model</em>.</p>
 
-<p>In regular SSMs, A, B, C and D are learned matrices - that is $$ \mathbf{A} =
-\mathbf{A}_\theta$$ etc. (where θ represents the learned parameters)</p>
+<p>In regular SSMs, A, B, C and D are learned matrices - that is</p>
+
+<p>$$
+\mathbf{A} =
+\mathbf{A}_{\theta}$$ etc. (where θ represents the learned
+parameters)</p>
 
 <p>With the Selection Mechanism in Mamba, A, B, C and D are also functions of x.
-That is $$ \mathbf{A} = \mathbf{A}_\theta(x) $$ etc; the matrices are context
+That is $$\mathbf{A} = \mathbf{A}_{\theta(x)}$$ etc; the matrices are context
 dependent rather than static.</p>
 
 <div align="center">
@@ -914,7 +918,8 @@ code, <a href="https://srush.github.io/annotated-s4/">Annotated S4</a>,
 <a href="https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/">Nathan Labenz podcast</a></em></p>
 
 <p><br>
-<br></p>
+<br>
+$$</p>
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:figure" role="doc-endnote">
