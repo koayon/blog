@@ -919,4 +919,3 @@ code, [Annotated S4](https://srush.github.io/annotated-s4/),
 
 <br>
 <br>
-$$
