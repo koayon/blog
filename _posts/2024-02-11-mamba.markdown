@@ -909,6 +909,8 @@ All that remains to ask is: `Is Attention All We Need?`
 <br>
 <br>
 
+Join the discussion on Hacker News [here](https://news.ycombinator.com/item?id=39501982)
+
 _Thanks to Gonçalo for reading an early draft, Jaden for the nnsight library
 used for the Interpretability analysis and Tessa for Mamba patching
 visualisations._
