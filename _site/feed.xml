@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-02-19T16:10:14+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/blog/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/blog/" rel="alternate" type="text/html" /><updated>2024-03-14T19:04:26+00:00</updated><id>http://localhost:4000/blog/feed.xml</id><title type="html">Kola Ayonrinde</title><subtitle>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</subtitle><entry><title type="html">Mamba Explained</title><link href="http://localhost:4000/blog/2024/02/11/mamba.html" rel="alternate" type="text/html" title="Mamba Explained" /><published>2024-02-11T00:00:00+00:00</published><updated>2024-02-11T00:00:00+00:00</updated><id>http://localhost:4000/blog/2024/02/11/mamba</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/11/mamba.html">&lt;h3 id=&quot;the-state-space-model-taking-on-transformers&quot;&gt;The State Space Model taking on Transformers&lt;/h3&gt;
 
 &lt;div align=&quot;center&quot;&gt;
   &lt;figure&gt;
@@ -822,6 +822,8 @@ now a research direction with a fighting chance.&lt;/p&gt;
 &lt;p&gt;&lt;br /&gt;
 &lt;br /&gt;&lt;/p&gt;
 
+&lt;p&gt;Join the discussion on Hacker News &lt;a href=&quot;https://news.ycombinator.com/item?id=39501982&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;em&gt;Thanks to Gonçalo for reading an early draft, Jaden for the nnsight library
 used for the Interpretability analysis and Tessa for Mamba patching
 visualisations.&lt;/em&gt;&lt;/p&gt;
@@ -831,8 +833,7 @@ code, &lt;a href=&quot;https://srush.github.io/annotated-s4/&quot;&gt;Annotated 
 &lt;a href=&quot;https://www.cognitiverevolution.ai/emergency-pod-mamba-memory-and-the-ssm-moment/&quot;&gt;Nathan Labenz podcast&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;br /&gt;
-&lt;br /&gt;
-$$&lt;/p&gt;
+&lt;br /&gt;&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:figure&quot; role=&quot;doc-endnote&quot;&gt;
