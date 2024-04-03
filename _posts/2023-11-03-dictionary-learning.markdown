@@ -431,6 +431,11 @@ the results here in the next few days. _ -->
 <br>
 <br>
 
+_Thanks to Derik and Joe for comments on a draft of this post._
+
+<br>
+<br>
+
 [^1]:
     With both its weights and its activations on a series of input examples say
 
