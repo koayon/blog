@@ -42,5 +42,5 @@ Mathematics, ML applied to Musicology and Logic.
 Find me on [Substack](https://lookingglassworld.substack.com/) for other writing
 or on [GitHub](https://github.com/koayon) for code.
 
-Feel free to reach out by [email](mailto:koayon@gmail.com) or give anonymous
-feedback [here](https://www.admonymous.co/kola)
+Feel free to reach out by [email](mailto:koayon@gmail.com), give me anonymous
+feedback [here](https://www.admonymous.co/kola) or schedule a chat with me about the topics above [here](https://cal.com/kolaayonrinde/30min).
