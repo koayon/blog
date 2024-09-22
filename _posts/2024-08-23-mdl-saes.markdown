@@ -1,0 +1,7 @@
+---
+layout: post
+title: "MDL-SAEs: Interpretability as Compression"
+stub: mdl-saes
+tags: machine-learning interpretability dictionary-learning
+external_url: https://www.lesswrong.com/posts/G2oyFQFTE5eGEas6m/interpretability-as-compression-reconsidering-sae
+---
