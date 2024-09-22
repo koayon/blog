@@ -4,37 +4,31 @@ title: About
 permalink: /about/
 ---
 
-Hello! I'm Kola! I'm a ML Researcher based in London, UK.
+Hello! 👋
 
-<!-- I currently work at Unlikely AI, an AI
-lab taking a novel approach to building safe, trustworthy and powerful
-Artificial Intelligence. -->
-
+I'm Kola, an ML Researcher based in London, UK.
 This is my technical blog about Machine Learning.
 
-My main current research interests are:
+My current main research interests are:
 
-1. Adaptive Neural Computation
+1. Mechanistic Interpretability - broadly defined as the study of reverse
+   engineering neural networks from the learned weights into human-interpretable
+   algorithms.
+   - I’m particularly interested in universal representation learning (and its
+     philosophical implications), compositional representations and principled
+     approaches to feature disentanglement.
+2. Theories of Agency
+   - I'm particularly Active Inference and Bayesian Mechanics as candidates for unified theories of agency which we can use as models for agency at different levels of abstraction.
+3. Adaptive Neural Computation
    - I'm especially interested in approaches which allow networks to spend more
      compute on difficult tokens via early-exiting mechanisms, MoE and related
      approaches.
    - I maintain an
      [annotated collection of research papers](https://github.com/koayon/awesome-adaptive-computation)
      in Adaptive Computation for the community.
-2. Mechanistic Interpretability - broadly defined as the study of reverse
-   engineering neural networks from the learned weights into human-interpretable
-   algorithms.
-   - I’m particularly interested in universal representation learning (and its
-     philosophical implications), automated interpretability and
-     compositionality.
-3. Computational reasoning
-   - This can often overlap with either Adaptive Computation, search-based
-     methods and neurosymbolic approaches to computation. I'm also interested in
-     automated theorem proving and code generation as playgrounds for general
-     reasoning capabilities.
-
-<!-- 4. Modularity in Neural Networks
-   - When -->
+4. Modularity in Neural Networks
+   - I'm interested in how we can understand the inherent modularity in neural networks in the wild.
+   - I'm also interested in lessons about multi-task learning and generalisation from designed modular architectures.
 
 Previous research interests have included the Linguistic properties of
 Mathematics, ML applied to Musicology and Logic.
