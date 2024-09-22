@@ -18,7 +18,9 @@ My current main research interests are:
      philosophical implications), compositional representations and principled
      approaches to feature disentanglement.
 2. Theories of Agency
-   - I'm particularly Active Inference and Bayesian Mechanics as candidates for unified theories of agency which we can use as models for agency at different levels of abstraction.
+   - I'm particularly thinking about Active Inference and Bayesian Mechanics as candidates for unified theories of agency which we can use as models for agency at different levels of abstraction.
+   - I'm especially interested in how we can use these theories to understand multi-agent systems.
+   - I'm also interested in evaluations for dangerous capabilities in agentic systems, in particular in the context of cybersecurity as one of the first applications where our theory may apply.
 3. Adaptive Neural Computation
    - I'm especially interested in approaches which allow networks to spend more
      compute on difficult tokens via early-exiting mechanisms, MoE and related
