@@ -109,3 +109,43 @@ We also get all the benefits of using type signatures for clarity without the he
 In Python types are for communication with humans not for communicating with the compiler[^compiler], so it's better to optimise for readability.
 
 [^compiler]: The compiler ignores your type hints anyways.
+
+## Extensions
+
+We now move to extending the original Shazeer typing approach
+to more settings.
+
+### Output types
+
+Note that in the above MLP module we can look at the type signature of the forward function
+and immediately infer the input argument types.
+However it's a little more difficult to infer the output types at a glance as we don't use Shazeer typing for the output.
+This is unfortunate and I've found the best way around this if it's really unclear
+is to use Shazeer typing within your functions and for arguments and jaxtyping for output types.
+
+### Data Types
+
+Another important piece of information for understanding tensor code is the data types.
+For example you might have a tensor which is made up of boolean or integer values.
+Here I recommend including the datatype before the shape suffix
+e.g. `x_Int_BSN` or `z_Bool_FN`.
+Where the data type isn't specified we assume float values.
+
+Note that for code where grokking quantisation is important you can also
+use this for tracking which quantisation level you're at e.g.
+`x_8_FN` can signify that the value is an 8bit rather than 16bit float.
+
+### Singleton tensors
+
+For tensors which are 1 dimensional (e.g. loss, summary statistics etc),
+leave the shape suffix blank e.g. `loss: t.Tensor`.
+
+### Rearranges
+
+If you reshape some tensor you can use lowercase shape suffixes to signify this change. For example, using einops (covered [here](https://www.kolaayonrinde.com/blog/2024/01/08/einops.html)) we can have:
+
+```python
+x_BsN = rearrange(x_BSN, "batch seq_len neuron_dim -> (batch seq_len) neuron_dim")
+```
+
+The lower case `s` tells us that we can reshape this back when needed and signals that the size of the first dimension should be B*S.
