@@ -149,3 +149,14 @@ x_BsN = rearrange(x_BSN, "batch seq_len neuron_dim -> (batch seq_len) neuron_dim
 ```
 
 The lower case `s` tells us that we can reshape this back when needed and signals that the size of the first dimension should be B*S.
+
+## Conclusion
+
+That's all folks! I've found using Shazeer typing means that I ~never have shape errors,
+can very quickly grok code and understand sensible transformations,
+can keep my tensor code clean and
+am able to easily give additional context to Copilot to stop LLM errors.
+I highly recommend adopting this practise for your ML code.
+
+<br>
+<br>
