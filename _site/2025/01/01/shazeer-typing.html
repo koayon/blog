@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Shazeer Typing | Kola Ayonrinde</title>
+<meta name="generator" content="Jekyll v3.9.3">
+<meta property="og:title" content="Shazeer Typing">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Tensor Naming for Sanity and Clarity">
+<meta property="og:description" content="Tensor Naming for Sanity and Clarity">
+<link rel="canonical" href="http://localhost:4000/blog/2025/01/01/shazeer-typing.html">
+<meta property="og:url" content="http://localhost:4000/blog/2025/01/01/shazeer-typing.html">
+<meta property="og:site_name" content="Kola Ayonrinde">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2025-01-01T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Shazeer Typing">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-01-01T00:00:00+00:00","datePublished":"2025-01-01T00:00:00+00:00","description":"Tensor Naming for Sanity and Clarity","headline":"Shazeer Typing","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2025/01/01/shazeer-typing.html"},"url":"http://localhost:4000/blog/2025/01/01/shazeer-typing.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/main.css">
+<link type="application/atom+xml" rel="alternate" href="http://localhost:4000/blog/feed.xml" title="Kola Ayonrinde">
+</head>
+<body>
+<header class="site-header" role="banner">
+
+  <div class="wrapper">
+<a class="site-title" rel="author" href="/blog/">Kola Ayonrinde</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewbox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a></div>
+      </nav>
+</div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+  <link rel="stylesheet" href="/blog/assets/css/post.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css">
+
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7175JLSX4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-Q7175JLSX4");
+  </script>
+  <header class="post-header">
+    <!--  -->
+    
+    <h1 class="post-title p-name" itemprop="name headline">
+      Shazeer Typing
+    </h1>
+    
+    <!--  -->
+
+    <p class="post-meta">
+      <time class="dt-published" datetime="2025-01-01T00:00:00+00:00" itemprop="datePublished">Jan 1, 2025
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!-- <nav class="sidebar"> -->
+    <!-- Table of Contents -->
+    <!-- <h4>Table of Contents</h4> -->
+    <!--  -->
+    <!-- </nav> -->
+    <!-- <br /> -->
+    <!-- <br /> -->
+    <h3 id="tensor-naming-for-sanity-and-clarity">Tensor Naming for Sanity and Clarity</h3>
+
+<div align="center">
+  <figure>
+    <img src="/blog/images/shazeer-typing/karpathy_tweet.png" width="800" alt="Shazeer typing is good for your skin">
+    </figure>
+</div>
+
+<p><br></p>
+
+<p>Few people have made as big an impact on language modelling as Noam Shazeer.</p>
+
+<p>Shazeer invented MoEs, Multihead Attention, Multiquery Attention,
+Tensor-Parallel LLM Training, SwiGLU and co-invented the Transformer.
+In 2021, after Google’s delay to ship LLMs,
+Shazeer left Google to found Character.AI<sup id="fnref:google" role="doc-noteref"><a href="#fn:google" class="footnote" rel="footnote">1</a></sup>.
+This ended a string of insightful research papers and since joining Character, Shazeer has released only 4 research blog posts.
+Three of the posts are on the Character blog <a href="https://research.character.ai/">here</a> about efficient inference and prompting.
+But the last is a curious tiny post on what he calls <a href="https://medium.com/@NoamShazeer/shape-suffixes-good-coding-style-f836e72e24fd">Shape Suffixes</a> which
+we call as <code class="language-plaintext highlighter-rouge">Shazeer typing</code>.
+The post is only 114 words and a single code block, but I’ve found it
+remarkably useful for writing better PyTorch code.</p>
+
+<p>Let’s get into it.</p>
+
+<h2 id="core-idea">Core Idea</h2>
+
+<h3 id="the-problem">The Problem</h3>
+
+<p>When writing ML code,
+we often need to understand what each tensor and its dimensions represent
+(as well as the size of the dimensions) at a glance.
+For example, if a matrix M represents a linear transformation from space X to space Y,
+that’s immediately useful information.</p>
+
+<p>Other solutions to this problem of communicating shapes exist:
+<code class="language-plaintext highlighter-rouge">jaxtyping</code> checks tensor shapes effectively
+but it’s fairly verbose and you only see the shape when a tensor is introduced.</p>
+
+<h3 id="the-solution">The Solution</h3>
+
+<p>The <strong>Shazeer typing</strong> system is simpler and more lightweight:</p>
+
+<ul>
+  <li>Designate a system of single-letter names for logical dimensions, e.g. <code class="language-plaintext highlighter-rouge">B</code> for batch size, <code class="language-plaintext highlighter-rouge">S</code> for sequence length, etc., and document it somewhere in your file/project/codebase.</li>
+  <li>When known, the name of a tensor should end in a dimension-suffix composed of those letters, e.g. tokens_BS represents a two-dimensional tensor with batch_size and seq_length dimensions.</li>
+</ul>
+
+<p>We can now write an MLP (in pseudocode) as:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">""" Example MLP torch pseudocode code with Shazeer typing.
+For illustration purposes only.
+
+Dimension key:
+
+B: batch_size
+S: seq_len (sequence length)
+N: neuron_dim (sometimes called model dimension, d_model or embedding_dim)
+V: vocab_size (vocabulary size)
+F: feature_dim (feed-forward subnetwork hidden size)
+"""</span>
+
+<span class="k">class</span> <span class="nc">MLP</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">W_in_NF</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">out_dim</span><span class="p">,</span> <span class="n">in_dim</span><span class="p">))</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">W_out_FN</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">init_params</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_BSN</span><span class="p">:</span> <span class="n">t</span><span class="p">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="p">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">y_BSF</span> <span class="o">=</span> <span class="n">x_BSN</span> <span class="o">@</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_in_NF</span>
+        <span class="n">y_BSF</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="n">gelu</span><span class="p">(</span><span class="n">y_BSF</span><span class="p">)</span>
+        <span class="n">out_BSN</span> <span class="o">=</span> <span class="n">y_BSF</span> <span class="o">@</span> <span class="bp">self</span><span class="p">.</span><span class="n">W_out_FN</span>
+
+        <span class="k">return</span> <span class="n">out_BSN</span>
+</code></pre></div></div>
+
+<p>From this, we can immediately see that we won’t have any share errors:
+all the shapes match up for our matrix multiplications.
+And it’s pretty clear what each tensor represents.</p>
+
+<p><br></p>
+
+<p>Shazeer typing is an excellent lesson in following the <a href="https://peps.python.org/pep-0020/">Zen of Python</a>. It tracks with:</p>
+
+<blockquote>
+  <p>Explicit is better than implicit.</p>
+
+  <p>Simple is better than complex.</p>
+
+  <p>Readability counts.</p>
+
+  <p>Practicality beats purity.</p>
+
+  <p>In the face of ambiguity, refuse the temptation to guess.
+There should be one– and preferably only one –obvious way to do it.</p>
+
+  <p>If the implementation is easy to explain, it may be a good idea.</p>
+</blockquote>
+
+<p>We also get all the benefits of using type signatures for clarity without the headache of being ultra precise with types.
+In Python, types are for communication with humans, not for communicating with the compiler<sup id="fnref:compiler" role="doc-noteref"><a href="#fn:compiler" class="footnote" rel="footnote">2</a></sup>, so it’s better to optimise for readability.</p>
+
+<h2 id="extensions">Extensions</h2>
+
+<p>We now further extend the original Shazeer typing approach.</p>
+
+<h3 id="output-types">Output types</h3>
+
+<p>In the above MLP module,
+we can look at the type signature of the forward function
+and immediately infer the input argument types.
+However, it’s harder to infer the output types at a glance as we don’t use Shazeer typing for the output type.
+This is unfortunate.
+If this becomes unclear in your code,
+I’ve found the best solution is to use Shazeer typing within your functions and input arguments and
+jaxtyping for output types.</p>
+
+<h3 id="data-types">Data Types</h3>
+
+<p>Data types are also important for understanding tensor code.
+For example, you might have a tensor which is made up of boolean or integer values.
+Here, I recommend including the datatype before the shape suffix
+e.g. <code class="language-plaintext highlighter-rouge">x_Int_BSN</code> or <code class="language-plaintext highlighter-rouge">z_Bool_FN</code>.
+Where the data type isn’t specified, we assume float values.</p>
+
+<p>Note that for code where grokking quantisation is important you can also
+use this approach for quantisation levels.
+For example <code class="language-plaintext highlighter-rouge">x_8_FN</code> can signify that the value is an 8-bit rather than 16-bit float.</p>
+
+<h3 id="singleton-tensors">Singleton tensors</h3>
+
+<p>For 1D tensors (e.g. loss, summary statistics etc),
+leave the shape suffix blank, e.g. <code class="language-plaintext highlighter-rouge">loss: t.Tensor</code>.</p>
+
+<h3 id="rearranges">Rearranges</h3>
+
+<p>You can use lowercase shape suffixes to signify a reshaped tensor. For example, using einops (covered <a href="https://www.kolaayonrinde.com/blog/2024/01/08/einops.html">here</a>) we can have:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x_BsN</span> <span class="o">=</span> <span class="n">rearrange</span><span class="p">(</span><span class="n">x_BSN</span><span class="p">,</span> <span class="s">"batch seq_len neuron_dim -&gt; (batch seq_len) neuron_dim"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The lowercase <code class="language-plaintext highlighter-rouge">s</code> indicates that we can reshape this back when needed and signals that the first dimension should be of size B*S.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>That’s all folks! I’ve found using Shazeer typing means that I ~never have shape errors,
+can very quickly grok code and understand sensible transformations,
+can keep my tensor code clean and
+am able to easily give additional context to Copilot to stop LLM errors.
+I highly recommend adopting this practice for your ML code.</p>
+
+<p><br>
+<br></p>
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:google" role="doc-endnote">
+      <p>Shazeer is now back at Google to lead the Gemini team following a $2.7B Inflection-style acqui-hire. It’s not <em>quite</em> true that Google spent $2.7B to hire one researcher, but it’s not <em>not</em> true 🤷 <a href="#fnref:google" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:compiler" role="doc-endnote">
+      <p>The compiler ignores your type hints anyways. <a href="#fnref:compiler" class="reversefootnote" role="doc-backlink">↩</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+
+  <!-- Citations -->
+  <!-- Add the citation section here -->
+  <div class="citation-section">
+    <h3>If you'd like to cite this article, please use:</h3>
+    <pre>
+  @misc{kayonrinde2025shazeer-typing,
+    author = "Kola Ayonrinde",
+    title = "Shazeer Typing",
+    year = 2025,
+    howpublished = "Blog post",
+    url = "http://localhost:4000/2025/01/01/shazeer-typing.html"
+  }
+    </pre>
+  </div>
+
+  <br>
+
+  <div>
+    <h4>To be notified of new posts, subscribe below:</h4>
+    <iframe src="https://lookingglassworld.substack.com/embed" width="100%" height="320" style="border: 1px solid #eee; background: white" frameborder="0" scrolling="no"></iframe>
+  </div>
+<a class="u-url" href="/blog/2025/01/01/shazeer-typing.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Kola Ayonrinde</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Kola Ayonrinde</li>
+<li><a class="u-email" href="mailto:koayon@gmail.com">koayon@gmail.com</a></li>
+</ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+<ul class="social-media-list"><li><a href="https://github.com/koayon"><svg class="svg-icon"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">koayon</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>The technical blog of Kola Ayonrinde: Research Scientist/ML Engineer</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
