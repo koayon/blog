@@ -6,7 +6,7 @@ permalink: /about/
 
 Hello! 👋
 
-I'm Kola, an ML Researcher based in London, UK.
+I'm Kola, an ML Researcher based in London.
 I work at the [UK AI Safety Institute](https://www.aisi.gov.uk/) on Agency, Capability Evaluation, and Elicitation.
 This is my technical blog about Machine Learning.
 
@@ -49,3 +49,6 @@ Please reach out if you're interested in collaborating on one of the above topic
 
 Feel free to reach out by [email](mailto:koayon@gmail.com), give me anonymous
 feedback [here](https://www.admonymous.co/kola) or schedule a chat with me about the topics above [here](https://cal.com/kolaayonrinde/30min).
+
+I am grateful to the Foresight Institute and Machine Learning
+Alignment & Theory Scholars (MATS) for supporting this research.
