@@ -1,0 +1,7 @@
+---
+layout: post
+title: "SAEBench: A Comprehensive Benchmark for Sparse Autoencoders"
+stub: sae-bench
+tags: machine-learning interpretability dictionary-learning evals
+external_url: https://www.neuronpedia.org/sae-bench/info
+---
