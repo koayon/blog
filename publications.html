@@ -7,8 +7,20 @@ title: "Publications"
 <ul>
   {% for pub in site.publications %}
   <li>
-    <a href="{{ pub.url }}">{{ pub.title }}</a> – {{ pub.authors | join: ", "
-    }}, {{ pub.year }}
+    <strong>
+      {% if pub.external_url %}
+      <a href="{{ pub.external_url }}" target="_blank" rel="noopener noreferrer"
+        >{{ pub.title }}</a
+      >
+      {% endif %} {% if pub.external_url == null %} {{ pub.title }} {% endif %}
+    </strong>
+    <br />
+    {{ pub.authors | join: ", " }} - {{ pub.year }} <br />
+    <em>{{ pub.journal }}</em>
+    <details>
+      <summary>Show Abstract</summary>
+      <div>{{ pub.content | markdownify }}</div>
+    </details>
   </li>
   {% endfor %}
 </ul>
