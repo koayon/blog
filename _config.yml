@@ -63,3 +63,7 @@ font-awesome:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+collections:
+  publications:
+    output: true
+    permalink: /publications/:title/
