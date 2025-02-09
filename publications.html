@@ -3,24 +3,32 @@ layout: default
 title: "Publications"
 ---
 
-<h1>Publications</h1>
-<ul>
+<h1>Selected Publications</h1>
+<ul style="list-style: none; padding-left: 0">
   {% for pub in site.publications %}
   <li>
     <strong>
       {% if pub.external_url %}
-      <a href="{{ pub.external_url }}" target="_blank" rel="noopener noreferrer"
-        >{{ pub.title }}</a
+      <a
+        href="{{ pub.external_url }}"
+        target="_blank"
+        rel="noopener noreferrer"
       >
-      {% endif %} {% if pub.external_url == null %} {{ pub.title }} {% endif %}
+        {{ pub.title }}
+      </a>
+      {% else %} {{ pub.title }} {% endif %}
     </strong>
     <br />
-    {{ pub.authors | join: ", " }} - {{ pub.year }} <br />
+    {% for author in pub.authors %} {% if author contains "Kola Ayonrinde" %}
+    <strong>{{ author }}</strong>
+    {% else %} {{ author }} {% endif %} {% unless forloop.last %}, {% endunless
+    %} {% endfor %} - {{ pub.year }} <br />
     <em>{{ pub.journal }}</em>
     <details>
       <summary>Show Abstract</summary>
       <div>{{ pub.content | markdownify }}</div>
     </details>
   </li>
+  <br />
   {% endfor %}
 </ul>
