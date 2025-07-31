@@ -11,7 +11,7 @@ authors:
   - "Yeu-Tong Lau"
   - "Eoin Farrell"
   - "Callum McDougall"
-  - "*Kola Ayonrinde"
+  - "Kola Ayonrinde"
   - "Demian Till"
   - "Matthew Wearden"
   - "Arthur Conmy"
