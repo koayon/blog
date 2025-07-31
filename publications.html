@@ -5,7 +5,7 @@ title: "Publications"
 
 <h1>Selected Publications</h1>
 <ul style="list-style: none; padding-left: 0">
-  {% for pub in site.publications %}
+  {% for pub in site.publications reversed%} {% unless pub.hidden %}
   <li>
     <strong>
       {% if pub.external_url %}
@@ -30,5 +30,5 @@ title: "Publications"
     </details>
   </li>
   <br />
-  {% endfor %}
+  {% endunless %} {% endfor %}
 </ul>
