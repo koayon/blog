@@ -1,0 +1,12 @@
+---
+layout: publication
+title: "Evaluating Explanations: An Explanatory Virtues Framework for Mechanistic Interpretability -- The Strange Science Part I.ii"
+authors:
+  - "Kola Ayonrinde"
+  - "Louis Jaburi"
+year: 2025
+journal: "Under Review"
+external_url: https://arxiv.org/abs/2505.01372
+---
+
+Mechanistic Interpretability (MI) aims to understand neural networks through causal explanations. Though MI has many explanation-generating methods, progress has been limited by the lack of a universal approach to evaluating explanations. Here we analyse the fundamental question "What makes a good explanation?" We introduce a pluralist Explanatory Virtues Framework drawing on four perspectives from the Philosophy of Science - the Bayesian, Kuhnian, Deutschian, and Nomological - to systematically evaluate and improve explanations in MI. We find that Compact Proofs consider many explanatory virtues and are hence a promising approach. Fruitful research directions implied by our framework include (1) clearly defining explanatory simplicity, (2) focusing on unifying explanations and (3) deriving universal principles for neural networks. Improved MI methods enhance our ability to monitor, predict, and steer AI systems.
