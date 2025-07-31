@@ -4,7 +4,7 @@ title: "Adaptive Sparse Allocation with Mutual Choice & Feature Choice Sparse Au
 authors:
   - "Kola Ayonrinde"
 year: 2024
-journal: "Under Review"
+journal: "arXiv"
 external_url: https://arxiv.org/abs/2411.02124
 ---
 
