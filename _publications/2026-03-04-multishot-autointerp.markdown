@@ -1,0 +1,12 @@
+---
+layout: publication
+title: "Multi-shot AutoInterp: Agents Can Explain Complex Features By Refining Explanations"
+authors:
+  - "Kamal Maher"
+  - "Simon Elias Schrader"
+  - "Kola Ayonrinde"
+year: 2026
+journal: "ICLR 2026, HCAIR Workshop"
+---
+
+Interpretability studies often show that some features of language models are easily interpretable by humans while others are difficult to explain. If such features are truly beyond human grasp, the field of interpretability may have fundamental limits. We notice, however, that previous human and automated interpretability studies typically seek single-shot explanations, and we hypothesise that the lack of interaction may be a cause for features seeming uninterpretable. To add interaction to feature interpretability, we introduce Multi-Shot AutoInterp (MSA), an agentic framework where LLM agents iteratively refine feature explanations by forming hypotheses, performing targeted experiments on new sequences, and incorporating feedback from feature activations. We find that MSA agents achieve improved AutoInterp performance on difficult-to-interpret sparse autoencoder features with 7.7% greater prediction accuracy than current AutoInterp methods. In addition, MSA agents produced insightful explanations for features that initially appeared opaque to the authors, for example illuminating the meaning of a feature that is activated on tokens representing conceptual parallelism. Our results suggest that features that were previously thought of as uninterpretable may instead be simply not amenable to single-shot explanation, which increases our estimation of how many features are ultimately human-understandable. We argue that through multi-shot approaches humans may be able to understand more of the elusive safety-relevant features in a language model or learn novel, AI-native scientific concepts that were not previously salient to humans.

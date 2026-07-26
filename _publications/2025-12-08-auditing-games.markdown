@@ -1,0 +1,23 @@
+---
+layout: publication
+title: "Auditing Games for Sandbagging"
+authors:
+  - "Jordan Taylor"
+  - "Sid Black"
+  - "Dillon Bowen"
+  - "Thomas Read"
+  - "Satvik Golechha"
+  - "Alex Zelenka-Martin"
+  - "Oliver Makins"
+  - "Connor Kissane"
+  - "Kola Ayonrinde"
+  - "Jacob Merizian"
+  - "Samuel Marks"
+  - "Chris Cundy"
+  - "Joseph Bloom"
+year: 2025
+journal: "arXiv"
+external_url: https://arxiv.org/abs/2512.07810
+---
+
+Future AI systems could conceal their capabilities ("sandbagging") during evaluations, potentially misleading developers and auditors. We stress-tested sandbagging detection techniques using an auditing game. First, a red team fine-tuned five models, some of which conditionally underperformed, as a proxy for sandbagging. Second, a blue team used black-box, model-internals, or training-based approaches to identify sandbagging models. We found that the blue team could not reliably discriminate sandbaggers from benign models. Black-box approaches were defeated by effective imitation of a weaker model. Linear probes, a model-internals approach, showed more promise but their naive application was vulnerable to behaviours instilled by the red team. We also explored capability elicitation as a strategy for detecting sandbagging. Although prompt-based elicitation was not reliable, training-based elicitation consistently elicited full performance from the sandbagging models, using only a single correct demonstration of the evaluation task. However, the performance of benign models was sometimes also raised, so relying on elicitation as a detection strategy was prone to false positives. In the short term, we recommend developers remove potential sandbagging using on-distribution training for elicitation. In the longer term, further research is needed to ensure the efficacy of training-based elicitation and develop robust methods for sandbagging detection.
