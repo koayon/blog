@@ -1,0 +1,7 @@
+---
+layout: post
+title: "J++ Lens: Jacobian Filtering Enables More Faithful Workspace Lenses"
+stub: jpp-lens
+tags: machine-learning interpretability
+external_url: https://www.lesswrong.com/posts/nc9dHfcB22JdMzGbr/j-lens-jacobian-filtering-enables-more-faithful-workspace
+---
