@@ -1,0 +1,48 @@
+<li>
+  <strong>
+    {% if include.pub.external_url %}
+    <a
+      href="{{ include.pub.external_url }}"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {{ include.pub.title }}
+    </a>
+    {% else %} {{ include.pub.title }} {% endif %}
+  </strong>
+  <br />
+  {% assign author_count = include.pub.authors | size %}
+  {% if author_count > 15 %}
+    {% assign first_authors = include.pub.authors | slice: 0, 2 %}
+    {% for author in first_authors %}
+      {{ author }}{% unless forloop.last %}, {% endunless %}
+    {% endfor %},
+    &hellip;, <strong>Kola Ayonrinde</strong>, &hellip;,
+    {% assign last_author = include.pub.authors | last %}
+    {% if last_author contains "Kola Ayonrinde" %}
+      <strong>{{ last_author }}</strong>
+    {% else %}
+      {{ last_author }}
+    {% endif %}
+  {% else %}
+    {% for author in include.pub.authors %}
+      {% if author contains "Kola Ayonrinde" %}
+        <strong>{{ author }}</strong>
+      {% else %}
+        {{ author }}
+      {% endif %}
+      {% unless forloop.last %}, {% endunless %}
+    {% endfor %}
+  {% endif %}
+  - {{ include.pub.year }} <br />
+  {% assign journal = include.pub.journal %}
+  {% if include.hide_award_star %}
+    {% assign journal = journal | remove_first: "🌟 " %}
+  {% endif %}
+  <em>{{ journal }}</em>
+  <details>
+    <summary>Show Abstract</summary>
+    <div>{{ include.pub.content | markdownify }}</div>
+  </details>
+</li>
+<br />

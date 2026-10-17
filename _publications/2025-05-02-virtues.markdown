@@ -5,7 +5,7 @@ authors:
   - "Kola Ayonrinde"
   - "Louis Jaburi"
 year: 2025
-journal: "Under Review"
+journal: "NeurIPS 2025, Mechanistic Interpretability Workshop"
 external_url: https://arxiv.org/abs/2505.01372
 ---
 

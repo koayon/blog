@@ -5,30 +5,22 @@ title: "Publications"
 
 <h1>Selected Publications</h1>
 <ul style="list-style: none; padding-left: 0">
-  {% for pub in site.publications reversed%} {% unless pub.hidden %}
-  <li>
-    <strong>
-      {% if pub.external_url %}
-      <a
-        href="{{ pub.external_url }}"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {{ pub.title }}
-      </a>
-      {% else %} {{ pub.title }} {% endif %}
-    </strong>
-    <br />
-    {% for author in pub.authors %} {% if author contains "Kola Ayonrinde" %}
-    <strong>{{ author }}</strong>
-    {% else %} {{ author }} {% endif %} {% unless forloop.last %}, {% endunless
-    %} {% endfor %} - {{ pub.year }} <br />
-    <em>{{ pub.journal }}</em>
-    <details>
-      <summary>Show Abstract</summary>
-      <div>{{ pub.content | markdownify }}</div>
-    </details>
-  </li>
-  <br />
-  {% endunless %} {% endfor %}
+  {% assign selected_publications = site.publications | where: "selected", true
+  | sort: "selected_order" %}
+  {% for pub in selected_publications %}
+    {% include publication-item.html pub=pub hide_award_star=true %}
+  {% endfor %}
 </ul>
+
+<h2>All Publications</h2>
+<details>
+  <summary>Show all publications</summary>
+  <ul style="list-style: none; padding-left: 0; margin-top: 1rem">
+    {% assign sorted_publications = site.publications | sort: "path" | reverse %}
+    {% for pub in sorted_publications %}
+      {% unless pub.hidden %}
+        {% include publication-item.html pub=pub %}
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</details>
